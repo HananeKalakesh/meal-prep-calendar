@@ -1,7 +1,6 @@
 <script>
     // Global variables
     let currentMonthIndex = 0; // Represents the current "month" in a cycle of 4
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
     // Enhanced meal plan with shuffled dinners for variety
     const mealPlan = {
@@ -16,8 +15,6 @@
                 "Mediterranean Quinoa Salad",
                 "Asian Chicken Salad"
             ],
-            // Sunday meals for Week 1 now conceptually come from Week 2's general meals
-            // These will be dynamically assigned in generateCalendar
         },
         week2: {
             lunches: [
@@ -30,7 +27,6 @@
                 "Chickpea Salad",
                 "Mediterranean Orzo Salad"
             ],
-            // Sunday meals for Week 2 now conceptually come from Week 3's general meals
         },
         week3: {
             lunches: [
@@ -43,7 +39,6 @@
                 "Asian Chicken Salad",
                 "Chicken Salad"
             ],
-            // Sunday meals for Week 3 now conceptually come from Week 4's general meals
         },
         week4: {
             lunches: [
@@ -56,7 +51,6 @@
                 "Pepper and Cucumber Salad",
                 "Mexican Burrito Bowl"
             ],
-            // Sunday meals for Week 4 now conceptually come from Week 1's general meals
         }
     };
 
@@ -589,134 +583,99 @@
     // Function to generate the calendar
     function generateCalendar() {
         const calendarEl = document.getElementById('calendar');
-        calendarEl.innerHTML = ''; // Clear previous calendar
+        calendarEl.innerHTML = ''; // Clear previous calendar once at the beginning
 
         // Update the current month display to show "Month Cycle X" or similar, since actual months are less relevant now
         document.getElementById('currentMonth').textContent = `Meal Plan Cycle ${currentMonthIndex + 1}`;
 
         const weekLength = 7; // Days in a week
 
-        // Get the current week's data
-        const currentWeekKey = `week${(currentMonthIndex % 4) + 1}`;
-        const currentWeekData = mealPlan[currentWeekKey];
+        for (let weekDisplay = 0; weekDisplay < 4; weekDisplay++) { // Loop for 4 weeks to display
+            // Calculate which mealPlan week corresponds to the current 'weekDisplay'
+            // This creates the cycling effect for the 4 weeks starting from currentMonthIndex
+            const actualMealPlanWeekIndex = (currentMonthIndex + weekDisplay) % 4;
+            const actualMealPlanWeekKey = `week${actualMealPlanWeekIndex + 1}`;
+            const mealsForThisDisplayedWeek = mealPlan[actualMealPlanWeekKey];
 
-        // Determine the next week's key for Sunday's meals
-        const nextWeekIndex = (currentMonthIndex + 1) % 4; // Cycles 0 -> 1, 1 -> 2, 2 -> 3, 3 -> 0
-        const nextWeekKey = `week${nextWeekIndex + 1}`;
-        const nextWeekData = mealPlan[nextWeekKey];
+            // Determine the *next* actual meal plan week for Sunday's meals (prep for the *next* week)
+            const nextActualMealPlanWeekIndex = (actualMealPlanWeekIndex + 1) % 4;
+            const nextActualMealPlanWeekKey = `week${nextActualMealPlanWeekIndex + 1}`;
+            const mealsForNextDisplayedWeek = mealPlan[nextActualMealPlanWeekKey];
 
-        // Shuffle dinners for the *current* week's Monday-Saturday to add variety
-        const shuffledDinnersCurrentWeek = [...currentWeekData.dinners];
-        shuffleArray(shuffledDinnersCurrentWeek);
+            // Shuffle lunches and dinners from the *next* week for this week's Sunday prep
+            const shuffledLunchesForSundayPrep = [...mealsForNextDisplayedWeek.lunches];
+            shuffleArray(shuffledLunchesForSundayPrep);
+            const shuffledDinnersForSundayPrep = [...mealsForNextDisplayedWeek.dinners];
+            shuffleArray(shuffledDinnersForSundayPrep);
 
-        // Shuffle lunches and dinners for the *next* week to pick Sunday's meals
-        const shuffledLunchesNextWeek = [...nextWeekData.lunches];
-        shuffleArray(shuffledLunchesNextWeek);
-        const shuffledDinnersNextWeek = [...nextWeekData.dinners];
-        shuffleArray(shuffledDinnersNextWeek);
-
-
-        for (let w = 0; w < 4; w++) { // Loop for 4 weeks display
-            // This outer loop is actually redundant for displaying *a single* 4-week cycle.
-            // The logic below will generate a full 4-week grid based on currentMonthIndex.
-            // Let's refactor this to simply build out the 4 weeks.
-
-            // The original intent of 'currentMonthIndex' was to cycle through months.
-            // With "Week X" display, we are always showing the full 4-week cycle
-            // but the `currentMonthIndex` can still be used to offset the starting week
-            // if we want to change which week is "Week 1" in the display.
-
-            // For your request, we just need to render the 4 weeks,
-            // and the `currentMonthIndex` acts as a "starting point" for the cycle.
-
-            // Reset weekCounter for each full display generation
-            let weekCounter = 1;
-            calendarEl.innerHTML = ''; // Clear for fresh generation
-
-            for (let weekDisplay = 0; weekDisplay < 4; weekDisplay++) { // Loop for 4 weeks to display
-                // Calculate which mealPlan week corresponds to the current 'weekDisplay'
-                // This creates the cycling effect for the 4 weeks
-                const actualMealPlanWeekIndex = (currentMonthIndex + weekDisplay) % 4;
-                const actualMealPlanWeekKey = `week${actualMealPlanWeekIndex + 1}`;
-                const mealsForThisDisplayedWeek = mealPlan[actualMealPlanWeekKey];
-
-                // Determine the *next* actual meal plan week for Sunday's meals
-                const nextActualMealPlanWeekIndex = (actualMealPlanWeekIndex + 1) % 4;
-                const nextActualMealPlanWeekKey = `week${nextActualMealPlanWeekIndex + 1}`;
-                const mealsForNextDisplayedWeek = mealPlan[nextActualMealPlanWeekKey];
+            // Shuffle dinners for this displayed week's Monday-Saturday (consumed during this week)
+            const shuffledDinnersForMonSat = [...mealsForThisDisplayedWeek.dinners];
+            shuffleArray(shuffledDinnersForMonSat);
 
 
-                // Shuffle dinners for this displayed week's Monday-Saturday
-                const shuffledDinnersForMonSat = [...mealsForThisDisplayedWeek.dinners];
-                shuffleArray(shuffledDinnersForMonSat);
+            for (let dayOfWeek = 0; dayOfWeek < weekLength; dayOfWeek++) { // Loop for 7 days
+                const dayEl = document.createElement('div');
+                dayEl.classList.add('day');
 
-                // Shuffle lunches and dinners from the *next* week for this week's Sunday
-                const shuffledLunchesForSundayPrep = [...mealsForNextDisplayedWeek.lunches];
-                shuffleArray(shuffledLunchesForSundayPrep);
-                const shuffledDinnersForSundayPrep = [...mealsForNextDisplayedWeek.dinners];
-                shuffleArray(shuffledDinnersForSundayPrep);
+                const dayNumberEl = document.createElement('div');
+                dayNumberEl.classList.add('day-number');
 
-                for (let dayOfWeek = 0; dayOfWeek < weekLength; dayOfWeek++) { // Loop for 7 days
-                    const dayEl = document.createElement('div');
-                    dayEl.classList.add('day');
+                if (dayOfWeek === 0) { // Sunday (Prep Day for the *next* week's meals)
+                    dayNumberEl.textContent = `Week ${weekDisplay + 1}`; // Display "Week 1", "Week 2", etc.
+                    dayEl.classList.add('prep-day'); // Mark Sunday as prep day
+                    const prepIndicator = document.createElement('div');
+                    prepIndicator.classList.add('prep-indicator');
+                    prepIndicator.textContent = 'Prep Day';
+                    dayEl.appendChild(prepIndicator);
 
-                    const dayNumberEl = document.createElement('div');
-                    dayNumberEl.classList.add('day-number');
+                    // Sunday meals are chosen from the *next* week's available meals
+                    const sundayLunch = getRandomMeal(shuffledLunchesForSundayPrep);
+                    const sundayDinner = getRandomMeal(shuffledDinnersForSundayPrep);
 
-                    if (dayOfWeek === 0) { // Sunday
-                        dayNumberEl.textContent = `Week ${weekDisplay + 1}`; // Display "Week 1", "Week 2", etc.
-                        dayEl.classList.add('prep-day'); // Mark Sunday as prep day
-                        const prepIndicator = document.createElement('div');
-                        prepIndicator.classList.add('prep-indicator');
-                        prepIndicator.textContent = 'Prep Day';
-                        dayEl.appendChild(prepIndicator);
-
-                        // **Sunday meals from the *next* actual meal plan week's general meals**
-                        const sundayLunch = getRandomMeal(shuffledLunchesForSundayPrep);
-                        const sundayDinner = getRandomMeal(shuffledDinnersForSundayPrep);
-
-                        if (sundayLunch) {
-                            const lunchEl = document.createElement('div');
-                            lunchEl.classList.add('meal', 'lunch');
-                            lunchEl.textContent = `Prep Lunch: ${sundayLunch}`; // Indicate it's for prep
-                            lunchEl.onclick = () => openModal(sundayLunch);
-                            dayEl.appendChild(lunchEl);
-                        }
-
-                        if (sundayDinner) {
-                            const dinnerEl = document.createElement('div');
-                            dinnerEl.classList.add('meal', 'dinner');
-                            dinnerEl.textContent = `Prep Dinner: ${sundayDinner}`; // Indicate it's for prep
-                            dinnerEl.onclick = () => openModal(sundayDinner);
-                            dayEl.appendChild(dinnerEl);
-                        }
-
-                    } else { // Monday to Saturday
-                        // Meals for Monday-Saturday come from the *current* actual meal plan week
-                        const lunch = mealsForThisDisplayedWeek.lunches[(dayOfWeek - 1) % mealsForThisDisplayedWeek.lunches.length];
-                        const dinner = shuffledDinnersForMonSat[(dayOfWeek - 1) % shuffledDinnersForMonSat.length];
-
-                        if (lunch) {
-                            const lunchEl = document.createElement('div');
-                            lunchEl.classList.add('meal', 'lunch');
-                            lunchEl.textContent = `Lunch: ${lunch}`;
-                            lunchEl.onclick = () => openModal(lunch);
-                            dayEl.appendChild(lunchEl);
-                        }
-
-                        if (dinner) {
-                            const dinnerEl = document.createElement('div');
-                            dinnerEl.classList.add('meal', 'dinner');
-                            dinnerEl.textContent = `Dinner: ${dinner}`;
-                            dinnerEl.onclick = () => openModal(dinner);
-                            dayEl.appendChild(dinnerEl);
-                        }
+                    if (sundayLunch) {
+                        const lunchEl = document.createElement('div');
+                        lunchEl.classList.add('meal', 'lunch');
+                        lunchEl.textContent = `Prep Lunch: ${sundayLunch}`; // Indicate it's for prep
+                        lunchEl.onclick = () => openModal(sundayLunch);
+                        dayEl.appendChild(lunchEl);
                     }
 
-                    calendarEl.appendChild(dayEl);
+                    if (sundayDinner) {
+                        const dinnerEl = document.createElement('div');
+                        dinnerEl.classList.add('meal', 'dinner');
+                        dinnerEl.textContent = `Prep Dinner: ${sundayDinner}`; // Indicate it's for prep
+                        dinnerEl.onclick = () => openModal(sundayDinner);
+                        dayEl.appendChild(dinnerEl);
+                    }
+
+                } else { // Monday to Saturday (Consumption Days)
+                    // Meals for Monday-Saturday come from the *current* displayed week's plan
+                    const lunch = mealsForThisDisplayedWeek.lunches[(dayOfWeek - 1) % mealsForThisDisplayedWeek.lunches.length];
+                    const dinner = shuffledDinnersForMonSat[(dayOfWeek - 1) % shuffledDinnersForMonSat.length];
+
+                    // Set generic day number for Monday-Saturday
+                    dayNumberEl.textContent = `Day ${dayOfWeek}`; // Or just keep empty, or use numbers 1-6 for Mon-Sat if preferred
+
+                    if (lunch) {
+                        const lunchEl = document.createElement('div');
+                        lunchEl.classList.add('meal', 'lunch');
+                        lunchEl.textContent = `Lunch: ${lunch}`;
+                        lunchEl.onclick = () => openModal(lunch);
+                        dayEl.appendChild(lunchEl);
+                    }
+
+                    if (dinner) {
+                        const dinnerEl = document.createElement('div');
+                        dinnerEl.classList.add('meal', 'dinner');
+                        dinnerEl.textContent = `Dinner: ${dinner}`;
+                        dinnerEl.onclick = () => openModal(dinner);
+                        dayEl.appendChild(dinnerEl);
+                    }
                 }
+                calendarEl.appendChild(dayEl);
             }
         }
+    }
 
     // Function to change which 'cycle' of weeks is currently viewed
     function changeMonth(direction) {
