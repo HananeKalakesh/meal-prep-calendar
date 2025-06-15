@@ -32,13 +32,10 @@
             align-items: center;
         }
 
-        /* Header Styles - Only one will be rendered via JS now */
+        /* Header Styles - ONLY the main title is here, hidden below */
         .main-title {
-            color: var(--pastel-green-dark);
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            letter-spacing: 0.05em;
+            /* This section is now hidden as per request */
+            display: none; /* Hides the blue title */
         }
 
         /* Main Content Wrapper - Holds the entire calendar */
@@ -58,6 +55,11 @@
             grid-template-columns: repeat(7, 1fr); /* 7 columns for Sun-Sat */
             gap: 10px; /* Reduced gap for more compact view */
             width: 100%;
+        }
+
+        /* Hides the month name that is generated as a day-header */
+        .day-header.month-name {
+            display: none;
         }
 
         .day-header {
@@ -129,6 +131,10 @@
             margin-bottom: 10px;
         }
 
+        /* Hide the "(saturday no meal)" text specifically */
+        .day.empty-day .no-meal-text {
+            display: none;
+        }
 
         .prep-day {
             background-color: var(--pastel-pink-light); /* Light pink for Sundays (prep days) */
@@ -655,344 +661,396 @@
             "Meatballs with Marinara": {
                 emoji: "🍝",
                 ingredients: {
-                    proteins: ["500g ground beef or turkey", "1 egg"],
-                    carbs: ["1/2 cup breadcrumbs"],
-                    vegetables: ["2 tbsp fresh parsley, chopped", "1 clove garlic, minced"],
-                    pantry: ["1/4 cup milk", "1/2 tsp salt", "1/4 tsp black pepper", "1 tbsp olive oil", "1 jar (680g) marinara sauce", "Cooked pasta or zucchini noodles for serving"]
+                    proteins: ["500g ground beef or turkey"],
+                    carbs: ["Cooked pasta or zucchini noodles for serving"],
+                    vegetables: ["1/2 onion, finely chopped", "2 cloves garlic, minced"],
+                    pantry: ["1 egg", "1/4 cup breadcrumbs", "1/4 cup milk", "1 tsp dried oregano", "Salt and pepper to taste", "1 can (800g) crushed tomatoes", "1 tbsp olive oil", "Fresh basil for garnish"]
                 },
-                instructions: ["In a large bowl, gently combine ground meat, breadcrumbs, egg, milk, parsley, garlic, salt, and pepper.", "Form into 1-inch meatballs.", "Heat olive oil in a large skillet over medium heat.", "Brown meatballs on all sides, then drain any excess fat.", "Pour marinara sauce over the meatballs, bring to a simmer.", "Reduce heat, cover, and cook for 15-20 minutes, or until meatballs are cooked through.", "Serve hot over cooked pasta or zucchini noodles."],
-                macros: { calories: "420 kcal", protein: "35g", carbs: "30g", fat: "20g" }
+                instructions: ["In a large bowl, combine ground meat, chopped onion, minced garlic, egg, breadcrumbs, milk, oregano, salt, and pepper. Mix until just combined, don't overmix.", "Form into 1-inch meatballs.", "Heat olive oil in a large skillet or pot over medium-high heat. Brown meatballs on all sides, then remove.", "Pour crushed tomatoes into the same skillet, bring to a simmer.", "Return meatballs to the sauce, cover, and simmer for 20-25 minutes, or until meatballs are cooked through.", "Serve hot over pasta or zucchini noodles, garnished with fresh basil."],
+                macros: { calories: "400 kcal", protein: "35g", carbs: "30g", fat: "18g" }
             },
             "Chicken Salad": {
-                emoji: "🥗",
+                emoji: "🥪",
                 ingredients: {
-                    proteins: ["2 cups cooked chicken, shredded or cubed"],
-                    vegetables: ["1/4 cup celery, finely chopped", "2 tbsp red onion, finely chopped", "1 tbsp fresh dill or parsley, chopped (optional)"],
-                    pantry: ["1/2 cup mayonnaise", "1 tsp Dijon mustard", "Salt and black pepper to taste", "Lettuce leaves or bread for serving"]
+                    proteins: ["2 cups cooked chicken, shredded"],
+                    vegetables: ["1 celery stalk, finely chopped", "1/4 cup red onion, finely chopped"],
+                    pantry: ["1/2 cup mayonnaise or Greek yogurt", "1 tbsp Dijon mustard", "Salt and pepper to taste", "Optional: 1/4 cup grapes, halved, or chopped pecans"]
                 },
-                instructions: ["In a medium bowl, combine the cooked chicken, mayonnaise, chopped celery, and red onion.", "Stir in fresh dill or parsley (if using) and Dijon mustard.", "Mix all ingredients until well combined.", "Season with salt and black pepper to taste.", "Serve chilled on lettuce leaves, as a sandwich, or with crackers."],
-                macros: { calories: "280 kcal", protein: "25g", carbs: "5g", fat: "18g" }
+                instructions: ["In a medium bowl, combine shredded chicken, chopped celery, and red onion.", "In a small bowl, whisk together mayonnaise (or Greek yogurt), Dijon mustard, salt, and pepper.", "Pour the dressing over the chicken mixture and mix until well combined.", "If using, stir in grapes or pecans.", "Serve as a sandwich filling, with crackers, or on lettuce cups."],
+                macros: { calories: "280 kcal", protein: "28g", carbs: "5g", fat: "18g" }
             },
             "Chicken Curry": {
                 emoji: "🍛",
                 ingredients: {
-                    proteins: ["500g chicken breast, cubed"],
-                    vegetables: ["1 onion, chopped", "2 cloves garlic, minced", "1/2 cup frozen peas"],
-                    pantry: ["1 tbsp olive oil", "1 tbsp grated fresh ginger", "2 tbsp curry powder", "1 can (400ml) coconut milk", "1 cup chicken broth", "Cooked basmati rice for serving"]
+                    proteins: ["500g chicken breast or thighs, cubed"],
+                    carbs: ["Cooked rice for serving"],
+                    vegetables: ["1 onion, chopped", "2 cloves garlic, minced", "1-inch ginger, grated", "1 bell pepper, chopped"],
+                    pantry: ["1 tbsp olive oil", "2 tbsp curry powder", "1 can (400ml) coconut milk", "1/2 cup chicken broth", "1 tbsp tomato paste", "Salt and pepper to taste", "Fresh cilantro for garnish"]
                 },
-                instructions: ["Heat olive oil in a large pot or deep skillet over medium heat.", "Add chicken cubes and cook until lightly browned; remove and set aside.", "In the same pot, add onion and cook until softened, about 5 minutes.", "Stir in garlic, ginger, and curry powder; cook for 1 minute until fragrant.", "Return chicken to the pot.", "Pour in coconut milk and chicken broth.", "Bring to a simmer, then reduce heat, cover, and cook for 15-20 minutes, or until chicken is cooked through.", "Stir in frozen peas and cook for another 5 minutes.", "Serve hot over basmati rice."],
-                macros: { calories: "400 kcal", protein: "35g", carbs: "30g", fat: "18g" }
+                instructions: ["Heat olive oil in a large pot or deep skillet over medium heat.", "Add chicken and cook until lightly browned; remove from pot.", "Add onion to the pot and sauté until softened.", "Stir in garlic, ginger, and curry powder; cook for 1 minute until fragrant.", "Add bell pepper, coconut milk, chicken broth, and tomato paste. Bring to a simmer.", "Return chicken to the pot. Cover and simmer for 20-25 minutes, or until chicken is cooked through and sauce has thickened slightly.", "Season with salt and pepper. Serve hot over cooked rice, garnished with fresh cilantro."],
+                macros: { calories: "420 kcal", protein: "35g", carbs: "40g", fat: "18g" }
+            },
+            "Teriyaki Chicken": {
+                emoji: "🥢",
+                ingredients: {
+                    proteins: ["500g chicken breast or thighs, cubed"],
+                    carbs: ["Cooked rice for serving"],
+                    vegetables: ["1 cup broccoli florets", "1 carrot, sliced into rounds", "Sliced green onions for garnish"],
+                    pantry: ["1/2 cup soy sauce", "1/4 cup mirin (sweet rice wine)", "2 tbsp sake (optional)", "2 tbsp brown sugar", "1 tbsp grated fresh ginger", "2 cloves garlic, minced", "1 tbsp cornstarch (mixed with 2 tbsp water for slurry)", "1 tbsp sesame oil"]
+                },
+                instructions: ["In a bowl, whisk together soy sauce, mirin, sake (if using), brown sugar, ginger, and garlic to create the teriyaki sauce.", "Heat sesame oil in a large skillet or wok over medium-high heat.", "Add chicken and cook until browned on all sides. Remove from pan.", "Add broccoli and carrots to the skillet, stir-fry for 3-5 minutes until tender-crisp.", "Pour the teriyaki sauce into the skillet and bring to a simmer. Stir in the cornstarch slurry and cook, stirring, until the sauce thickens.", "Return chicken to the skillet, toss to coat everything in the sauce.", "Serve hot over cooked rice, garnished with green onions."],
+                macros: { calories: "380 kcal", protein: "30g", carbs: "45g", fat: "10g" }
             },
             "Pepper and Cucumber Salad": {
                 emoji: "🥒",
                 ingredients: {
                     proteins: [],
-                    vegetables: ["2 cucumbers, diced", "2 bell peppers (any color), diced", "1/2 red onion, thinly sliced", "1/4 cup fresh dill, chopped"],
-                    pantry: ["3 tbsp olive oil", "2 tbsp white wine vinegar", "1 tsp sugar (optional, for balance)", "Salt and black pepper to taste"]
+                    carbs: [],
+                    vegetables: ["2 cucumbers, diced", "2 bell peppers (any color), diced", "1/2 red onion, thinly sliced", "1/4 cup fresh mint, chopped"],
+                    pantry: ["3 tbsp olive oil", "2 tbsp white wine vinegar", "1 tsp sumac", "Salt and pepper to taste"]
                 },
-                instructions: ["Dice cucumbers and bell peppers into bite-sized pieces.", "Thinly slice the red onion and chop fresh dill.", "In a large bowl, combine the diced vegetables, red onion, and dill.", "In a small bowl, whisk together olive oil, white wine vinegar, sugar (if using), salt, and black pepper to create the dressing.", "Pour the dressing over the vegetables and toss gently to ensure everything is evenly coated.", "Serve immediately or chill in the refrigerator for at least 30 minutes to allow the flavors to meld."],
-                macros: { calories: "180 kcal", protein: "2g", carbs: "15g", fat: "12g" }
+                instructions: ["In a large bowl, combine diced cucumbers, bell peppers, red onion, and chopped fresh mint.", "In a small bowl, whisk together olive oil, white wine vinegar, sumac, salt, and pepper to make the dressing.", "Pour the dressing over the vegetables and toss gently to combine.", "Serve immediately or chill for a short period."],
+                macros: { calories: "150 kcal", protein: "3g", carbs: "15g", fat: "10g" }
             },
             "Mexican Burrito Bowl": {
                 emoji: "🌶️",
                 ingredients: {
-                    proteins: ["Optional: cooked seasoned chicken, beef, or tofu"],
-                    carbs: ["1 cup cooked rice (brown or white)", "1 cup cooked black beans, rinsed and drained"],
-                    vegetables: ["1 cup cooked corn kernels (fresh, frozen, or canned)", "1/2 cup salsa", "1/4 cup chopped fresh cilantro", "1/2 avocado, sliced or diced", "Lime wedges for serving"],
-                    pantry: ["2 tbsp sour cream or Greek yogurt (optional)"]
+                    proteins: ["400g ground beef or black beans"],
+                    carbs: ["1 cup cooked rice", "1 can (400g) black beans, rinsed and drained", "1 can (200g) corn kernels, drained"],
+                    vegetables: ["1 bell pepper, diced", "1 onion, diced", "1/2 cup salsa", "1/4 cup chopped cilantro", "Avocado slices or guacamole"],
+                    pantry: ["1 tbsp olive oil", "2 tsp chili powder", "1 tsp cumin", "Salt and pepper to taste", "Lime wedges", "Optional: shredded cheese, sour cream"]
                 },
-                instructions: ["Assemble the bowl by layering cooked rice as the base.", "Top with cooked black beans and corn kernels.", "Add salsa, fresh cilantro, and avocado slices/dices.", "If desired, add your choice of cooked and seasoned protein (chicken, beef, or tofu).", "Dollop with sour cream or Greek yogurt if using.", "Serve immediately with a lime wedge for squeezing over the top."],
-                macros: { calories: "480 kcal", protein: "15g", carbs: "60g", fat: "20g" }
-            },
-            "Teriyaki Chicken": {
-                emoji: "🍣",
-                ingredients: {
-                    proteins: ["500g chicken breast or thighs, cut into bite-sized pieces"],
-                    carbs: ["Cooked rice for serving"],
-                    vegetables: ["1 cup broccoli florets", "1 bell pepper (any color), sliced", "Sliced green onions for garnish"],
-                    pantry: ["1 tbsp olive oil", "1/2 cup teriyaki sauce (store-bought or homemade)", "1 tbsp honey or brown sugar (optional, for extra glaze)", "Sesame seeds for garnish"]
-                },
-                instructions: ["Heat olive oil in a large skillet or wok over medium-high heat.", "Add chicken pieces and stir-fry until cooked through and lightly browned.", "Add broccoli florets and sliced bell pepper to the skillet, stir-fry for 3-5 minutes until tender-crisp.", "Pour teriyaki sauce over the chicken and vegetables, stir to coat.", "If desired, add honey or brown sugar and let the sauce simmer for 1-2 minutes until slightly thickened and glossy.", "Serve hot over cooked rice, garnished with sesame seeds and sliced green onions."],
-                macros: { calories: "390 kcal", protein: "35g", carbs: "40g", fat: "12g" }
+                instructions: ["If using ground beef, heat olive oil in a large skillet over medium-high heat and brown the beef, breaking it up with a spoon. Drain excess fat.", "Add diced bell pepper and onion to the skillet; sauté until softened.", "Stir in chili powder, cumin, salt, and pepper; cook for 1 minute until fragrant.", "Add black beans and corn to the skillet; stir to combine and heat through.", "Serve the mixture over cooked rice. Top each bowl with salsa, cilantro, avocado slices, and any optional toppings like cheese or sour cream.", "Serve with lime wedges."],
+                macros: { calories: "480 kcal", protein: "30g", carbs: "60g", fat: "18g" }
             }
         };
 
-        // Utility function to shuffle an array
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
+        const mealTypes = {
+            lunch: "Lunch",
+            dinner: "Dinner"
+        };
+
+        const currentYear = new Date().getFullYear();
+        const startMonth = new Date().getMonth(); // Current month
+        const numberOfMonths = 1; // Display only the current month
+
+        // Function to get the week number of the year for a given date
+        function getWeekNumber(d) {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+            return weekNo;
         }
 
-        // Function to distribute meals for Sunday-Friday consumption (6 meals)
-        function distributeMealsForConsumption(mealOptions, type) {
-            let assignedMeals = [];
-            let shuffledOptions = [...mealOptions];
-            shuffleArray(shuffledOptions);
+        function renderCalendar() {
+            const calendarDisplay = document.getElementById('calendarDisplay');
+            calendarDisplay.innerHTML = ''; // Clear previous content
 
-            if (type === 'lunches') {
-                // L1, L1, L2, L2, L3, L3 for Sunday-Friday (6 meals)
-                for (let i = 0; i < 3; i++) {
-                    const meal = shuffledOptions[i % shuffledOptions.length];
-                    assignedMeals.push(meal, meal);
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            for (let m = 0; m < numberOfMonths; m++) {
+                const monthDate = new Date(currentYear, startMonth + m, 1);
+                const monthName = monthNames[monthDate.getMonth()];
+                const year = monthDate.getFullYear();
+                const firstDayOfMonth = new Date(year, monthDate.getMonth(), 1).getDay(); // 0 for Sunday, 1 for Monday, etc.
+                const daysInMonth = new Date(year, monthDate.getMonth() + 1, 0).getDate();
+
+                // Month Name Header (now hidden by CSS)
+                const monthHeader = document.createElement('div');
+                monthHeader.classList.add('day-header', 'month-name'); // Add a class to specifically hide this
+                monthHeader.style.gridColumn = 'span 7';
+                monthHeader.textContent = `${monthName} ${year}`;
+                calendarDisplay.appendChild(monthHeader);
+
+                // Day Names Header (Sun, Mon, Tue...)
+                dayNames.forEach(dayName => {
+                    const header = document.createElement('div');
+                    header.classList.add('day-header');
+                    header.textContent = dayName;
+                    calendarDisplay.appendChild(header);
+                });
+
+                // Empty placeholders for days before the 1st
+                for (let i = 0; i < firstDayOfMonth; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.classList.add('day', 'empty-day');
+                    calendarDisplay.appendChild(emptyDay);
                 }
-            } else if (type === 'dinners') {
-                // D1, D2, D3, D1, D2, D3 for Sunday-Friday (6 meals)
-                for (let i = 0; i < 6; i++) {
-                    assignedMeals.push(shuffledOptions[i % shuffledOptions.length]);
-                }
-            }
-            return assignedMeals.slice(0, 6); // Ensure exactly 6 meals for Sun-Fri
-        }
 
-        // Main function to generate the entire calendar
-        function generateFullCalendar() {
-            const calendarDisplayEl = document.getElementById('calendarDisplay');
-            calendarDisplayEl.innerHTML = ''; // Clear previous content
+                // Render actual days
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const currentDay = new Date(year, monthDate.getMonth(), day);
+                    const dayOfWeek = currentDay.getDay(); // 0-Sunday, 1-Monday, ..., 6-Saturday
+                    const weekNo = getWeekNumber(currentDay);
+                    const weekIndex = (weekNo % 4 === 0) ? 4 : (weekNo % 4); // Map week numbers to 1-4
+                    const weekKey = `week${weekIndex}`;
 
-            const dayNamesFull = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            const startDate = new Date(); // Start from today's date
-            startDate.setDate(startDate.getDate() - startDate.getDay()); // Set to the most recent Sunday
-
-            // Add day headers once at the top
-            dayNamesFull.forEach(dayName => {
-                const header = document.createElement('div');
-                header.classList.add('day-header');
-                header.textContent = dayName;
-                calendarDisplayEl.appendChild(header);
-            });
-
-            for (let weekDisplay = 0; weekDisplay < 4; weekDisplay++) { // Loop for 4 weeks
-                // Get meal data for the *current* week's consumption
-                const currentConsumptionWeekKey = `week${(weekDisplay % 4) + 1}`;
-                const currentConsumptionWeekData = mealPlan[currentConsumptionWeekKey];
-
-                const distributedLunchesConsumption = distributeMealsForConsumption(currentConsumptionWeekData.lunches, 'lunches');
-                const distributedDinnersConsumption = distributeMealsForConsumption(currentConsumptionWeekData.dinners, 'dinners');
-
-                // Store meals for this specific week to be used by its grocery/prep buttons
-                const currentWeekMealsForGroceryAndPrep = {
-                    lunches: [],
-                    dinners: []
-                };
-
-                // Create days for Sunday to Saturday
-                for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-                    const currentDay = new Date(startDate);
-                    currentDay.setDate(startDate.getDate() + (weekDisplay * 7) + dayIndex);
-
-                    const dayEl = document.createElement('div');
-                    dayEl.classList.add('day');
-
-                    // Add week number for visual clarity in monthly view
-                    if (dayIndex === 0) { // Only on Sunday of each week
-                        const weekNumberIndicator = document.createElement('div');
-                        weekNumberIndicator.classList.add('week-number');
-                        weekNumberIndicator.textContent = `Week ${weekDisplay + 1}`;
-                        dayEl.appendChild(weekNumberIndicator);
+                    const dayDiv = document.createElement('div');
+                    dayDiv.classList.add('day');
+                    if (dayOfWeek === 0) { // Sunday is a prep day
+                        dayDiv.classList.add('prep-day');
+                    } else if (dayOfWeek === 6) { // Saturday no meal
+                        dayDiv.classList.add('empty-day');
                     }
 
-                    const dayDateEl = document.createElement('div');
-                    dayDateEl.classList.add('day-date');
-                    dayDateEl.textContent = currentDay.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                    dayEl.appendChild(dayDateEl);
+                    // Add week number
+                    const weekNumberSpan = document.createElement('span');
+                    weekNumberSpan.classList.add('week-number');
+                    weekNumberSpan.textContent = `Week ${weekNo}`;
+                    dayDiv.appendChild(weekNumberSpan);
 
-                    if (dayIndex === 6) { // Saturday is blank + contains week-specific buttons
-                        dayEl.classList.add('empty-day');
-                        dayEl.innerHTML += '<p style="margin-top: 5px;">Saturday</p>';
-                        dayEl.innerHTML += '<p>No Meals</p>';
+                    const dayNameSpan = document.createElement('div');
+                    dayNameSpan.classList.add('day-name');
+                    dayNameSpan.textContent = dayNames[dayOfWeek];
+                    dayDiv.appendChild(dayNameSpan);
 
-                        // Add Grocery List and Preparation buttons for THIS week inside Saturday's box
-                        const groceryButton = document.createElement('button');
-                        groceryButton.classList.add('week-action-button');
-                        groceryButton.textContent = 'Grocery (This Week)';
-                        groceryButton.onclick = () => openWeeklyGroceryListModal(currentWeekMealsForGroceryAndPrep);
-                        dayEl.appendChild(groceryButton);
+                    const dayDateSpan = document.createElement('div');
+                    dayDateSpan.classList.add('day-date');
+                    dayDateSpan.textContent = `${monthName.substring(0, 3)} ${day}, ${year}`;
+                    dayDiv.appendChild(dayDateSpan);
+
+                    if (dayOfWeek === 6) { // Saturday
+                        const noMealText = document.createElement('div');
+                        noMealText.classList.add('no-meal-text'); // Add class to hide this specific text
+                        noMealText.textContent = "(No Meal Scheduled)";
+                        dayDiv.appendChild(noMealText);
 
                         const prepButton = document.createElement('button');
                         prepButton.classList.add('week-action-button');
-                        prepButton.textContent = 'Preparation (This Week)';
-                        prepButton.onclick = () => openWeeklyPreparationStepsModal(currentWeekMealsForGroceryAndPrep);
-                        dayEl.appendChild(prepButton);
+                        prepButton.textContent = "View Weekly Prep";
+                        prepButton.onclick = () => showPreparations(weekKey);
+                        dayDiv.appendChild(prepButton);
 
-                    } else { // Sunday to Friday (Consumption Days)
-                        const currentDayLunch = distributedLunchesConsumption[dayIndex];
-                        const currentDayDinner = distributedDinnersConsumption[dayIndex];
+                        const groceryButton = document.createElement('button');
+                        groceryButton.classList.add('week-action-button');
+                        groceryButton.textContent = "View Grocery List";
+                        groceryButton.onclick = () => showGroceryList(weekKey);
+                        dayDiv.appendChild(groceryButton);
+                    } else if (dayOfWeek === 0) { // Sunday
+                        const prepIndicator = document.createElement('span');
+                        prepIndicator.classList.add('prep-indicator');
+                        prepIndicator.textContent = 'Prep Day!';
+                        dayDiv.appendChild(prepIndicator);
 
-                        // Add consumption meals to the current week's specific list
-                        if (currentDayLunch) currentWeekMealsForGroceryAndPrep.lunches.push(currentDayLunch);
-                        if (currentDayDinner) currentWeekMealsForGroceryAndPrep.dinners.push(currentDayDinner);
-
-                        // Display consumption meals
-                        if (currentDayLunch) {
-                            const lunchEl = document.createElement('div');
-                            lunchEl.classList.add('meal', 'lunch');
-                            const mealEmoji = recipes[currentDayLunch]?.emoji || '';
-                            lunchEl.innerHTML = `${mealEmoji} Lunch: ${currentDayLunch}`;
-                            lunchEl.onclick = () => openRecipeModal(currentDayLunch);
-                            dayEl.appendChild(lunchEl);
+                        // Add meals for Sunday (if any)
+                        if (mealPlan[weekKey] && mealPlan[weekKey].lunches) {
+                            mealPlan[weekKey].lunches.forEach(mealName => {
+                                if (recipes[mealName]) {
+                                    const mealDiv = document.createElement('div');
+                                    mealDiv.classList.add('meal', 'lunch');
+                                    mealDiv.innerHTML = `${recipes[mealName].emoji} ${mealName}`;
+                                    mealDiv.onclick = () => showRecipeDetails(mealName);
+                                    dayDiv.appendChild(mealDiv);
+                                }
+                            });
                         }
+                    } else { // Monday to Friday
+                        if (mealPlan[weekKey]) {
+                            // Lunch
+                            if (mealPlan[weekKey].lunches && mealPlan[weekKey].lunches.length > 0) {
+                                const lunchIndex = (dayOfWeek - 1) % mealPlan[weekKey].lunches.length; // Cycle through lunches Mon-Fri
+                                const lunchMealName = mealPlan[weekKey].lunches[lunchIndex];
+                                if (recipes[lunchMealName]) {
+                                    const mealDiv = document.createElement('div');
+                                    mealDiv.classList.add('meal', 'lunch');
+                                    mealDiv.innerHTML = `${recipes[lunchMealName].emoji} ${lunchMealName}`;
+                                    mealDiv.onclick = () => showRecipeDetails(lunchMealName);
+                                    dayDiv.appendChild(mealDiv);
+                                }
+                            }
 
-                        if (currentDayDinner) {
-                            const dinnerEl = document.createElement('div');
-                            dinnerEl.classList.add('meal', 'dinner');
-                            const mealEmoji = recipes[currentDayDinner]?.emoji || '';
-                            dinnerEl.innerHTML = `${mealEmoji} Dinner: ${currentDayDinner}`;
-                            dinnerEl.onclick = () => openRecipeModal(currentDayDinner);
-                            dayEl.appendChild(dinnerEl);
-                        }
-
-                        if (dayIndex === 0) { // Sunday - a prep day, but only showing consumption meals
-                            dayEl.classList.add('prep-day');
-                            const prepIndicator = document.createElement('div');
-                            prepIndicator.classList.add('prep-indicator');
-                            prepIndicator.textContent = 'Prep Day';
-                            dayEl.appendChild(prepIndicator);
+                            // Dinner
+                            if (mealPlan[weekKey].dinners && mealPlan[weekKey].dinners.length > 0) {
+                                const dinnerIndex = (dayOfWeek - 1) % mealPlan[weekKey].dinners.length; // Cycle through dinners Mon-Fri
+                                const dinnerMealName = mealPlan[weekKey].dinners[dinnerIndex];
+                                if (recipes[dinnerMealName]) {
+                                    const mealDiv = document.createElement('div');
+                                    mealDiv.classList.add('meal', 'dinner');
+                                    mealDiv.innerHTML = `${recipes[dinnerMealName].emoji} ${dinnerMealName}`;
+                                    mealDiv.onclick = () => showRecipeDetails(dinnerMealName);
+                                    dayDiv.appendChild(mealDiv);
+                                }
+                            }
                         }
                     }
-                    calendarDisplayEl.appendChild(dayEl);
+                    calendarDisplay.appendChild(dayDiv);
                 }
             }
         }
 
-        // Universal Modal Functions
-        const universalModal = document.getElementById('universalModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
+        function showRecipeDetails(mealName) {
+            const recipe = recipes[mealName];
+            if (!recipe) return;
 
-        function openModal(title, contentHtml) {
-            modalTitle.textContent = title;
-            modalBody.innerHTML = contentHtml;
-            universalModal.style.display = 'flex';
+            const modal = document.getElementById('universalModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            modalTitle.textContent = `${recipe.emoji} ${mealName}`;
+            modalBody.innerHTML = ''; // Clear previous content
+
+            // Ingredients
+            if (Object.keys(recipe.ingredients).length > 0) {
+                const ingredientsHeading = document.createElement('h3');
+                ingredientsHeading.textContent = 'Ingredients';
+                modalBody.appendChild(ingredientsHeading);
+
+                const ingredientsList = document.createElement('ul');
+                ingredientsList.classList.add('ingredients-list');
+                for (const category in recipe.ingredients) {
+                    if (recipe.ingredients[category].length > 0) {
+                        const categoryHeader = document.createElement('li');
+                        categoryHeader.classList.add('category-header');
+                        categoryHeader.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                        ingredientsList.appendChild(categoryHeader);
+                        recipe.ingredients[category].forEach(item => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = item;
+                            ingredientsList.appendChild(listItem);
+                        });
+                    }
+                }
+                modalBody.appendChild(ingredientsList);
+            }
+
+            // Instructions
+            if (recipe.instructions && recipe.instructions.length > 0) {
+                const instructionsHeading = document.createElement('h3');
+                instructionsHeading.textContent = 'Instructions';
+                modalBody.appendChild(instructionsHeading);
+
+                const instructionsList = document.createElement('ol');
+                instructionsList.classList.add('instructions-list');
+                recipe.instructions.forEach(step => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = step;
+                    instructionsList.appendChild(listItem);
+                });
+                modalBody.appendChild(instructionsList);
+            }
+
+            // Macros
+            if (recipe.macros && Object.keys(recipe.macros).length > 0) {
+                const macrosHeading = document.createElement('h3');
+                macrosHeading.textContent = 'Macros (Approximate)';
+                modalBody.appendChild(macrosHeading);
+
+                const macrosList = document.createElement('ul');
+                macrosList.classList.add('macros-list');
+                for (const macro in recipe.macros) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${macro.charAt(0).toUpperCase() + macro.slice(1)}: ${recipe.macros[macro]}`;
+                    macrosList.appendChild(listItem);
+                }
+                modalBody.appendChild(macrosList);
+            }
+
+            modal.style.display = 'flex'; // Use flex to center
+        }
+
+        function showGroceryList(weekKey) {
+            const modal = document.getElementById('universalModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            modalTitle.textContent = `🛒 Grocery List for ${weekKey.replace('week', 'Week ')}`;
+            modalBody.innerHTML = '';
+
+            const allIngredients = {};
+
+            // Aggregate ingredients from all meals in the specified week
+            const mealsInWeek = [
+                ...(mealPlan[weekKey]?.lunches || []),
+                ...(mealPlan[weekKey]?.dinners || [])
+            ];
+
+            mealsInWeek.forEach(mealName => {
+                const recipe = recipes[mealName];
+                if (recipe) {
+                    for (const category in recipe.ingredients) {
+                        recipe.ingredients[category].forEach(item => {
+                            if (!allIngredients[category]) {
+                                allIngredients[category] = new Set();
+                            }
+                            allIngredients[category].add(item);
+                        });
+                    }
+                }
+            });
+
+            if (Object.keys(allIngredients).length === 0) {
+                modalBody.innerHTML = '<p>No meals planned for this week to generate a grocery list.</p>';
+            } else {
+                const groceryList = document.createElement('ul');
+                groceryList.classList.add('modal-list');
+                for (const category in allIngredients) {
+                    const categoryHeader = document.createElement('li');
+                    categoryHeader.classList.add('category-header');
+                    categoryHeader.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                    groceryList.appendChild(categoryHeader);
+
+                    const itemsList = document.createElement('ul');
+                    Array.from(allIngredients[category]).sort().forEach(item => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = item;
+                        itemsList.appendChild(listItem);
+                    });
+                    groceryList.appendChild(itemsList);
+                }
+                modalBody.appendChild(groceryList);
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function showPreparations(weekKey) {
+            const modal = document.getElementById('universalModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            modalTitle.textContent = `📝 Weekly Preparations for ${weekKey.replace('week', 'Week ')}`;
+            modalBody.innerHTML = '';
+
+            const prepSteps = new Set();
+            const mealsInWeek = [
+                ...(mealPlan[weekKey]?.lunches || []),
+                ...(mealPlan[weekKey]?.dinners || [])
+            ];
+
+            mealsInWeek.forEach(mealName => {
+                const recipe = recipes[mealName];
+                if (recipe && recipe.instructions && recipe.instructions.length > 0) {
+                    // Just take the first few (or all) instructions as prep suggestions
+                    recipe.instructions.slice(0, 2).forEach(step => { // Example: first 2 steps
+                        prepSteps.add(`For ${mealName}: ${step}`);
+                    });
+                }
+            });
+
+            if (prepSteps.size === 0) {
+                modalBody.innerHTML = '<p>No specific preparation steps found for meals this week.</p>';
+            } else {
+                const prepList = document.createElement('ol');
+                prepList.classList.add('modal-list');
+                Array.from(prepSteps).sort().forEach(step => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = step;
+                    prepList.appendChild(listItem);
+                });
+                modalBody.appendChild(prepList);
+            }
+
+            modal.style.display = 'flex';
         }
 
         function closeModal() {
-            universalModal.style.display = 'none';
-            modalTitle.textContent = '';
-            modalBody.innerHTML = '';
+            document.getElementById('universalModal').style.display = 'none';
         }
 
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            if (event.target === universalModal) {
-                closeModal();
-            }
-        }
-
-        // --- Recipe Modal Content Generation ---
-        function openRecipeModal(recipeName) {
-            const recipe = recipes[recipeName];
-
-            if (recipe) {
-                let ingredientsHtml = '<h3>Ingredients:</h3><ul class="ingredients-list">';
-                const categoriesOrder = ['proteins', 'carbs', 'vegetables', 'pantry'];
-                categoriesOrder.forEach(category => {
-                    if (recipe.ingredients[category] && recipe.ingredients[category].length > 0) {
-                        ingredientsHtml += `<li class="category-header">${category.charAt(0).toUpperCase() + category.slice(1)}</li>`;
-                        recipe.ingredients[category].forEach(item => {
-                            ingredientsHtml += `<li>${item}</li>`;
-                        });
-                    }
-                });
-                ingredientsHtml += '</ul>';
-
-                const instructionsHtml = recipe.instructions && recipe.instructions.length > 0
-                    ? `<h3>Instructions:</h3><ol class="instructions-list">${recipe.instructions.map(step => `<li>${step}</li>`).join('')}</ol>`
-                    : '';
-
-                const macrosHtml = recipe.macros
-                    ? `
-                        <h3>Macros:</h3>
-                        <ul class="macros-list">
-                            <li>Calories: ${recipe.macros.calories || 'N/A'}</li>
-                            <li>Protein: ${recipe.macros.protein || 'N/A'}</li>
-                            <li>Carbs: ${recipe.macros.carbs || 'N/A'}</li>
-                            <li>Fat: ${recipe.macros.fat || 'N/A'}</li>
-                        </ul>
-                    `
-                    : '';
-
-                openModal(`${recipe.emoji} ${recipeName}`, ingredientsHtml + instructionsHtml + macrosHtml);
-            } else {
-                openModal("Recipe Not Found", "<p>Sorry, the recipe for this meal is not available.</p>");
-            }
-        }
-
-        // --- Weekly Grocery List Modal Content Generation ---
-        function openWeeklyGroceryListModal(weekMeals) {
-            const aggregatedIngredients = {
-                proteins: new Set(),
-                carbs: new Set(),
-                vegetables: new Set(),
-                pantry: new Set()
-            };
-
-            // Combine ingredients for all unique lunches and dinners of this specific week
-            const uniqueMealsForWeek = new Set([...weekMeals.lunches, ...weekMeals.dinners]);
-
-            uniqueMealsForWeek.forEach(mealName => {
-                const recipe = recipes[mealName];
-                if (recipe && recipe.ingredients) {
-                    for (const category in recipe.ingredients) {
-                        if (aggregatedIngredients[category]) { // Ensure category exists
-                            recipe.ingredients[category].forEach(item => {
-                                aggregatedIngredients[category].add(item);
-                            });
-                        }
-                    }
-                }
-            });
-
-            let groceryHtml = '<ul class="modal-list">';
-            const categoriesOrder = ['proteins', 'carbs', 'vegetables', 'pantry'];
-            let contentFound = false;
-
-            categoriesOrder.forEach(category => {
-                if (aggregatedIngredients[category].size > 0) {
-                    groceryHtml += `<li class="category-header">${category.charAt(0).toUpperCase() + category.slice(1)}</li>`;
-                    groceryHtml += '<ul>';
-                    Array.from(aggregatedIngredients[category]).sort().forEach(item => {
-                        groceryHtml += `<li>${item}</li>`;
-                    });
-                    groceryHtml += '</ul>';
-                    contentFound = true;
-                }
-            });
-
-            if (!contentFound) {
-                groceryHtml += '<li>No grocery items found for this week.</li>';
-            }
-            groceryHtml += '</ul>';
-
-            openModal("🛒 Grocery List (This Week)", groceryHtml);
-        }
-
-        // --- Weekly Preparation Steps Modal Content Generation ---
-        function openWeeklyPreparationStepsModal(weekMeals) {
-            const uniqueMealsForWeek = new Set([...weekMeals.lunches, ...weekMeals.dinners]);
-
-            let prepHtml = '';
-            if (uniqueMealsForWeek.size === 0) {
-                prepHtml = '<p>No specific preparation steps needed for this week.</p>';
-            } else {
-                prepHtml = '<h3>Preparation Steps for This Week:</h3><ol class="modal-list">';
-                uniqueMealsForWeek.forEach(mealName => {
-                    const recipe = recipes[mealName];
-                    if (recipe && recipe.instructions && recipe.instructions.length > 0) {
-                        prepHtml += `<li><strong>${recipes[mealName]?.emoji || ''} ${mealName}:</strong>`;
-                        prepHtml += `<ul>${recipe.instructions.map(step => `<li>${step}</li>`).join('')}</ul>`;
-                        prepHtml += `</li>`;
-                    }
-                });
-                prepHtml += '</ol>';
-            }
-
-            openModal("👩‍🍳 Preparation Steps (This Week)", prepHtml);
-        }
-
-        // Initial generation on page load
-        document.addEventListener('DOMContentLoaded', generateFullCalendar);
+        // Initial render
+        document.addEventListener('DOMContentLoaded', renderCalendar);
     </script>
 </body>
 </html>
