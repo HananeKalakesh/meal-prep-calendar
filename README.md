@@ -52,32 +52,6 @@
             margin-bottom: 30px;
         }
 
-        /* Global Action Buttons (Grocery/Preparation) */
-        .global-actions {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px; /* Space between buttons and first week */
-        }
-
-        .global-action-button {
-            background-color: var(--pastel-pink-dark); /* Using pastel pink for global actions */
-            color: var(--text-color-light);
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .global-action-button:hover {
-            background-color: #c42f73; /* Slightly darker pink on hover */
-            transform: translateY(-2px);
-        }
-
         /* Calendar Section for Each Week */
         .calendar-section {
             margin-bottom: 40px;
@@ -116,7 +90,7 @@
         }
 
         .day {
-            background-color: var(--pastel-green-light); /* Light green for consumption days */
+            background-color: var(--pastel-green-light); /* Light green for days */
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -137,6 +111,10 @@
             justify-content: center;
             align-items: center;
             font-style: italic;
+            display: flex; /* Ensure it's a flex container for its internal buttons */
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px; /* Adjust padding for button spacing */
         }
 
         .day:hover:not(.empty-day) {
@@ -197,17 +175,25 @@
             border-left: 4px solid var(--pastel-pink-dark);
         }
 
-        /* Specific style for Prep Meals on Sunday to distinguish them */
-        .meal.prep-meal {
-            background-color: #f5f5f5; /* Lighter grey for prep meals to visually separate */
-            border-left: 4px solid #888; /* Grey border */
-            font-style: italic;
-            font-size: 0.88em;
-            color: #555;
-            margin-top: 10px; /* Add some space from consumption meals */
+        /* Specific styles for buttons inside Saturday's box */
+        .week-action-button {
+            background-color: var(--pastel-pink-dark);
+            color: var(--text-color-light);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Make buttons fill available width */
+            text-align: center;
         }
-        .meal.prep-meal:hover {
-            background-color: #e0e0e0;
+
+        .week-action-button:hover {
+            background-color: #c42f73; /* Slightly darker pink on hover */
+            transform: translateY(-1px);
         }
 
         /* Modal Styles (for Recipe, Grocery, and Preparations) */
@@ -351,14 +337,6 @@
             .week-title {
                 font-size: 1.5em;
             }
-            .global-actions {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .global-action-button {
-                width: 80%;
-                margin: 0 auto;
-            }
             .modal-content {
                 width: 90%;
             }
@@ -392,11 +370,6 @@
     <h1>Meal Prep Calendar</h1>
 
     <div class="main-container">
-        <div class="global-actions">
-            <button class="global-action-button" onclick="openGroceryListModal()">View Full Grocery List</button>
-            <button class="global-action-button" onclick="openPreparationStepsModal()">View Full Preparations</button>
-        </div>
-
         <div id="calendarDisplay">
             </div>
     </div>
@@ -684,27 +657,23 @@
         // Function to distribute meals for Sunday-Friday consumption (6 meals)
         function distributeMealsForConsumption(mealOptions, type) {
             let assignedMeals = [];
-            let shuffledOptions = [...mealOptions]; 
-            shuffleArray(shuffledOptions); 
+            let shuffledOptions = [...mealOptions];
+            shuffleArray(shuffledOptions);
 
             if (type === 'lunches') {
                 // L1, L1, L2, L2, L3, L3 for Sunday-Friday (6 meals)
-                for (let i = 0; i < 3; i++) { 
-                    const meal = shuffledOptions[i % shuffledOptions.length]; 
-                    assignedMeals.push(meal, meal); 
+                for (let i = 0; i < 3; i++) {
+                    const meal = shuffledOptions[i % shuffledOptions.length];
+                    assignedMeals.push(meal, meal);
                 }
             } else if (type === 'dinners') {
                 // D1, D2, D3, D1, D2, D3 for Sunday-Friday (6 meals)
-                for (let i = 0; i < 6; i++) { 
+                for (let i = 0; i < 6; i++) {
                     assignedMeals.push(shuffledOptions[i % shuffledOptions.length]);
                 }
             }
             return assignedMeals.slice(0, 6); // Ensure exactly 6 meals for Sun-Fri
         }
-
-        // Global arrays to store all meals for the entire 4-week cycle
-        let allConsumptionMeals = []; // Stores all LUNCH and DINNER meals actually consumed in the 4 weeks
-        let allPrepMeals = []; // Stores all LUNCH and DINNER meals to be prepped on Sundays for the *following* weeks
 
         // Main function to generate the entire calendar
         function generateFullCalendar() {
@@ -712,9 +681,6 @@
             calendarDisplayEl.innerHTML = ''; // Clear previous content
 
             const dayNamesFull = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-            allConsumptionMeals = []; // Reset global arrays
-            allPrepMeals = [];
 
             for (let weekDisplay = 0; weekDisplay < 4; weekDisplay++) { // Loop for 4 weeks
                 const weekSection = document.createElement('div');
@@ -739,20 +705,18 @@
                 // Get meal data for the *current* week's consumption
                 const currentConsumptionWeekKey = `week${(weekDisplay % 4) + 1}`;
                 const currentConsumptionWeekData = mealPlan[currentConsumptionWeekKey];
-                
-                // Get meal data for the *next* week's consumption (these are the meals to be prepped on Sunday of *this* week)
-                const nextConsumptionWeekKey = `week${((weekDisplay + 1) % 4) + 1}`;
-                const nextConsumptionWeekData = mealPlan[nextConsumptionWeekKey];
 
                 const distributedLunchesConsumption = distributeMealsForConsumption(currentConsumptionWeekData.lunches, 'lunches');
                 const distributedDinnersConsumption = distributeMealsForConsumption(currentConsumptionWeekData.dinners, 'dinners');
 
-                // Random meals to be PREPPED on Sunday of the *current* week for *next* week's consumption
-                const sundayPrepLunchForNextWeek = getRandomMeal(nextConsumptionWeekData.lunches);
-                const sundayPrepDinnerForNextWeek = getRandomMeal(nextConsumptionWeekData.dinners);
+                // Store meals for this specific week to be used by its grocery/prep buttons
+                const currentWeekMealsForGroceryAndPrep = {
+                    lunches: [],
+                    dinners: []
+                };
 
                 // Create days for Sunday to Saturday
-                for (let dayIndex = 0; dayIndex < 7; dayIndex++) { 
+                for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
                     const dayEl = document.createElement('div');
                     dayEl.classList.add('day');
 
@@ -761,16 +725,31 @@
                     dayNameEl.textContent = dayNamesFull[dayIndex];
                     dayEl.appendChild(dayNameEl);
 
-                    if (dayIndex === 6) { // Saturday is blank
+                    if (dayIndex === 6) { // Saturday is blank + contains week-specific buttons
                         dayEl.classList.add('empty-day');
-                        dayEl.innerHTML += '<p style="margin-top: 10px;">No Meals</p>'; 
+                        dayEl.innerHTML += '<p style="margin-top: 5px;">Saturday</p>';
+                        dayEl.innerHTML += '<p>No Meals</p>';
+
+                        // Add Grocery List and Preparation buttons for THIS week inside Saturday's box
+                        const groceryButton = document.createElement('button');
+                        groceryButton.classList.add('week-action-button');
+                        groceryButton.textContent = 'Grocery (This Week)';
+                        groceryButton.onclick = () => openWeeklyGroceryListModal(currentWeekMealsForGroceryAndPrep);
+                        dayEl.appendChild(groceryButton);
+
+                        const prepButton = document.createElement('button');
+                        prepButton.classList.add('week-action-button');
+                        prepButton.textContent = 'Preparation (This Week)';
+                        prepButton.onclick = () => openWeeklyPreparationStepsModal(currentWeekMealsForGroceryAndPrep);
+                        dayEl.appendChild(prepButton);
+
                     } else { // Sunday to Friday (Consumption Days)
                         const currentDayLunch = distributedLunchesConsumption[dayIndex];
                         const currentDayDinner = distributedDinnersConsumption[dayIndex];
 
-                        // Add to global consumption list
-                        if (currentDayLunch) allConsumptionMeals.push(currentDayLunch);
-                        if (currentDayDinner) allConsumptionMeals.push(currentDayDinner);
+                        // Add consumption meals to the current week's specific list
+                        if (currentDayLunch) currentWeekMealsForGroceryAndPrep.lunches.push(currentDayLunch);
+                        if (currentDayDinner) currentWeekMealsForGroceryAndPrep.dinners.push(currentDayDinner);
 
                         // Display consumption meals
                         if (currentDayLunch) {
@@ -789,31 +768,12 @@
                             dayEl.appendChild(dinnerEl);
                         }
 
-                        if (dayIndex === 0) { // Sunday - Also a Prep Day
+                        if (dayIndex === 0) { // Sunday - a prep day, but only showing consumption meals
                             dayEl.classList.add('prep-day');
                             const prepIndicator = document.createElement('div');
                             prepIndicator.classList.add('prep-indicator');
                             prepIndicator.textContent = 'Prep Day';
                             dayEl.appendChild(prepIndicator);
-
-                            // Add the "Prep" meals (for next week's consumption) to Sunday's display
-                            // These are distinct from the consumption meals of the current Sunday.
-                            if (sundayPrepLunchForNextWeek) {
-                                const prepLunchEl = document.createElement('div');
-                                prepLunchEl.classList.add('meal', 'prep-meal'); // Use new class for distinct styling
-                                prepLunchEl.textContent = `Prep Lunch (for Mon): ${sundayPrepLunchForNextWeek}`;
-                                prepLunchEl.onclick = () => openRecipeModal(sundayPrepLunchForNextWeek);
-                                dayEl.appendChild(prepLunchEl);
-                                allPrepMeals.push(sundayPrepLunchForNextWeek); // Add to global prep list
-                            }
-                            if (sundayPrepDinnerForNextWeek) {
-                                const prepDinnerEl = document.createElement('div');
-                                prepDinnerEl.classList.add('meal', 'prep-meal'); // Use new class for distinct styling
-                                prepDinnerEl.textContent = `Prep Dinner (for Mon): ${sundayPrepDinnerForNextWeek}`;
-                                prepDinnerEl.onclick = () => openRecipeModal(sundayPrepDinnerForNextWeek);
-                                dayEl.appendChild(prepDinnerEl);
-                                allPrepMeals.push(sundayPrepDinnerForNextWeek); // Add to global prep list
-                            }
                         }
                     }
                     weekCalendarGrid.appendChild(dayEl);
@@ -886,8 +846,8 @@
             }
         }
 
-        // --- Full Grocery List Modal Content Generation ---
-        function openGroceryListModal() {
+        // --- Weekly Grocery List Modal Content Generation ---
+        function openWeeklyGroceryListModal(weekMeals) {
             const aggregatedIngredients = {
                 proteins: new Set(),
                 carbs: new Set(),
@@ -895,26 +855,18 @@
                 pantry: new Set()
             };
 
-            // Combine ingredients from ALL consumption meals across all 4 weeks
-            new Set(allConsumptionMeals).forEach(mealName => { // Use Set to avoid duplicate processing of same recipe
-                const recipe = recipes[mealName];
-                if (recipe && recipe.ingredients) {
-                    for (const category in recipe.ingredients) {
-                        recipe.ingredients[category].forEach(item => {
-                            aggregatedIngredients[category].add(item);
-                        });
-                    }
-                }
-            });
+            // Combine ingredients for all unique lunches and dinners of this specific week
+            const uniqueMealsForWeek = new Set([...weekMeals.lunches, ...weekMeals.dinners]);
 
-            // Combine ingredients from ALL prep meals across all 4 weeks
-            new Set(allPrepMeals).forEach(mealName => { // Use Set to avoid duplicate processing of same recipe
+            uniqueMealsForWeek.forEach(mealName => {
                 const recipe = recipes[mealName];
                 if (recipe && recipe.ingredients) {
                     for (const category in recipe.ingredients) {
-                        recipe.ingredients[category].forEach(item => {
-                            aggregatedIngredients[category].add(item);
-                        });
+                        if (aggregatedIngredients[category]) { // Ensure category exists
+                            recipe.ingredients[category].forEach(item => {
+                                aggregatedIngredients[category].add(item);
+                            });
+                        }
                     }
                 }
             });
@@ -936,23 +888,23 @@
             });
 
             if (!contentFound) {
-                groceryHtml += '<li>No grocery items found for the entire cycle.</li>';
+                groceryHtml += '<li>No grocery items found for this week.</li>';
             }
             groceryHtml += '</ul>';
 
-            openModal("Full Grocery List", groceryHtml);
+            openModal("Grocery List (This Week)", groceryHtml);
         }
 
-        // --- Full Preparation Steps Modal Content Generation ---
-        function openPreparationStepsModal() {
-            const uniquePrepMeals = new Set(allPrepMeals); // Get unique prep meals from global list
+        // --- Weekly Preparation Steps Modal Content Generation ---
+        function openWeeklyPreparationStepsModal(weekMeals) {
+            const uniqueMealsForWeek = new Set([...weekMeals.lunches, ...weekMeals.dinners]);
 
             let prepHtml = '';
-            if (uniquePrepMeals.size === 0) {
-                prepHtml = '<p>No specific preparation steps needed for this cycle.</p>';
+            if (uniqueMealsForWeek.size === 0) {
+                prepHtml = '<p>No specific preparation steps needed for this week.</p>';
             } else {
-                prepHtml = '<h3>Preparation Steps for the Cycle:</h3><ol class="modal-list">';
-                uniquePrepMeals.forEach(mealName => {
+                prepHtml = '<h3>Preparation Steps for This Week:</h3><ol class="modal-list">';
+                uniqueMealsForWeek.forEach(mealName => {
                     const recipe = recipes[mealName];
                     if (recipe && recipe.instructions && recipe.instructions.length > 0) {
                         prepHtml += `<li><strong>${mealName}:</strong>`;
@@ -962,8 +914,8 @@
                 });
                 prepHtml += '</ol>';
             }
-            
-            openModal("Full Preparation Steps", prepHtml);
+
+            openModal("Preparation Steps (This Week)", prepHtml);
         }
 
         // Initial generation on page load
