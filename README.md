@@ -32,8 +32,8 @@
             align-items: center;
         }
 
-        /* Header Styles */
-        h1 {
+        /* Header Styles - Only one will be rendered via JS now */
+        .main-title {
             color: var(--pastel-green-dark);
             text-align: center;
             margin-bottom: 30px;
@@ -41,10 +41,10 @@
             letter-spacing: 0.05em;
         }
 
-        /* Main Content Wrapper */
+        /* Main Content Wrapper - Holds the entire calendar */
         .main-container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1200px; /* Max width for desktop */
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
@@ -52,30 +52,11 @@
             margin-bottom: 30px;
         }
 
-        /* Calendar Section for Each Week */
-        .calendar-section {
-            margin-bottom: 40px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-
-        .week-title {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: var(--pastel-green-dark);
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 2px solid var(--pastel-green-medium);
-            padding-bottom: 10px;
-        }
-
-        /* Calendar Grid */
+        /* Calendar Grid for the entire month */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr); /* 7 columns for Sun-Sat */
-            gap: 15px; /* Space between days */
+            gap: 10px; /* Reduced gap for more compact view */
             width: 100%;
         }
 
@@ -86,49 +67,68 @@
             text-align: center;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--pastel-green-dark);
-            margin-bottom: 10px;
+            margin-bottom: 5px; /* Reduced margin */
         }
 
         .day {
             background-color: var(--pastel-green-light); /* Light green for days */
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 8px; /* Slightly smaller border-radius */
+            padding: 12px; /* Reduced padding */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Softer shadow */
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            min-height: 180px; /* Ensure days have enough height */
+            min-height: 150px; /* Reduced min-height */
             transition: transform 0.2s ease;
-            position: relative; /* For prep-indicator positioning */
+            position: relative;
             border: 1px solid var(--border-color);
+            overflow: hidden; /* Ensure content stays within day box */
         }
 
         .day.empty-day {
-            background-color: #f0f0f0; /* Gray for empty Saturday */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            background-color: #f0f0f0;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
             color: #888;
             text-align: center;
             justify-content: center;
             align-items: center;
             font-style: italic;
-            display: flex; /* Ensure it's a flex container for its internal buttons */
+            display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding: 15px; /* Adjust padding for button spacing */
+            gap: 8px; /* Reduced gap */
+            padding: 12px;
         }
 
         .day:hover:not(.empty-day) {
-            transform: translateY(-5px);
+            transform: translateY(-3px); /* Smaller lift on hover */
+        }
+
+        .week-number {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 0.75em;
+            font-weight: bold;
+            color: #888;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 2px 5px;
+            border-radius: 3px;
         }
 
         .day-name {
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1em; /* Slightly smaller font */
             color: var(--text-color-dark);
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* Reduced margin */
             border-bottom: 1px solid var(--pastel-green-medium);
-            padding-bottom: 5px;
+            padding-bottom: 4px; /* Reduced padding */
         }
+        .day-date {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
 
         .prep-day {
             background-color: var(--pastel-pink-light); /* Light pink for Sundays (prep days) */
@@ -137,24 +137,27 @@
 
         .prep-indicator {
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 3px; /* Adjusted position */
+            right: 3px; /* Adjusted position */
             background-color: var(--pastel-pink-dark);
             color: var(--text-color-light);
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 0.75em;
+            padding: 2px 6px; /* Reduced padding */
+            border-radius: 4px; /* Smaller border-radius */
+            font-size: 0.7em; /* Smaller font */
             font-weight: bold;
             z-index: 10;
         }
 
         .meal {
-            padding: 8px 10px;
-            margin-bottom: 8px;
-            border-radius: 6px;
+            padding: 6px 8px; /* Reduced padding */
+            margin-bottom: 6px; /* Reduced margin */
+            border-radius: 5px; /* Smaller border-radius */
             cursor: pointer;
-            font-size: 0.95em;
+            font-size: 0.9em; /* Slightly smaller font */
             transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center; /* Align emoji and text */
+            gap: 5px; /* Space between emoji and text */
         }
 
         .meal:last-child {
@@ -166,12 +169,12 @@
         }
 
         .lunch {
-            background-color: var(--pastel-green-light); /* Lighter green */
+            background-color: var(--pastel-green-light);
             border-left: 4px solid var(--pastel-green-dark);
         }
 
         .dinner {
-            background-color: var(--pastel-pink-light); /* Lighter pink */
+            background-color: var(--pastel-pink-light);
             border-left: 4px solid var(--pastel-pink-dark);
         }
 
@@ -180,33 +183,33 @@
             background-color: var(--pastel-pink-dark);
             color: var(--text-color-light);
             border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
+            padding: 6px 10px; /* Reduced padding */
+            border-radius: 4px; /* Smaller border-radius */
             cursor: pointer;
-            font-size: 0.85em;
+            font-size: 0.8em; /* Slightly smaller font */
             font-weight: bold;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 100%; /* Make buttons fill available width */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Softer shadow */
+            width: 100%;
             text-align: center;
         }
 
         .week-action-button:hover {
-            background-color: #c42f73; /* Slightly darker pink on hover */
+            background-color: #c42f73;
             transform: translateY(-1px);
         }
 
         /* Modal Styles (for Recipe, Grocery, and Preparations) */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 100; /* Sit on top */
+            display: none;
+            position: fixed;
+            z-index: 100;
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
             justify-content: center;
             align-items: center;
         }
@@ -214,13 +217,13 @@
         .modal-content {
             background-color: #fefefe;
             margin: auto;
-            padding: 30px;
-            border-radius: 12px;
-            width: 80%;
-            max-width: 700px; /* Slightly wider modal for lists */
-            max-height: 90vh; /* Max height to allow scrolling */
-            overflow-y: auto; /* Enable vertical scrolling */
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            padding: 25px; /* Reduced padding */
+            border-radius: 10px; /* Slightly smaller border-radius */
+            width: 85%; /* Wider modal for lists */
+            max-width: 750px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.18); /* Softer shadow */
             position: relative;
             animation-name: animatetop;
             animation-duration: 0.4s
@@ -234,11 +237,11 @@
         .close-button {
             color: #aaa;
             float: right;
-            font-size: 32px;
+            font-size: 30px; /* Slightly smaller */
             font-weight: bold;
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 10px; /* Adjusted position */
+            right: 15px; /* Adjusted position */
             cursor: pointer;
         }
 
@@ -251,22 +254,22 @@
 
         .modal-body h3 {
             color: var(--pastel-green-dark);
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-size: 1.4em;
+            margin-top: 15px; /* Reduced margin */
+            margin-bottom: 8px; /* Reduced margin */
+            font-size: 1.3em; /* Slightly smaller */
         }
 
         /* Styles for lists inside modals (ingredients, instructions, grocery, prep) */
         .ingredients-list, .instructions-list, .macros-list, .modal-list {
             list-style-type: none;
             padding: 0;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Reduced margin */
         }
 
         .ingredients-list li, .instructions-list li, .macros-list li, .modal-list li {
-            padding: 8px 0;
+            padding: 6px 0; /* Reduced padding */
             border-bottom: 1px dashed var(--pastel-green-medium);
-            font-size: 0.95em;
+            font-size: 0.9em; /* Slightly smaller font */
         }
 
         .instructions-list li {
@@ -278,7 +281,7 @@
         }
 
         .modal-body ol li {
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* Reduced margin */
         }
 
         /* Grocery/Preparation Modal specific list styles */
@@ -286,10 +289,10 @@
             background-color: var(--pastel-green-light);
             border-left: 4px solid var(--pastel-green-dark);
             font-weight: bold;
-            margin-top: 15px;
-            margin-bottom: 8px;
-            padding: 10px 12px;
-            font-size: 1.1em;
+            margin-top: 12px; /* Reduced margin */
+            margin-bottom: 6px; /* Reduced margin */
+            padding: 8px 10px; /* Reduced padding */
+            font-size: 1em; /* Slightly smaller */
         }
         .modal-list ul {
             list-style: none;
@@ -299,59 +302,105 @@
         .modal-list ul li {
             background-color: var(--pastel-pink-light);
             border-left: 4px solid var(--pastel-pink-dark);
-            margin-bottom: 6px;
-            padding: 8px 12px;
-            border-radius: 4px;
+            margin-bottom: 5px; /* Reduced margin */
+            padding: 6px 10px; /* Reduced padding */
+            border-radius: 3px;
         }
         .modal-list ol li { /* For preparation steps that are numbered */
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             background-color: var(--pastel-green-light);
             border-left: 4px solid var(--pastel-green-dark);
-            padding: 8px 12px;
-            border-radius: 4px;
+            padding: 6px 10px;
+            border-radius: 3px;
         }
 
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .calendar-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        /* Responsive Design - Optimized for iPad Pro 11-inch (834px x 1194px) and general tablets */
+        @media (min-width: 768px) and (max-width: 1200px) {
+            .main-container {
+                padding: 15px;
             }
-        }
-        @media (max-width: 768px) {
             .calendar-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                gap: 10px;
+                gap: 8px;
+            }
+            .day-header {
+                font-size: 1em;
+                padding-bottom: 8px;
             }
             .day {
-                min-height: 100px;
+                min-height: 130px; /* Adjust height for tablets */
                 padding: 10px;
+            }
+            .day-name {
+                font-size: 0.95em;
+                margin-bottom: 5px;
+            }
+            .day-date {
+                font-size: 0.8em;
+                margin-bottom: 8px;
             }
             .meal {
                 font-size: 0.85em;
-                padding: 6px 8px;
+                padding: 5px 6px;
+                margin-bottom: 5px;
             }
-            h1 {
-                font-size: 2em;
-            }
-            .week-title {
-                font-size: 1.5em;
+            .week-action-button {
+                font-size: 0.75em;
+                padding: 5px 8px;
             }
             .modal-content {
                 width: 90%;
             }
+            .close-button {
+                font-size: 28px;
+            }
+            .modal-body h3 {
+                font-size: 1.2em;
+            }
+            .ingredients-list li, .instructions-list li, .macros-list li, .modal-list li {
+                font-size: 0.85em;
+                padding: 5px 0;
+            }
         }
 
-        @media (max-width: 480px) {
-            .day-name {
+        @media (max-width: 767px) { /* General mobile/smaller tablet */
+            body {
+                padding: 10px;
+            }
+            .main-title {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+            .main-container {
+                padding: 10px;
+            }
+            .calendar-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Allow more flexibility */
+                gap: 5px;
+            }
+            .day-header {
                 font-size: 0.9em;
+                padding-bottom: 5px;
             }
             .day {
-                min-height: 80px;
+                min-height: 90px;
                 padding: 8px;
             }
+            .day-name {
+                font-size: 0.8em;
+                margin-bottom: 5px;
+            }
+            .day-date {
+                font-size: 0.75em;
+                margin-bottom: 5px;
+            }
             .meal {
+                font-size: 0.75em;
+                padding: 4px 5px;
+                margin-bottom: 4px;
+            }
+            .week-action-button {
                 font-size: 0.7em;
+                padding: 4px 6px;
             }
             .modal-content {
                 width: 95%;
@@ -359,18 +408,25 @@
             }
             .close-button {
                 font-size: 24px;
-                top: 10px;
-                right: 10px;
+                top: 8px;
+                right: 8px;
+            }
+            .modal-body h3 {
+                font-size: 1.1em;
+            }
+            .ingredients-list li, .instructions-list li, .macros-list li, .modal-list li {
+                font-size: 0.8em;
+                padding: 4px 0;
             }
         }
     </style>
 </head>
 <body>
 
-    <h1>Meal Prep Calendar</h1>
+    <h1 class="main-title">Meal Prep Calendar</h1>
 
     <div class="main-container">
-        <div id="calendarDisplay">
+        <div id="calendarDisplay" class="calendar-grid">
             </div>
     </div>
 
@@ -436,9 +492,10 @@
             }
         };
 
-        // Recipe database with ingredients (categorized) and instructions, and MACROS
+        // Recipe database with ingredients (categorized) and instructions, and MACROS, now with emojis
         const recipes = {
             "Kafta with Potatoes": {
+                emoji: "🥔",
                 ingredients: {
                     proteins: ["500g ground lamb or beef"],
                     vegetables: ["4 medium potatoes, cubed", "1 large onion, finely chopped", "2 cloves garlic, minced", "1/4 cup fresh parsley, chopped"],
@@ -448,6 +505,7 @@
                 macros: { calories: "350 kcal", protein: "30g", carbs: "40g", fat: "10g" }
             },
             "Lebanese Shawarma Bowl": {
+                emoji: "🥙",
                 ingredients: {
                     proteins: ["500g chicken thighs, sliced thin"],
                     carbs: ["2 cups basmati rice"],
@@ -458,6 +516,7 @@
                 macros: { calories: "450 kcal", protein: "40g", carbs: "50g", fat: "15g" }
             },
             "Caesar Salad": {
+                emoji: "🥗",
                 ingredients: {
                     proteins: ["4 anchovy fillets (optional)", "1 egg yolk"],
                     vegetables: ["2 large romaine lettuce heads", "2 cloves garlic"],
@@ -467,6 +526,7 @@
                 macros: { calories: "280 kcal", protein: "15g", carbs: "20g", fat: "18g" }
             },
             "Chickpea Salad": {
+                emoji: "🥣",
                 ingredients: {
                     proteins: [],
                     carbs: ["2 cans chickpeas, drained and rinsed"],
@@ -477,6 +537,7 @@
                 macros: { calories: "250 kcal", protein: "10g", carbs: "35g", fat: "10g" }
             },
             "Chicken with Roasted Veggies": {
+                emoji: "🍗",
                 ingredients: {
                     proteins: ["500g chicken breast, cubed"],
                     vegetables: ["2 bell peppers, chopped", "1 zucchini, chopped", "1 red onion, chopped"],
@@ -486,6 +547,7 @@
                 macros: { calories: "320 kcal", protein: "35g", carbs: "20g", fat: "12g" }
             },
             "Mediterranean Quinoa Salad": {
+                emoji: "🍚",
                 ingredients: {
                     proteins: ["1/4 cup feta cheese, crumbled"],
                     carbs: ["1 cup quinoa, rinsed"],
@@ -496,6 +558,7 @@
                 macros: { calories: "380 kcal", protein: "12g", carbs: "45g", fat: "18g" }
             },
             "Asian Chicken Salad": {
+                emoji: "🥢",
                 ingredients: {
                     proteins: ["2 cups cooked chicken, shredded"],
                     vegetables: ["4 cups shredded cabbage (green or napa)", "1 cup shredded carrots", "1/2 red bell pepper, thinly sliced", "1/4 cup chopped green onions", "1/4 cup chopped cilantro"],
@@ -505,6 +568,7 @@
                 macros: { calories: "300 kcal", protein: "25g", carbs: "25g", fat: "12g" }
             },
             "Shrimp Orzo": {
+                emoji: "🍤",
                 ingredients: {
                     proteins: ["400g raw shrimp, peeled and deveined"],
                     carbs: ["1 cup orzo pasta"],
@@ -515,6 +579,7 @@
                 macros: { calories: "380 kcal", protein: "25g", carbs: "45g", fat: "10g" }
             },
             "Korean Beef Bowl": {
+                emoji: "🥩",
                 ingredients: {
                     proteins: ["500g beef sirloin or flank steak, thinly sliced"],
                     carbs: ["Cooked rice for serving"],
@@ -525,6 +590,7 @@
                 macros: { calories: "420 kcal", protein: "38g", carbs: "40g", fat: "15g" }
             },
             "Sweet and Sour Chicken": {
+                emoji: "🍍",
                 ingredients: {
                     proteins: ["500g chicken breast, cubed"],
                     vegetables: ["1 bell pepper (any color), chopped", "1 onion, chopped"],
@@ -534,6 +600,7 @@
                 macros: { calories: "360 kcal", protein: "30g", carbs: "40g", fat: "10g" }
             },
             "Tuna Salad": {
+                emoji: "🐟",
                 ingredients: {
                     proteins: ["2 cans (140g each) tuna in water, drained"],
                     vegetables: ["1 stalk celery, finely chopped", "1/4 cup red onion, finely chopped", "1 tbsp fresh dill, chopped (optional)"],
@@ -543,6 +610,7 @@
                 macros: { calories: "220 kcal", protein: "20g", carbs: "5g", fat: "15g" }
             },
             "Mediterranean Orzo Salad": {
+                emoji: "🍝",
                 ingredients: {
                     proteins: ["1/4 cup feta cheese, crumbled"],
                     carbs: ["1 cup orzo pasta, cooked and cooled"],
@@ -553,6 +621,7 @@
                 macros: { calories: "350 kcal", protein: "10g", carbs: "40g", fat: "16g" }
             },
             "Quinoa Halloumi Salad": {
+                emoji: "🧀",
                 ingredients: {
                     proteins: ["250g halloumi cheese, sliced or cubed"],
                     carbs: ["1 cup quinoa, rinsed"],
@@ -563,6 +632,7 @@
                 macros: { calories: "400 kcal", protein: "20g", carbs: "35g", fat: "20g" }
             },
             "Bazella with Carrots": {
+                emoji: "🥕",
                 ingredients: {
                     proteins: ["500g ground beef or lamb (optional)"],
                     vegetables: ["1 onion, chopped", "2 cloves garlic, minced", "4 cups frozen peas and carrots mix"],
@@ -572,6 +642,7 @@
                 macros: { calories: "380 kcal", protein: "28g", carbs: "35g", fat: "14g" }
             },
             "Chicken Fajita Bowl": {
+                emoji: "🌶️",
                 ingredients: {
                     proteins: ["500g chicken breast, sliced into strips"],
                     carbs: ["1 cup cooked rice", "1/2 cup black beans, rinsed and drained"],
@@ -582,6 +653,7 @@
                 macros: { calories: "450 kcal", protein: "40g", carbs: "50g", fat: "15g" }
             },
             "Meatballs with Marinara": {
+                emoji: "🍝",
                 ingredients: {
                     proteins: ["500g ground beef or turkey", "1 egg"],
                     carbs: ["1/2 cup breadcrumbs"],
@@ -592,6 +664,7 @@
                 macros: { calories: "420 kcal", protein: "35g", carbs: "30g", fat: "20g" }
             },
             "Chicken Salad": {
+                emoji: "🥗",
                 ingredients: {
                     proteins: ["2 cups cooked chicken, shredded or cubed"],
                     vegetables: ["1/4 cup celery, finely chopped", "2 tbsp red onion, finely chopped", "1 tbsp fresh dill or parsley, chopped (optional)"],
@@ -601,6 +674,7 @@
                 macros: { calories: "280 kcal", protein: "25g", carbs: "5g", fat: "18g" }
             },
             "Chicken Curry": {
+                emoji: "🍛",
                 ingredients: {
                     proteins: ["500g chicken breast, cubed"],
                     vegetables: ["1 onion, chopped", "2 cloves garlic, minced", "1/2 cup frozen peas"],
@@ -610,6 +684,7 @@
                 macros: { calories: "400 kcal", protein: "35g", carbs: "30g", fat: "18g" }
             },
             "Pepper and Cucumber Salad": {
+                emoji: "🥒",
                 ingredients: {
                     proteins: [],
                     vegetables: ["2 cucumbers, diced", "2 bell peppers (any color), diced", "1/2 red onion, thinly sliced", "1/4 cup fresh dill, chopped"],
@@ -619,6 +694,7 @@
                 macros: { calories: "180 kcal", protein: "2g", carbs: "15g", fat: "12g" }
             },
             "Mexican Burrito Bowl": {
+                emoji: "🌶️",
                 ingredients: {
                     proteins: ["Optional: cooked seasoned chicken, beef, or tofu"],
                     carbs: ["1 cup cooked rice (brown or white)", "1 cup cooked black beans, rinsed and drained"],
@@ -629,6 +705,7 @@
                 macros: { calories: "480 kcal", protein: "15g", carbs: "60g", fat: "20g" }
             },
             "Teriyaki Chicken": {
+                emoji: "🍣",
                 ingredients: {
                     proteins: ["500g chicken breast or thighs, cut into bite-sized pieces"],
                     carbs: ["Cooked rice for serving"],
@@ -646,12 +723,6 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
-        }
-
-        // Utility function to get a random item from an array
-        function getRandomMeal(mealList) {
-            if (mealList.length === 0) return null;
-            return mealList[Math.floor(Math.random() * mealList.length)];
         }
 
         // Function to distribute meals for Sunday-Friday consumption (6 meals)
@@ -681,27 +752,18 @@
             calendarDisplayEl.innerHTML = ''; // Clear previous content
 
             const dayNamesFull = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const startDate = new Date(); // Start from today's date
+            startDate.setDate(startDate.getDate() - startDate.getDay()); // Set to the most recent Sunday
+
+            // Add day headers once at the top
+            dayNamesFull.forEach(dayName => {
+                const header = document.createElement('div');
+                header.classList.add('day-header');
+                header.textContent = dayName;
+                calendarDisplayEl.appendChild(header);
+            });
 
             for (let weekDisplay = 0; weekDisplay < 4; weekDisplay++) { // Loop for 4 weeks
-                const weekSection = document.createElement('div');
-                weekSection.classList.add('calendar-section');
-
-                const weekTitle = document.createElement('h2');
-                weekTitle.classList.add('week-title');
-                weekTitle.textContent = `Week ${weekDisplay + 1}`;
-                weekSection.appendChild(weekTitle);
-
-                const weekCalendarGrid = document.createElement('div');
-                weekCalendarGrid.classList.add('calendar-grid');
-
-                // Day Headers (Sun-Sat)
-                dayNamesFull.forEach(dayName => {
-                    const header = document.createElement('div');
-                    header.classList.add('day-header');
-                    header.textContent = dayName;
-                    weekCalendarGrid.appendChild(header);
-                });
-
                 // Get meal data for the *current* week's consumption
                 const currentConsumptionWeekKey = `week${(weekDisplay % 4) + 1}`;
                 const currentConsumptionWeekData = mealPlan[currentConsumptionWeekKey];
@@ -717,13 +779,24 @@
 
                 // Create days for Sunday to Saturday
                 for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+                    const currentDay = new Date(startDate);
+                    currentDay.setDate(startDate.getDate() + (weekDisplay * 7) + dayIndex);
+
                     const dayEl = document.createElement('div');
                     dayEl.classList.add('day');
 
-                    const dayNameEl = document.createElement('div');
-                    dayNameEl.classList.add('day-name');
-                    dayNameEl.textContent = dayNamesFull[dayIndex];
-                    dayEl.appendChild(dayNameEl);
+                    // Add week number for visual clarity in monthly view
+                    if (dayIndex === 0) { // Only on Sunday of each week
+                        const weekNumberIndicator = document.createElement('div');
+                        weekNumberIndicator.classList.add('week-number');
+                        weekNumberIndicator.textContent = `Week ${weekDisplay + 1}`;
+                        dayEl.appendChild(weekNumberIndicator);
+                    }
+
+                    const dayDateEl = document.createElement('div');
+                    dayDateEl.classList.add('day-date');
+                    dayDateEl.textContent = currentDay.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    dayEl.appendChild(dayDateEl);
 
                     if (dayIndex === 6) { // Saturday is blank + contains week-specific buttons
                         dayEl.classList.add('empty-day');
@@ -755,7 +828,8 @@
                         if (currentDayLunch) {
                             const lunchEl = document.createElement('div');
                             lunchEl.classList.add('meal', 'lunch');
-                            lunchEl.textContent = `Lunch: ${currentDayLunch}`;
+                            const mealEmoji = recipes[currentDayLunch]?.emoji || '';
+                            lunchEl.innerHTML = `${mealEmoji} Lunch: ${currentDayLunch}`;
                             lunchEl.onclick = () => openRecipeModal(currentDayLunch);
                             dayEl.appendChild(lunchEl);
                         }
@@ -763,7 +837,8 @@
                         if (currentDayDinner) {
                             const dinnerEl = document.createElement('div');
                             dinnerEl.classList.add('meal', 'dinner');
-                            dinnerEl.textContent = `Dinner: ${currentDayDinner}`;
+                            const mealEmoji = recipes[currentDayDinner]?.emoji || '';
+                            dinnerEl.innerHTML = `${mealEmoji} Dinner: ${currentDayDinner}`;
                             dinnerEl.onclick = () => openRecipeModal(currentDayDinner);
                             dayEl.appendChild(dinnerEl);
                         }
@@ -776,10 +851,8 @@
                             dayEl.appendChild(prepIndicator);
                         }
                     }
-                    weekCalendarGrid.appendChild(dayEl);
+                    calendarDisplayEl.appendChild(dayEl);
                 }
-                weekSection.appendChild(weekCalendarGrid);
-                calendarDisplayEl.appendChild(weekSection);
             }
         }
 
@@ -840,7 +913,7 @@
                     `
                     : '';
 
-                openModal(recipeName, ingredientsHtml + instructionsHtml + macrosHtml);
+                openModal(`${recipe.emoji} ${recipeName}`, ingredientsHtml + instructionsHtml + macrosHtml);
             } else {
                 openModal("Recipe Not Found", "<p>Sorry, the recipe for this meal is not available.</p>");
             }
@@ -892,7 +965,7 @@
             }
             groceryHtml += '</ul>';
 
-            openModal("Grocery List (This Week)", groceryHtml);
+            openModal("🛒 Grocery List (This Week)", groceryHtml);
         }
 
         // --- Weekly Preparation Steps Modal Content Generation ---
@@ -907,7 +980,7 @@
                 uniqueMealsForWeek.forEach(mealName => {
                     const recipe = recipes[mealName];
                     if (recipe && recipe.instructions && recipe.instructions.length > 0) {
-                        prepHtml += `<li><strong>${mealName}:</strong>`;
+                        prepHtml += `<li><strong>${recipes[mealName]?.emoji || ''} ${mealName}:</strong>`;
                         prepHtml += `<ul>${recipe.instructions.map(step => `<li>${step}</li>`).join('')}</ul>`;
                         prepHtml += `</li>`;
                     }
@@ -915,7 +988,7 @@
                 prepHtml += '</ol>';
             }
 
-            openModal("Preparation Steps (This Week)", prepHtml);
+            openModal("👩‍🍳 Preparation Steps (This Week)", prepHtml);
         }
 
         // Initial generation on page load
