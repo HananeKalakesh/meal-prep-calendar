@@ -5,13 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Meal Prep Calendar</title>
     <style>
+        /* Pastel Colors */
+        :root {
+            --pastel-green-light: #e6ffe6; /* Very light green */
+            --pastel-green-medium: #c8f0c8; /* Medium light green */
+            --pastel-green-dark: #8cde8c;   /* Slightly darker green for accents */
+            --pastel-pink-light: #ffe6f0;   /* Very light pink */
+            --pastel-pink-medium: #f0c8d8;  /* Medium light pink */
+            --pastel-pink-dark: #de8cb2;    /* Slightly darker pink for accents */
+            --text-color-dark: #333;
+            --text-color-light: #fff;
+            --background-light: #fdfdfd;
+            --border-color: #eee;
+        }
+
         /* General Body Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--background-light);
+            color: var(--text-color-dark);
             line-height: 1.6;
             display: flex;
             flex-direction: column;
@@ -20,11 +34,59 @@
 
         /* Header Styles */
         h1 {
-            color: #2c3e50;
+            color: var(--pastel-green-dark);
             text-align: center;
             margin-bottom: 30px;
             font-size: 2.5em;
             letter-spacing: 0.05em;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1000px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-button {
+            background-color: var(--background-light);
+            color: var(--pastel-green-dark);
+            border: none;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            margin: 0 5px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-button.active {
+            background-color: var(--pastel-green-light);
+            color: var(--text-color-dark);
+            border-bottom: 2px solid var(--pastel-green-dark);
+            font-weight: bold;
+        }
+
+        .tab-button:hover:not(.active) {
+            background-color: var(--pastel-green-light);
+            color: var(--pastel-green-dark);
+        }
+
+        /* Content Area for Tabs */
+        .tab-content {
+            width: 100%;
+            max-width: 1000px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            margin-top: 10px;
         }
 
         /* Calendar Controls */
@@ -35,15 +97,13 @@
             width: 100%;
             max-width: 900px;
             margin-bottom: 20px;
-            background-color: #fff;
             padding: 15px 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
         .calendar-nav button {
-            background-color: #4CAF50; /* Green */
-            color: white;
+            background-color: var(--pastel-green-dark);
+            color: var(--text-color-light);
             border: none;
             padding: 12px 20px;
             text-align: center;
@@ -57,7 +117,7 @@
         }
 
         .calendar-nav button:hover {
-            background-color: #45a049;
+            background-color: #72c372; /* Slightly darker green on hover */
             transform: translateY(-2px);
         }
 
@@ -68,7 +128,7 @@
         #currentMonth {
             font-size: 1.8em;
             font-weight: bold;
-            color: #34495e;
+            color: var(--pastel-green-dark);
         }
 
         /* Calendar Grid */
@@ -77,12 +137,10 @@
             grid-template-columns: repeat(7, 1fr); /* 7 columns for 7 days */
             gap: 15px; /* Space between days */
             width: 100%;
-            max-width: 1000px; /* Max width of the grid */
-            margin-top: 20px;
         }
 
         .day {
-            background-color: #fff;
+            background-color: var(--pastel-green-light); /* Light green for days */
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -92,7 +150,7 @@
             min-height: 150px; /* Ensure days have enough height */
             transition: transform 0.2s ease;
             position: relative; /* For prep-indicator positioning */
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
         }
 
         .day:hover {
@@ -102,23 +160,23 @@
         .day-number {
             font-weight: bold;
             font-size: 1.1em;
-            color: #555;
+            color: var(--text-color-dark);
             margin-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--pastel-green-medium);
             padding-bottom: 5px;
         }
 
         .prep-day {
-            background-color: #e6ffe6; /* Lighter green for prep days */
-            border: 2px dashed #4CAF50;
+            background-color: var(--pastel-pink-light); /* Light pink for prep days */
+            border: 2px dashed var(--pastel-pink-dark);
         }
 
         .prep-indicator {
             position: absolute;
             top: 5px;
             right: 5px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: var(--pastel-pink-dark);
+            color: var(--text-color-light);
             padding: 3px 8px;
             border-radius: 5px;
             font-size: 0.75em;
@@ -140,20 +198,56 @@
         }
 
         .meal:hover {
-            background-color: #f0f0f0;
+            background-color: var(--pastel-green-medium);
         }
 
         .lunch {
-            background-color: #e0f7fa; /* Light blue */
-            border-left: 4px solid #00bcd4;
+            background-color: var(--pastel-green-light); /* Lighter green */
+            border-left: 4px solid var(--pastel-green-dark);
         }
 
         .dinner {
-            background-color: #ffe0b2; /* Light orange */
-            border-left: 4px solid #ff9800;
+            background-color: var(--pastel-pink-light); /* Lighter pink */
+            border-left: 4px solid var(--pastel-pink-dark);
         }
 
-        /* Modal Styles */
+        /* Meal Prep Tab Specific Styles */
+        .meal-prep-content h2 {
+            color: var(--pastel-green-dark);
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-bottom: 2px solid var(--pastel-green-medium);
+            padding-bottom: 5px;
+        }
+
+        .meal-prep-content h3 {
+            color: var(--pastel-pink-dark);
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .grocery-list ul, .preparation-steps ol {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .grocery-list li, .preparation-steps li {
+            background-color: var(--pastel-green-light);
+            border-left: 5px solid var(--pastel-green-dark);
+            margin-bottom: 8px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1.05em;
+        }
+        
+        .preparation-steps li {
+             background-color: var(--pastel-pink-light);
+             border-left-color: var(--pastel-pink-dark);
+        }
+
+        /* Modal Styles (re-checked for pastel colors) */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -199,13 +293,13 @@
 
         .close-button:hover,
         .close-button:focus {
-            color: black;
+            color: var(--pastel-pink-dark);
             text-decoration: none;
             cursor: pointer;
         }
 
         .modal-body h3 {
-            color: #34495e;
+            color: var(--pastel-green-dark);
             margin-top: 20px;
             margin-bottom: 10px;
             font-size: 1.4em;
@@ -219,7 +313,11 @@
 
         .ingredients-list li, .instructions-list li {
             padding: 8px 0;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px dashed var(--pastel-green-medium);
+        }
+
+        .instructions-list li {
+            border-bottom: 1px dashed var(--pastel-pink-medium);
         }
 
         .ingredients-list li:last-child, .instructions-list li:last-child {
@@ -255,6 +353,22 @@
                 width: 80%;
                 margin: 5px 0;
             }
+            .tabs {
+                flex-direction: column;
+                border-bottom: none;
+            }
+            .tab-button {
+                width: 100%;
+                margin: 2px 0;
+                border-radius: 0;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .tab-button.active {
+                border-bottom: none; /* Active tab doesn't need bottom border for column layout */
+            }
+            .tab-content {
+                padding: 15px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -287,14 +401,36 @@
 
     <h1>Meal Prep Calendar</h1>
 
-    <div class="calendar-nav">
-        <button onclick="changeMonth(-1)">Previous Cycle</button>
-        <span id="currentMonth">Meal Plan Cycle 1</span>
-        <button onclick="changeMonth(1)">Next Cycle</button>
+    <div class="tabs">
+        <button class="tab-button active" onclick="showTab('calendarTab')">Calendar</button>
+        <button class="tab-button" onclick="showTab('mealPrepTab')">Meal Prep</button>
     </div>
 
-    <div id="calendar" class="calendar-grid">
+    <div id="calendarTab" class="tab-content">
+        <div class="calendar-nav">
+            <button onclick="changeCycle(-1)">Previous Cycle</button>
+            <span id="currentMonth">Meal Plan Cycle 1</span>
+            <button onclick="changeCycle(1)">Next Cycle</button>
         </div>
+        <div id="calendar" class="calendar-grid">
+            </div>
+    </div>
+
+    <div id="mealPrepTab" class="tab-content" style="display: none;">
+        <div class="meal-prep-content">
+            <h2>Meal Preparation for This Cycle</h2>
+            <div class="grocery-list">
+                <h3>Grocery List:</h3>
+                <ul id="groceryList">
+                    </ul>
+            </div>
+            <div class="preparation-steps">
+                <h3>Preparation Steps:</h3>
+                <ol id="preparationSteps">
+                    </ol>
+            </div>
+        </div>
+    </div>
 
     <div id="recipeModal" class="modal">
         <div class="modal-content">
@@ -307,9 +443,9 @@
 
     <script>
         // Global variables
-        let currentMonthIndex = 0; // Represents the current "month" in a cycle of 4
+        let currentCycleIndex = 0; // Represents the current "cycle" in a cycle of 4 weeks
         
-        // Enhanced meal plan with shuffled dinners for variety
+        // Enhanced meal plan with specific meal types
         const mealPlan = {
             week1: {
                 lunches: [
@@ -364,517 +500,100 @@
         // Recipe database with ingredients and instructions
         const recipes = {
             "Kafta with Potatoes": {
-                ingredients: [
-                    "500g ground lamb or beef",
-                    "4 medium potatoes, cubed",
-                    "1 large onion, finely chopped",
-                    "2 cloves garlic, minced",
-                    "1/4 cup fresh parsley, chopped",
-                    "1 tsp allspice",
-                    "1 tsp cinnamon",
-                    "Salt and pepper to taste",
-                    "2 tbsp olive oil"
-                ],
-                instructions: [
-                    "Mix ground meat with half the onion, garlic, parsley, and spices",
-                    "Form into small oval-shaped patties",
-                    "Heat olive oil in a large pan over medium heat",
-                    "Brown kafta patties on both sides, then remove",
-                    "In same pan, sauté remaining onions until golden",
-                    "Add potatoes and cook for 5 minutes",
-                    "Return kafta to pan, add water to barely cover",
-                    "Simmer covered for 25-30 minutes until potatoes are tender"
-                ]
+                ingredients: ["500g ground lamb or beef", "4 medium potatoes", "1 large onion", "2 cloves garlic", "1/4 cup fresh parsley", "1 tsp allspice", "1 tsp cinnamon", "Salt", "Pepper", "2 tbsp olive oil"],
+                instructions: ["Mix meat, onion, garlic, parsley, spices.", "Form patties.", "Brown patties in olive oil.", "Sauté remaining onions.", "Add potatoes.", "Return kafta, add water, simmer 25-30 min."]
             },
             "Lebanese Shawarma Bowl": {
-                ingredients: [
-                    "500g chicken thighs, sliced thin",
-                    "2 cups basmati rice",
-                    "1 cucumber, diced",
-                    "2 tomatoes, diced",
-                    "1/2 red onion, sliced",
-                    "1/4 cup tahini",
-                    "2 tbsp lemon juice",
-                    "2 tsp shawarma spice blend",
-                    "Fresh parsley and mint"
-                ],
-                instructions: [
-                    "Marinate chicken in shawarma spices and lemon juice for 2 hours",
-                    "Cook rice according to package instructions",
-                    "Pan-fry chicken until golden and cooked through",
-                    "Prepare vegetables and arrange in bowls",
-                    "Mix tahini with lemon juice and water for sauce",
-                    "Assemble bowls with rice, chicken, vegetables, and sauce"
-                ]
+                ingredients: ["500g chicken thighs", "2 cups basmati rice", "1 cucumber", "2 tomatoes", "1/2 red onion", "1/4 cup tahini", "2 tbsp lemon juice", "2 tsp shawarma spice blend", "Fresh parsley", "Fresh mint"],
+                instructions: ["Marinate chicken.", "Cook rice.", "Pan-fry chicken.", "Prepare veggies.", "Make tahini sauce.", "Assemble bowls."]
             },
             "Caesar Salad": {
-                ingredients: [
-                    "2 large romaine lettuce heads",
-                    "1/2 cup parmesan cheese, grated",
-                    "1 cup croutons",
-                    "4 anchovy fillets (optional)",
-                    "2 cloves garlic",
-                    "1/4 cup lemon juice",
-                    "1/4 cup olive oil",
-                    "1 egg yolk",
-                    "1 tsp Dijon mustard"
-                ],
-                instructions: [
-                    "Wash and chop romaine lettuce",
-                    "Make dressing: blend garlic, anchovies, lemon juice, egg yolk, and mustard",
-                    "Slowly add olive oil while blending",
-                    "Toss lettuce with dressing",
-                    "Top with parmesan and croutons",
-                    "Serve immediately"
-                ]
+                ingredients: ["2 romaine lettuce heads", "1/2 cup parmesan", "1 cup croutons", "4 anchovy fillets (optional)", "2 cloves garlic", "1/4 cup lemon juice", "1/4 cup olive oil", "1 egg yolk", "1 tsp Dijon mustard"],
+                instructions: ["Wash lettuce.", "Blend dressing ingredients.", "Toss lettuce with dressing.", "Top with parmesan and croutons."]
             },
             "Chickpea Salad": {
-                ingredients: [
-                    "2 cans chickpeas, drained and rinsed",
-                    "1 cucumber, diced",
-                    "2 tomatoes, diced",
-                    "1/2 red onion, finely chopped",
-                    "1/4 cup fresh parsley",
-                    "3 tbsp olive oil",
-                    "2 tbsp lemon juice",
-                    "1 tsp sumac",
-                    "Salt and pepper to taste"
-                ],
-                instructions: [
-                    "Drain and rinse chickpeas thoroughly",
-                    "Dice all vegetables finely",
-                    "Chop parsley and mint",
-                    "Whisk together olive oil, lemon juice, and sumac",
-                    "Combine all ingredients in a large bowl",
-                    "Toss well and let marinate for 30 minutes",
-                    "Adjust seasoning before serving"
-                ]
+                ingredients: ["2 cans chickpeas", "1 cucumber", "2 tomatoes", "1/2 red onion", "1/4 cup fresh parsley", "3 tbsp olive oil", "2 tbsp lemon juice", "1 tsp sumac", "Salt", "Pepper"],
+                instructions: ["Drain chickpeas.", "Dice veggies.", "Chop herbs.", "Whisk dressing.", "Combine all ingredients."]
             },
             "Chicken with Roasted Veggies": {
-                ingredients: [
-                    "500g chicken breast, cubed",
-                    "2 bell peppers, chopped",
-                    "1 zucchini, chopped",
-                    "1 red onion, chopped",
-                    "2 tbsp olive oil",
-                    "1 tsp dried oregano",
-                    "Salt and pepper to taste"
-                ],
-                instructions: [
-                    "Preheat oven to 200°C (400°F)",
-                    "Toss chicken and vegetables with olive oil, oregano, salt, and pepper",
-                    "Spread on a baking sheet in a single layer",
-                    "Roast for 20-25 minutes, or until chicken is cooked through and vegetables are tender-crisp",
-                    "Serve hot"
-                ]
+                ingredients: ["500g chicken breast", "2 bell peppers", "1 zucchini", "1 red onion", "2 tbsp olive oil", "1 tsp dried oregano", "Salt", "Pepper"],
+                instructions: ["Preheat oven.", "Toss chicken and veggies with oil and spices.", "Roast 20-25 min."]
             },
             "Mediterranean Quinoa Salad": {
-                ingredients: [
-                    "1 cup quinoa, rinsed",
-                    "2 cups vegetable broth or water",
-                    "1 cucumber, diced",
-                    "1 cup cherry tomatoes, halved",
-                    "1/2 red onion, finely chopped",
-                    "1/2 cup Kalamata olives, pitted and halved",
-                    "1/4 cup fresh parsley, chopped",
-                    "1/4 cup fresh mint, chopped",
-                    "1/4 cup feta cheese, crumbled",
-                    "3 tbsp olive oil",
-                    "2 tbsp lemon juice",
-                    "Salt and pepper to taste"
-                ],
-                instructions: [
-                    "Cook quinoa according to package directions using broth/water",
-                    "Let cool completely",
-                    "In a large bowl, combine cooked quinoa, cucumber, cherry tomatoes, red onion, olives, parsley, and mint",
-                    "Whisk together olive oil, lemon juice, salt, and pepper",
-                    "Pour dressing over salad and toss to combine",
-                    "Stir in crumbled feta cheese just before serving"
-                ]
+                ingredients: ["1 cup quinoa", "2 cups vegetable broth", "1 cucumber", "1 cup cherry tomatoes", "1/2 red onion", "1/2 cup Kalamata olives", "1/4 cup fresh parsley", "1/4 cup fresh mint", "1/4 cup feta cheese", "3 tbsp olive oil", "2 tbsp lemon juice", "Salt", "Pepper"],
+                instructions: ["Cook quinoa, cool.", "Combine quinoa, veggies, herbs.", "Whisk dressing.", "Pour dressing, toss.", "Stir in feta."]
             },
             "Asian Chicken Salad": {
-                ingredients: [
-                    "2 cups cooked chicken, shredded",
-                    "4 cups shredded cabbage (green or napa)",
-                    "1 cup shredded carrots",
-                    "1/2 red bell pepper, thinly sliced",
-                    "1/4 cup chopped green onions",
-                    "1/4 cup chopped cilantro",
-                    "1/4 cup rice vinegar",
-                    "2 tbsp soy sauce",
-                    "1 tbsp sesame oil",
-                    "1 tbsp honey or maple syrup",
-                    "1 tsp grated fresh ginger",
-                    "1/2 cup chopped peanuts or cashews (optional)"
-                ],
-                instructions: [
-                    "In a large bowl, combine shredded chicken, cabbage, carrots, red bell pepper, green onions, and cilantro",
-                    "In a small bowl, whisk together rice vinegar, soy sauce, sesame oil, honey, and ginger until well combined",
-                    "Pour dressing over the salad ingredients and toss to coat evenly",
-                    "If desired, add chopped peanuts or cashews for crunch",
-                    "Serve immediately or chill for later"
-                ]
+                ingredients: ["2 cups cooked chicken", "4 cups shredded cabbage", "1 cup shredded carrots", "1/2 red bell pepper", "1/4 cup green onions", "1/4 cup cilantro", "1/4 cup rice vinegar", "2 tbsp soy sauce", "1 tbsp sesame oil", "1 tbsp honey", "1 tsp fresh ginger", "1/2 cup chopped peanuts (optional)"],
+                instructions: ["Combine salad ingredients.", "Whisk dressing ingredients.", "Pour dressing, toss."]
             },
             "Beef Cubes with Potato": {
-                ingredients: [
-                    "500g beef stew meat, cubed",
-                    "3 medium potatoes, peeled and cubed",
-                    "1 large onion, chopped",
-                    "2 carrots, sliced",
-                    "2 stalks celery, sliced",
-                    "4 cups beef broth",
-                    "2 tbsp olive oil",
-                    "1 tbsp tomato paste",
-                    "1 tsp dried thyme",
-                    "Salt and pepper to taste"
-                ],
-                instructions: [
-                    "Heat olive oil in a large pot or Dutch oven over medium-high heat",
-                    "Brown beef cubes on all sides, then remove and set aside",
-                    "Add onion, carrots, and celery to the pot and cook until softened, about 5-7 minutes",
-                    "Stir in tomato paste and thyme, cook for 1 minute",
-                    "Return beef to the pot, add beef broth, salt, and pepper",
-                    "Bring to a simmer, then reduce heat, cover, and cook for 1.5 - 2 hours until beef is tender",
-                    "Add potatoes and continue cooking for another 20-30 minutes, or until potatoes are tender",
-                    "Adjust seasoning as needed and serve"
-                ]
+                ingredients: ["500g beef stew meat", "3 medium potatoes", "1 large onion", "2 carrots", "2 stalks celery", "4 cups beef broth", "2 tbsp olive oil", "1 tbsp tomato paste", "1 tsp dried thyme", "Salt", "Pepper"],
+                instructions: ["Brown beef.", "Sauté veggies.", "Add tomato paste, thyme.", "Return beef, add broth, simmer 1.5-2 hrs.", "Add potatoes, cook 20-30 min."]
             },
             "Shrimp Orzo": {
-                ingredients: [
-                    "400g raw shrimp, peeled and deveined",
-                    "1 cup orzo pasta",
-                    "2 tbsp olive oil",
-                    "1 onion, finely chopped",
-                    "2 cloves garlic, minced",
-                    "1 can (400g) diced tomatoes",
-                    "1/2 cup white wine (optional)",
-                    "2 cups vegetable or chicken broth",
-                    "1/4 cup fresh parsley, chopped",
-                    "Salt and pepper to taste"
-                ],
-                instructions: [
-                    "Heat olive oil in a large skillet over medium heat",
-                    "Add onion and cook until softened, about 5 minutes",
-                    "Add garlic and cook for 1 minute more until fragrant",
-                    "Stir in orzo and toast for 2 minutes",
-                    "Pour in white wine (if using) and cook until absorbed",
-                    "Add diced tomatoes and broth, bring to a simmer",
-                    "Cover and cook for 10-12 minutes, stirring occasionally, until orzo is almost cooked",
-                    "Stir in shrimp and cook for 3-5 minutes until pink and cooked through",
-                    "Season with salt and pepper, stir in fresh parsley before serving"
-                ]
+                ingredients: ["400g raw shrimp", "1 cup orzo pasta", "2 tbsp olive oil", "1 onion", "2 cloves garlic", "1 can diced tomatoes", "1/2 cup white wine (optional)", "2 cups broth", "1/4 cup fresh parsley", "Salt", "Pepper"],
+                instructions: ["Sauté onion, garlic.", "Add orzo, toast.", "Add wine, tomatoes, broth, simmer.", "Stir in shrimp, cook 3-5 min.", "Add parsley."]
             },
             "Korean Beef Bowl": {
-                ingredients: [
-                    "500g beef sirloin or flank steak, thinly sliced",
-                    "2 tbsp soy sauce",
-                    "1 tbsp sesame oil",
-                    "1 tbsp brown sugar",
-                    "2 cloves garlic, minced",
-                    "1 tsp grated fresh ginger",
-                    "1/2 red bell pepper, sliced",
-                    "1 cup broccoli florets",
-                    "Cooked rice for serving",
-                    "Sesame seeds and sliced green onions for garnish"
-                ],
-                instructions: [
-                    "In a bowl, combine soy sauce, sesame oil, brown sugar, garlic, and ginger to make the marinade",
-                    "Add sliced beef to the marinade and toss to coat; let marinate for at least 30 minutes",
-                    "Heat a large skillet or wok over medium-high heat",
-                    "Add marinated beef and stir-fry until cooked through and slightly caramelized",
-                    "Add red bell pepper and broccoli, stir-fry for 3-5 minutes until tender-crisp",
-                    "Serve hot over cooked rice, garnished with sesame seeds and green onions"
-                ]
+                ingredients: ["500g beef sirloin", "2 tbsp soy sauce", "1 tbsp sesame oil", "1 tbsp brown sugar", "2 cloves garlic", "1 tsp fresh ginger", "1/2 red bell pepper", "1 cup broccoli florets", "Cooked rice", "Sesame seeds", "Green onions"],
+                instructions: ["Make marinade.", "Marinate beef.", "Stir-fry beef.", "Add veggies, stir-fry.", "Serve over rice."]
             },
             "Sweet and Sour Chicken": {
-                ingredients: [
-                    "500g chicken breast, cubed",
-                    "1 bell pepper (any color), chopped",
-                    "1 onion, chopped",
-                    "1 can (227g) pineapple chunks, drained (reserve juice)",
-                    "2 tbsp cornstarch",
-                    "1/4 cup white vinegar",
-                    "1/4 cup sugar",
-                    "2 tbsp soy sauce",
-                    "1 tbsp ketchup",
-                    "1/2 cup chicken broth",
-                    "2 tbsp oil for cooking"
-                ],
-                instructions: [
-                    "Toss chicken cubes with 1 tbsp cornstarch",
-                    "Heat oil in a large skillet or wok over medium-high heat",
-                    "Stir-fry chicken until lightly browned and cooked through, remove from pan",
-                    "In the same pan, add bell pepper and onion, stir-fry for 3-4 minutes until slightly softened",
-                    "In a small bowl, whisk together remaining cornstarch with vinegar, sugar, soy sauce, ketchup, pineapple juice, and chicken broth",
-                    "Pour sauce into the skillet, bring to a simmer, stirring until thickened",
-                    "Return chicken to the pan along with pineapple chunks",
-                    "Toss to coat everything in the sauce",
-                    "Serve hot with rice or noodles"
-                ]
+                ingredients: ["500g chicken breast", "1 bell pepper", "1 onion", "1 can pineapple chunks", "2 tbsp cornstarch", "1/4 cup white vinegar", "1/4 cup sugar", "2 tbsp soy sauce", "1 tbsp ketchup", "1/2 cup chicken broth", "2 tbsp oil"],
+                instructions: ["Toss chicken with cornstarch.", "Stir-fry chicken.", "Sauté bell pepper, onion.", "Whisk sauce ingredients.", "Pour sauce, simmer.", "Return chicken, pineapple."]
             },
             "Tuna Salad": {
-                ingredients: [
-                    "2 cans (140g each) tuna in water, drained",
-                    "1/2 cup mayonnaise or Greek yogurt",
-                    "1 stalk celery, finely chopped",
-                    "1/4 cup red onion, finely chopped",
-                    "1 tbsp fresh dill, chopped (optional)",
-                    "1 tbsp Dijon mustard",
-                    "Salt and black pepper to taste"
-                ],
-                instructions: [
-                    "In a medium bowl, flake the drained tuna with a fork",
-                    "Add mayonnaise (or Greek yogurt), chopped celery, red onion, dill (if using), and Dijon mustard",
-                    "Mix well to combine all ingredients",
-                    "Season with salt and black pepper to taste",
-                    "Serve as a sandwich filling, with crackers, or on a bed of lettuce"
-                ]
+                ingredients: ["2 cans tuna", "1/2 cup mayonnaise or Greek yogurt", "1 stalk celery", "1/4 cup red onion", "1 tbsp fresh dill (optional)", "1 tbsp Dijon mustard", "Salt", "Black pepper"],
+                instructions: ["Flake tuna.", "Combine with mayonnaise, celery, onion, dill, mustard.", "Mix well."]
             },
             "Mediterranean Orzo Salad": {
-                ingredients: [
-                    "1 cup orzo pasta, cooked and cooled",
-                    "1 cup cherry tomatoes, halved",
-                    "1 cucumber, diced",
-                    "1/2 red onion, thinly sliced",
-                    "1/2 cup Kalamata olives, pitted and halved",
-                    "1/4 cup fresh parsley, chopped",
-                    "1/4 cup feta cheese, crumbled",
-                    "3 tbsp olive oil",
-                    "2 tbsp red wine vinegar",
-                    "1 tsp dried oregano",
-                    "Salt and pepper to taste"
-                ],
-                instructions: [
-                    "Cook orzo pasta according to package directions; drain and rinse with cold water to cool, then set aside",
-                    "In a large bowl, combine the cooled orzo, cherry tomatoes, cucumber, red onion, olives, and parsley",
-                    "In a small bowl, whisk together olive oil, red wine vinegar, oregano, salt, and pepper to make the dressing",
-                    "Pour the dressing over the orzo mixture and toss gently to coat all ingredients",
-                    "Stir in the crumbled feta cheese",
-                    "Serve immediately or chill for flavors to meld"
-                ]
+                ingredients: ["1 cup orzo pasta", "1 cup cherry tomatoes", "1 cucumber", "1/2 red onion", "1/2 cup Kalamata olives", "1/4 cup fresh parsley", "1/4 cup feta cheese", "3 tbsp olive oil", "2 tbsp red wine vinegar", "1 tsp dried oregano", "Salt", "Pepper"],
+                instructions: ["Cook orzo, cool.", "Combine orzo, veggies, olives, parsley.", "Whisk dressing.", "Pour dressing, toss.", "Stir in feta."]
             },
             "Quinoa Halloumi Salad": {
-                ingredients: [
-                    "1 cup quinoa, rinsed",
-                    "2 cups water or vegetable broth",
-                    "250g halloumi cheese, sliced or cubed",
-                    "2 tbsp olive oil",
-                    "1 red bell pepper, chopped",
-                    "1 yellow bell pepper, chopped",
-                    "1/2 red onion, thinly sliced",
-                    "1/4 cup fresh mint, chopped",
-                    "1/4 cup fresh parsley, chopped",
-                    "3 tbsp lemon juice",
-                    "Salt and pepper to taste"
-                ],
-                instructions: [
-                    "Cook quinoa according to package directions with water or broth; let cool",
-                    "Heat 1 tbsp olive oil in a non-stick skillet over medium heat",
-                    "Add halloumi cheese and cook until golden brown on both sides, about 2-3 minutes per side; remove and set aside",
-                    "In a large bowl, combine cooled quinoa, roasted bell peppers, red onion, mint, and parsley",
-                    "Whisk together remaining olive oil, lemon juice, salt, and pepper for the dressing",
-                    "Pour dressing over the salad and toss well",
-                    "Gently fold in the cooked halloumi cheese",
-                    "Serve warm or at room temperature"
-                ]
+                ingredients: ["1 cup quinoa", "2 cups water or vegetable broth", "250g halloumi cheese", "2 tbsp olive oil", "1 red bell pepper", "1 yellow bell pepper", "1/2 red onion", "1/4 cup fresh mint", "1/4 cup fresh parsley", "3 tbsp lemon juice", "Salt", "Pepper"],
+                instructions: ["Cook quinoa, cool.", "Fry halloumi.", "Combine quinoa, peppers, onion, herbs.", "Whisk dressing.", "Pour dressing, toss.", "Fold in halloumi."]
             },
             "Bazella with Carrots": {
-                ingredients: [
-                    "500g ground beef or lamb (optional)",
-                    "1 tbsp olive oil",
-                    "1 onion, chopped",
-                    "2 cloves garlic, minced",
-                    "1 can (400g) crushed tomatoes",
-                    "4 cups frozen peas and carrots mix",
-                    "1 cup water or beef broth",
-                    "1 tsp seven spice (baharat)",
-                    "Salt and pepper to taste",
-                    "Cooked rice for serving"
-                ],
-                instructions: [
-                    "If using meat, brown ground beef/lamb in olive oil in a large pot; drain excess fat and set aside",
-                    "In the same pot, sauté onion until softened, then add garlic and cook for 1 minute more",
-                    "Stir in crushed tomatoes, peas and carrots, water/broth, and seven spice",
-                    "If using meat, return it to the pot",
-                    "Bring to a simmer, then reduce heat, cover, and cook for 20-25 minutes, or until vegetables are tender",
-                    "Season with salt and pepper to taste",
-                    "Serve hot with rice"
-                ]
+                ingredients: ["500g ground beef or lamb (optional)", "1 tbsp olive oil", "1 onion", "2 cloves garlic", "1 can crushed tomatoes", "4 cups frozen peas and carrots mix", "1 cup water or beef broth", "1 tsp seven spice", "Salt", "Pepper", "Cooked rice"],
+                instructions: ["Brown meat (if used).", "Sauté onion, garlic.", "Stir in tomatoes, peas/carrots, broth, spice.", "Return meat (if used), simmer 20-25 min."]
             },
             "Chicken Fajita Bowl": {
-                ingredients: [
-                    "500g chicken breast, sliced into strips",
-                    "2 bell peppers (different colors), sliced",
-                    "1 onion, sliced",
-                    "2 tbsp olive oil",
-                    "2 tsp fajita seasoning",
-                    "1 cup cooked rice",
-                    "1/2 cup black beans, rinsed and drained",
-                    "1/4 cup corn kernels (frozen or canned)",
-                    "Salsa, avocado slices, and lime wedges for serving"
-                ],
-                instructions: [
-                    "Heat olive oil in a large skillet over medium-high heat",
-                    "Add chicken strips and cook until browned and cooked through",
-                    "Add sliced bell peppers and onion, and sauté until tender-crisp",
-                    "Stir in fajita seasoning and cook for another minute",
-                    "Serve chicken and vegetable mixture over cooked rice, topped with black beans, corn, salsa, avocado, and lime wedges"
-                ]
+                ingredients: ["500g chicken breast", "2 bell peppers", "1 onion", "2 tbsp olive oil", "2 tsp fajita seasoning", "1 cup cooked rice", "1/2 cup black beans", "1/4 cup corn kernels", "Salsa", "Avocado slices", "Lime wedges"],
+                instructions: ["Stir-fry chicken.", "Add peppers, onion, sauté.", "Stir in seasoning.", "Serve over rice with toppings."]
             },
             "Meatballs with Marinara": {
-                ingredients: [
-                    "500g ground beef or turkey",
-                    "1/2 cup breadcrumbs",
-                    "1 egg",
-                    "1/4 cup milk",
-                    "2 tbsp fresh parsley, chopped",
-                    "1 clove garlic, minced",
-                    "1/2 tsp salt",
-                    "1/4 tsp black pepper",
-                    "1 tbsp olive oil",
-                    "1 jar (680g) marinara sauce",
-                    "Cooked pasta or zucchini noodles for serving"
-                ],
-                instructions: [
-                    "In a large bowl, gently combine ground meat, breadcrumbs, egg, milk, parsley, garlic, salt, and pepper",
-                    "Form into 1-inch meatballs",
-                    "Heat olive oil in a large skillet over medium heat",
-                    "Brown meatballs on all sides, then drain any excess fat",
-                    "Pour marinara sauce over the meatballs, bring to a simmer",
-                    "Reduce heat, cover, and cook for 15-20 minutes, or until meatballs are cooked through",
-                    "Serve hot over cooked pasta or zucchini noodles"
-                ]
+                ingredients: ["500g ground beef or turkey", "1/2 cup breadcrumbs", "1 egg", "1/4 cup milk", "2 tbsp fresh parsley", "1 clove garlic", "1/2 tsp salt", "1/4 tsp black pepper", "1 tbsp olive oil", "1 jar marinara sauce", "Cooked pasta or zucchini noodles"],
+                instructions: ["Combine meatball ingredients, form meatballs.", "Brown meatballs.", "Pour marinara, simmer 15-20 min.", "Serve over pasta."]
             },
             "Chicken Salad": {
-                ingredients: [
-                    "2 cups cooked chicken, shredded or cubed",
-                    "1/2 cup mayonnaise",
-                    "1/4 cup celery, finely chopped",
-                    "2 tbsp red onion, finely chopped",
-                    "1 tbsp fresh dill or parsley, chopped (optional)",
-                    "1 tsp Dijon mustard",
-                    "Salt and black pepper to taste",
-                    "Lettuce leaves or bread for serving"
-                ],
-                instructions: [
-                    "In a medium bowl, combine the cooked chicken, mayonnaise, chopped celery, and red onion",
-                    "Stir in fresh dill or parsley (if using) and Dijon mustard",
-                    "Mix all ingredients until well combined",
-                    "Season with salt and black pepper to taste",
-                    "Serve chilled on lettuce leaves, as a sandwich, or with crackers"
-                ]
+                ingredients: ["2 cups cooked chicken", "1/2 cup mayonnaise", "1/4 cup celery", "2 tbsp red onion", "1 tbsp fresh dill or parsley (optional)", "1 tsp Dijon mustard", "Salt", "Black pepper"],
+                instructions: ["Combine chicken, mayonnaise, celery, onion.", "Stir in dill, mustard.", "Mix well."]
             },
             "Chicken Curry": {
-                ingredients: [
-                    "500g chicken breast, cubed",
-                    "1 tbsp olive oil",
-                    "1 onion, chopped",
-                    "2 cloves garlic, minced",
-                    "1 tbsp grated fresh ginger",
-                    "2 tbsp curry powder",
-                    "1 can (400ml) coconut milk",
-                    "1 cup chicken broth",
-                    "1/2 cup frozen peas",
-                    "Cooked basmati rice for serving"
-                ],
-                instructions: [
-                    "Heat olive oil in a large pot or deep skillet over medium heat",
-                    "Add chicken cubes and cook until lightly browned; remove and set aside",
-                    "In the same pot, add onion and cook until softened, about 5 minutes",
-                    "Stir in garlic, ginger, and curry powder; cook for 1 minute until fragrant",
-                    "Return chicken to the pot, pour in coconut milk and chicken broth",
-                    "Bring to a simmer, then reduce heat, cover, and cook for 15-20 minutes, or until chicken is cooked through",
-                    "Stir in frozen peas and cook for another 5 minutes",
-                    "Serve hot over basmati rice"
-                ]
+                ingredients: ["500g chicken breast", "1 tbsp olive oil", "1 onion", "2 cloves garlic", "1 tbsp fresh ginger", "2 tbsp curry powder", "1 can coconut milk", "1 cup chicken broth", "1/2 cup frozen peas", "Cooked basmati rice"],
+                instructions: ["Brown chicken.", "Sauté onion, garlic, ginger, curry powder.", "Return chicken, add coconut milk, broth, simmer.", "Stir in peas."]
             },
             "Pepper and Cucumber Salad": {
-                ingredients: [
-                    "2 cucumbers, diced",
-                    "2 bell peppers (any color), diced",
-                    "1/2 red onion, thinly sliced",
-                    "1/4 cup fresh dill, chopped",
-                    "3 tbsp olive oil",
-                    "2 tbsp white wine vinegar",
-                    "1 tsp sugar (optional, for balance)",
-                    "Salt and black pepper to taste"
-                ],
-                instructions: [
-                    "Dice cucumbers and bell peppers into bite-sized pieces",
-                    "Thinly slice the red onion and chop fresh dill",
-                    "In a large bowl, combine the diced vegetables, red onion, and dill",
-                    "In a small bowl, whisk together olive oil, white wine vinegar, sugar (if using), salt, and black pepper to create the dressing",
-                    "Pour the dressing over the vegetables and toss gently to ensure everything is evenly coated",
-                    "Serve immediately or chill in the refrigerator for at least 30 minutes to allow the flavors to meld"
-                ]
+                ingredients: ["2 cucumbers", "2 bell peppers", "1/2 red onion", "1/4 cup fresh dill", "3 tbsp olive oil", "2 tbsp white wine vinegar", "1 tsp sugar (optional)", "Salt", "Black pepper"],
+                instructions: ["Dice veggies.", "Slice onion, chop dill.", "Combine veggies.", "Whisk dressing.", "Pour dressing, toss."]
             },
             "Mexican Burrito Bowl": {
-                ingredients: [
-                    "1 cup cooked rice (brown or white)",
-                    "1 cup cooked black beans, rinsed and drained",
-                    "1 cup cooked corn kernels (fresh, frozen, or canned)",
-                    "1/2 cup salsa",
-                    "1/4 cup chopped fresh cilantro",
-                    "1/2 avocado, sliced or diced",
-                    "2 tbsp sour cream or Greek yogurt (optional)",
-                    "Lime wedges for serving",
-                    "Optional: cooked seasoned chicken, beef, or tofu"
-                ],
-                instructions: [
-                    "Assemble the bowl by layering cooked rice as the base",
-                    "Top with cooked black beans and corn kernels",
-                    "Add salsa, fresh cilantro, and avocado slices/dices",
-                    "If desired, add your choice of cooked and seasoned protein (chicken, beef, or tofu)",
-                    "Dollop with sour cream or Greek yogurt if using",
-                    "Serve immediately with a lime wedge for squeezing over the top"
-                ]
+                ingredients: ["1 cup cooked rice", "1 cup cooked black beans", "1 cup cooked corn kernels", "1/2 cup salsa", "1/4 cup fresh cilantro", "1/2 avocado", "2 tbsp sour cream or Greek yogurt (optional)", "Lime wedges", "Optional: cooked seasoned protein"],
+                instructions: ["Layer rice, beans, corn.", "Top with salsa, cilantro, avocado.", "Add protein (optional), sour cream (optional)."]
             },
             "Burghul Banadoura": {
-                ingredients: [
-                    "1 cup coarse bulgur",
-                    "2 tbsp olive oil",
-                    "1 large onion, finely chopped",
-                    "2 cloves garlic, minced",
-                    "1 can (800g) crushed tomatoes",
-                    "2 cups water or vegetable broth",
-                    "1 tsp dried mint (Na'na)",
-                    "Salt and black pepper to taste",
-                    "Fresh mint or parsley for garnish (optional)"
-                ],
-                instructions: [
-                    "Rinse bulgur thoroughly in a fine-mesh sieve, then drain well",
-                    "Heat olive oil in a large pot or deep skillet over medium heat",
-                    "Add finely chopped onion and cook until softened and translucent, about 5-7 minutes",
-                    "Add minced garlic and cook for another minute until fragrant",
-                    "Stir in the crushed tomatoes, water or vegetable broth, dried mint, salt, and black pepper",
-                    "Bring the mixture to a boil, then add the rinsed bulgur",
-                    "Stir well, reduce the heat to low, cover the pot, and simmer for 20-25 minutes, or until the bulgur has absorbed all the liquid and is tender",
-                    "Fluff with a fork before serving",
-                    "Garnish with fresh mint or parsley if desired"
-                ]
+                ingredients: ["1 cup coarse bulgur", "2 tbsp olive oil", "1 large onion", "2 cloves garlic", "1 can crushed tomatoes", "2 cups water or vegetable broth", "1 tsp dried mint", "Salt", "Black pepper"],
+                instructions: ["Rinse bulgur.", "Sauté onion, garlic.", "Stir in tomatoes, water/broth, dried mint, seasonings.", "Add bulgur, simmer 20-25 min."]
             },
             "Teriyaki Chicken": {
-                ingredients: [
-                    "500g chicken breast or thighs, cut into bite-sized pieces",
-                    "1 tbsp olive oil",
-                    "1/2 cup teriyaki sauce (store-bought or homemade)",
-                    "1 tbsp honey or brown sugar (optional, for extra glaze)",
-                    "1 cup broccoli florets",
-                    "1 bell pepper (any color), sliced",
-                    "Cooked rice for serving",
-                    "Sesame seeds and sliced green onions for garnish"
-                ],
-                instructions: [
-                    "Heat olive oil in a large skillet or wok over medium-high heat",
-                    "Add chicken pieces and stir-fry until cooked through and lightly browned",
-                    "Add broccoli florets and sliced bell pepper to the skillet, stir-fry for 3-5 minutes until tender-crisp",
-                    "Pour teriyaki sauce over the chicken and vegetables, stir to coat",
-                    "If desired, add honey or brown sugar and let the sauce simmer for 1-2 minutes until slightly thickened and glossy",
-                    "Serve hot over cooked rice, garnished with sesame seeds and sliced green onions"
-                ]
+                ingredients: ["500g chicken breast or thighs", "1 tbsp olive oil", "1/2 cup teriyaki sauce", "1 tbsp honey or brown sugar (optional)", "1 cup broccoli florets", "1 bell pepper", "Cooked rice", "Sesame seeds", "Green onions"],
+                instructions: ["Stir-fry chicken.", "Add broccoli, bell pepper.", "Pour teriyaki sauce, simmer.", "Serve over rice."]
             }
         };
 
+        // Utility function to shuffle an array
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -882,25 +601,45 @@
             }
         }
 
-        // Function to get a random item from an array
+        // Utility function to get a random item from an array
         function getRandomMeal(mealList) {
             return mealList[Math.floor(Math.random() * mealList.length)];
         }
 
-        // Function to generate the calendar
+        // Function to distribute meals for Monday-Saturday based on your specific pattern
+        function distributeMeals(mealOptions, type) {
+            let assignedMeals = [];
+            let shuffledOptions = [...mealOptions]; // Create a copy to shuffle
+            shuffleArray(shuffledOptions); // Randomize the order of the available meals
+
+            if (type === 'lunches') {
+                // L1, L1, L2, L2, L3, L3
+                for (let i = 0; i < 3; i++) {
+                    const meal = shuffledOptions[i % shuffledOptions.length]; // Cycle through if less than 3 unique
+                    assignedMeals.push(meal, meal);
+                }
+            } else if (type === 'dinners') {
+                // D1, D2, D3, D1, D2, D3
+                for (let i = 0; i < 6; i++) {
+                    assignedMeals.push(shuffledOptions[i % shuffledOptions.length]);
+                }
+            }
+            return assignedMeals;
+        }
+
+        // Function to generate the calendar display
         function generateCalendar() {
             const calendarEl = document.getElementById('calendar');
-            calendarEl.innerHTML = ''; // Clear previous calendar once at the beginning
+            calendarEl.innerHTML = ''; // Clear previous calendar content
 
-            // Update the current month display to show "Month Cycle X" or similar, since actual months are less relevant now
-            document.getElementById('currentMonth').textContent = `Meal Plan Cycle ${currentMonthIndex + 1}`;
+            // Update the current cycle display
+            document.getElementById('currentMonth').textContent = `Meal Plan Cycle ${currentCycleIndex + 1}`;
 
             const weekLength = 7; // Days in a week
 
             for (let weekDisplay = 0; weekDisplay < 4; weekDisplay++) { // Loop for 4 weeks to display
                 // Calculate which mealPlan week corresponds to the current 'weekDisplay'
-                // This creates the cycling effect for the 4 weeks starting from currentMonthIndex
-                const actualMealPlanWeekIndex = (currentMonthIndex + weekDisplay) % 4;
+                const actualMealPlanWeekIndex = (currentCycleIndex + weekDisplay) % 4;
                 const actualMealPlanWeekKey = `week${actualMealPlanWeekIndex + 1}`;
                 const mealsForThisDisplayedWeek = mealPlan[actualMealPlanWeekKey];
 
@@ -909,60 +648,53 @@
                 const nextActualMealPlanWeekKey = `week${nextActualMealPlanWeekIndex + 1}`;
                 const mealsForNextDisplayedWeek = mealPlan[nextActualMealPlanWeekKey];
 
-                // Shuffle lunches and dinners from the *next* week for this week's Sunday prep
-                const shuffledLunchesForSundayPrep = [...mealsForNextDisplayedWeek.lunches];
-                shuffleArray(shuffledLunchesForSundayPrep);
-                const shuffledDinnersForSundayPrep = [...mealsForNextDisplayedWeek.dinners];
-                shuffleArray(shuffledDinnersForSundayPrep);
+                // Distribute lunches and dinners for Monday-Saturday based on patterns
+                const distributedLunchesMonSat = distributeMeals(mealsForThisDisplayedWeek.lunches, 'lunches');
+                const distributedDinnersMonSat = distributeMeals(mealsForThisDisplayedWeek.dinners, 'dinners');
 
-                // Shuffle dinners for this displayed week's Monday-Saturday (consumed during this week)
-                const shuffledDinnersForMonSat = [...mealsForThisDisplayedWeek.dinners];
-                shuffleArray(shuffledDinnersForMonSat);
+                // Get random meals for Sunday prep from the *next* week's available meals
+                const sundayPrepLunch = getRandomMeal(mealsForNextDisplayedWeek.lunches);
+                const sundayPrepDinner = getRandomMeal(mealsForNextDisplayedWeek.dinners);
 
-
-                for (let dayOfWeek = 0; dayOfWeek < weekLength; dayOfWeek++) { // Loop for 7 days
+                for (let dayOfWeek = 0; dayOfWeek < weekLength; dayOfWeek++) { // Loop for 7 days (Sun-Sat)
                     const dayEl = document.createElement('div');
                     dayEl.classList.add('day');
 
-                    const dayNumberEl = document.createElement('div');
-                    dayNumberEl.classList.add('day-number');
-
-                    if (dayOfWeek === 0) { // Sunday (Prep Day for the *next* week's meals)
-                        dayNumberEl.textContent = `Week ${weekDisplay + 1}`; // Display "Week 1", "Week 2", etc.
-                        dayEl.classList.add('prep-day'); // Mark Sunday as prep day
+                    const dayNameEl = document.createElement('div');
+                    dayNameEl.classList.add('day-number');
+                    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    
+                    if (dayOfWeek === 0) { // Sunday (Prep Day)
+                        dayNameEl.textContent = `Week ${weekDisplay + 1} ${dayNames[dayOfWeek]}`; // Week number + Day Name
+                        dayEl.classList.add('prep-day');
                         const prepIndicator = document.createElement('div');
                         prepIndicator.classList.add('prep-indicator');
                         prepIndicator.textContent = 'Prep Day';
                         dayEl.appendChild(prepIndicator);
 
-                        // Sunday meals are chosen from the *next* week's available meals
-                        const sundayLunch = getRandomMeal(shuffledLunchesForSundayPrep);
-                        const sundayDinner = getRandomMeal(shuffledDinnersForSundayPrep);
-
-                        if (sundayLunch) {
+                        // Sunday meals are for PREP for the *next* week's consumption
+                        if (sundayPrepLunch) {
                             const lunchEl = document.createElement('div');
                             lunchEl.classList.add('meal', 'lunch');
-                            lunchEl.textContent = `Prep Lunch: ${sundayLunch}`; // Indicate it's for prep
-                            lunchEl.onclick = () => openModal(sundayLunch);
+                            lunchEl.textContent = `Prep Lunch: ${sundayPrepLunch}`;
+                            lunchEl.onclick = () => openModal(sundayPrepLunch);
                             dayEl.appendChild(lunchEl);
                         }
 
-                        if (sundayDinner) {
+                        if (sundayPrepDinner) {
                             const dinnerEl = document.createElement('div');
                             dinnerEl.classList.add('meal', 'dinner');
-                            dinnerEl.textContent = `Prep Dinner: ${sundayDinner}`; // Indicate it's for prep
-                            dinnerEl.onclick = () => openModal(sundayDinner);
+                            dinnerEl.textContent = `Prep Dinner: ${sundayPrepDinner}`;
+                            dinnerEl.onclick = () => openModal(sundayPrepDinner);
                             dayEl.appendChild(dinnerEl);
                         }
 
                     } else { // Monday to Saturday (Consumption Days)
-                        // Meals for Monday-Saturday come from the *current* displayed week's plan
-                        const lunch = mealsForThisDisplayedWeek.lunches[(dayOfWeek - 1) % mealsForThisDisplayedWeek.lunches.length];
-                        const dinner = shuffledDinnersForMonSat[(dayOfWeek - 1) % shuffledDinnersForMonSat.length];
+                        dayNameEl.textContent = dayNames[dayOfWeek];
+                        const dayIndexForMeals = dayOfWeek - 1; // 0 for Monday, 1 for Tuesday... 5 for Saturday
 
-                        // Set generic day number for Monday-Saturday
-                        const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                        dayNumberEl.textContent = dayNames[dayOfWeek];
+                        const lunch = distributedLunchesMonSat[dayIndexForMeals % distributedLunchesMonSat.length];
+                        const dinner = distributedDinnersMonSat[dayIndexForMeals % distributedDinnersMonSat.length];
 
                         if (lunch) {
                             const lunchEl = document.createElement('div');
@@ -980,20 +712,132 @@
                             dayEl.appendChild(dinnerEl);
                         }
                     }
-                    // Append day number element to the day element always
-                    dayEl.prepend(dayNumberEl); // Prepend so it appears at the top of the day box
+                    dayEl.prepend(dayNameEl); // Ensure day name is at the top
                     calendarEl.appendChild(dayEl);
                 }
             }
+            // After generating calendar, generate meal prep list for the *current* cycle's first week (which is the actual meal plan week)
+            generateMealPrepList();
         }
 
-        // Function to change which 'cycle' of weeks is currently viewed
-        function changeMonth(direction) {
-            currentMonthIndex = (currentMonthIndex + direction + 4) % 4; // Ensure positive modulo result
-            generateCalendar();
+        // Function to generate the grocery list and preparation steps
+        function generateMealPrepList() {
+            const groceryListEl = document.getElementById('groceryList');
+            const preparationStepsEl = document.getElementById('preparationSteps');
+            groceryListEl.innerHTML = '';
+            preparationStepsEl.innerHTML = '';
+
+            // Get the current week for which prep is being done
+            const actualMealPlanWeekKey = `week${(currentCycleIndex % 4) + 1}`;
+            const currentWeekData = mealPlan[actualMealPlanWeekKey];
+
+            // Determine the *next* actual meal plan week for Sunday's prep meals
+            const nextActualMealPlanWeekIndex = (currentCycleIndex + 1) % 4;
+            const nextActualMealPlanWeekKey = `week${nextActualMealPlanWeekIndex + 1}`;
+            const nextWeekData = mealPlan[nextActualMealPlanWeekKey];
+
+            // Collect all meals that will be consumed in the CURRENT displayed cycle (Mon-Sat)
+            const mealsToCook = [
+                ...distributeMeals(currentWeekData.lunches, 'lunches'),
+                ...distributeMeals(currentWeekData.dinners, 'dinners')
+            ];
+
+            // Collect the meals that will be PREPPED on the Sunday of the CURRENT displayed cycle
+            // These are randomly selected from the *next* week's pool
+            const sundayPrepLunch = getRandomMeal(nextWeekData.lunches);
+            const sundayPrepDinner = getRandomMeal(nextWeekData.dinners);
+            
+            // Add Sunday prep meals to the list of meals to cook for ingredient gathering
+            if(sundayPrepLunch) mealsToCook.push(sundayPrepLunch);
+            if(sundayPrepDinner) mealsToCook.push(sundayPrepDinner);
+
+            const ingredientsCount = {};
+            const prepRecipes = new Set(); // To store unique recipe names for prep steps
+
+            // Aggregate ingredients from all meals
+            mealsToCook.forEach(mealName => {
+                const recipe = recipes[mealName];
+                if (recipe) {
+                    recipe.ingredients.forEach(ingredient => {
+                        ingredientsCount[ingredient] = (ingredientsCount[ingredient] || 0) + 1;
+                    });
+                }
+            });
+
+            // Add ingredients for Sunday prep meals to the list of meals to cook for ingredient gathering
+            // This is crucial: the actual prep being done on Sunday is for *these* specific meals.
+            if(sundayPrepLunch) {
+                const recipe = recipes[sundayPrepLunch];
+                if(recipe) {
+                    prepRecipes.add(sundayPrepLunch);
+                }
+            }
+            if(sundayPrepDinner) {
+                const recipe = recipes[sundayPrepDinner];
+                if(recipe) {
+                    prepRecipes.add(sundayPrepDinner);
+                }
+            }
+
+
+            // Populate Grocery List
+            for (const ingredient in ingredientsCount) {
+                const li = document.createElement('li');
+                // For simplicity, we just list the ingredient. If quantities need aggregation,
+                // the `recipes` object would need more structured quantity data.
+                li.textContent = `${ingredient}`; // (x${ingredientsCount[ingredient]}) if you want counts
+                groceryListEl.appendChild(li);
+            }
+
+            // Populate Preparation Steps (only for the meals prepped on Sunday)
+            if (prepRecipes.size === 0) {
+                const li = document.createElement('li');
+                li.textContent = "No specific prep steps found for Sunday's meals.";
+                preparationStepsEl.appendChild(li);
+            } else {
+                prepRecipes.forEach(recipeName => {
+                    const recipe = recipes[recipeName];
+                    if (recipe && recipe.instructions && recipe.instructions.length > 0) {
+                        const liTitle = document.createElement('li');
+                        liTitle.innerHTML = `<strong>${recipeName}:</strong>`;
+                        preparationStepsEl.appendChild(liTitle);
+                        recipe.instructions.forEach(instruction => {
+                            const li = document.createElement('li');
+                            li.textContent = instruction;
+                            preparationStepsEl.appendChild(li);
+                        });
+                    }
+                });
+            }
         }
 
-        // Modal functionality (remains the same)
+
+        // Function to change the current meal plan cycle
+        function changeCycle(direction) {
+            currentCycleIndex = (currentCycleIndex + direction + 4) % 4; // Ensure positive modulo result (0-3)
+            generateCalendar(); // Regenerate calendar with new cycle
+            generateMealPrepList(); // Regenerate grocery/prep list for the new cycle
+        }
+
+        // Function to show/hide tabs
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).style.display = 'block';
+
+            // Activate the clicked button
+            document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // Modal functionality
         function openModal(recipeName) {
             const modal = document.getElementById('recipeModal');
             const modalTitle = document.getElementById('modalTitle');
@@ -1017,7 +861,7 @@
                         </ol>
                     </div>
                 `;
-                modal.style.display = 'flex'; /* Use flex to center the modal content */
+                modal.style.display = 'flex'; 
             } else {
                 modalTitle.textContent = "Recipe Not Found";
                 modalBody.innerHTML = "<p>Sorry, the recipe for this meal is not available.</p>";
@@ -1038,8 +882,11 @@
             }
         }
 
-        // Initial calendar generation on page load
-        document.addEventListener('DOMContentLoaded', generateCalendar);
+        // Initial generation on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            generateCalendar();
+            showTab('calendarTab'); // Show calendar tab by default
+        });
     </script>
 </body>
 </html>
