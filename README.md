@@ -9,10 +9,10 @@
         :root {
             --pastel-green-light: #e6ffe6; /* Very light green */
             --pastel-green-medium: #c8f0c8; /* Medium light green */
-            --pastel-green-dark: #8cde8c;   /* Slightly darker green for accents */
+            --pastel-green-dark: #28a745;   /* Darker green for accents */
             --pastel-pink-light: #ffe6f0;   /* Very light pink */
             --pastel-pink-medium: #f0c8d8;  /* Medium light pink */
-            --pastel-pink-dark: #de8cb2;    /* Slightly darker pink for accents */
+            --pastel-pink-dark: #e83e8c;    /* Darker pink for accents */
             --text-color-dark: #333;
             --text-color-light: #fff;
             --background-light: #fdfdfd;
@@ -41,102 +41,52 @@
             letter-spacing: 0.05em;
         }
 
-        /* Tabs Navigation */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+        /* Main Content Wrapper */
+        .main-container {
             width: 100%;
-            max-width: 1000px;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .tab-button {
-            background-color: var(--background-light);
-            color: var(--pastel-green-dark);
-            border: none;
-            padding: 15px 30px;
-            text-align: center;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            margin: 0 5px;
-            border-bottom: 2px solid transparent;
-        }
-
-        .tab-button.active {
-            background-color: var(--pastel-green-light);
-            color: var(--text-color-dark);
-            border-bottom: 2px solid var(--pastel-green-dark);
-            font-weight: bold;
-        }
-
-        .tab-button:hover:not(.active) {
-            background-color: var(--pastel-green-light);
-            color: var(--pastel-green-dark);
-        }
-
-        /* Content Area for Tabs */
-        .tab-content {
-            width: 100%;
-            max-width: 1000px;
+            max-width: 1200px; /* Increased max-width for better layout */
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             padding: 25px;
-            margin-top: 10px;
+            margin-bottom: 30px; /* Space between calendar and bottom */
         }
 
-        /* Calendar Controls */
-        .calendar-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 900px;
-            margin-bottom: 20px;
-            padding: 15px 25px;
+        /* Calendar Section for Each Week */
+        .calendar-section {
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
             border-radius: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
         }
 
-        .calendar-nav button {
-            background-color: var(--pastel-green-dark);
-            color: var(--text-color-light);
-            border: none;
-            padding: 12px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .calendar-nav button:hover {
-            background-color: #72c372; /* Slightly darker green on hover */
-            transform: translateY(-2px);
-        }
-
-        .calendar-nav button:active {
-            transform: translateY(0);
-        }
-
-        #currentMonth {
+        .week-title {
             font-size: 1.8em;
             font-weight: bold;
             color: var(--pastel-green-dark);
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--pastel-green-medium);
+            padding-bottom: 10px;
         }
 
         /* Calendar Grid */
         .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(7, 1fr); /* 7 columns for 7 days */
+            grid-template-columns: repeat(7, 1fr); /* 7 columns for Sun-Sat */
             gap: 15px; /* Space between days */
             width: 100%;
+        }
+
+        .day-header {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--pastel-green-dark);
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--pastel-green-dark);
+            margin-bottom: 10px;
         }
 
         .day {
@@ -147,17 +97,27 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            min-height: 150px; /* Ensure days have enough height */
+            min-height: 180px; /* Ensure days have enough height */
             transition: transform 0.2s ease;
             position: relative; /* For prep-indicator positioning */
             border: 1px solid var(--border-color);
         }
 
-        .day:hover {
+        .day.empty-day {
+            background-color: #f0f0f0; /* Gray for empty Saturday */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            color: #888;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            font-style: italic;
+        }
+
+        .day:hover:not(.empty-day) {
             transform: translateY(-5px);
         }
 
-        .day-number {
+        .day-name { /* Renamed from day-number for clarity */
             font-weight: bold;
             font-size: 1.1em;
             color: var(--text-color-dark);
@@ -210,44 +170,76 @@
             background-color: var(--pastel-pink-light); /* Lighter pink */
             border-left: 4px solid var(--pastel-pink-dark);
         }
+        
+        /* Week-specific tabs (Grocery/Prep) */
+        .week-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
 
-        /* Meal Prep Tab Specific Styles */
-        .meal-prep-content h2 {
-            color: var(--pastel-green-dark);
-            margin-bottom: 15px;
-            font-size: 1.8em;
-            border-bottom: 2px solid var(--pastel-green-medium);
+        .week-action-button {
+            background-color: var(--pastel-green-medium);
+            color: var(--text-color-dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .week-action-button:hover {
+            background-color: var(--pastel-green-dark);
+            color: var(--text-color-light);
+            transform: translateY(-2px);
+        }
+
+        .list-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .list-container h3 {
+            color: var(--pastel-pink-dark);
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            border-bottom: 1px dashed var(--pastel-pink-medium);
             padding-bottom: 5px;
         }
 
-        .meal-prep-content h3 {
-            color: var(--pastel-pink-dark);
-            margin-top: 25px;
-            margin-bottom: 10px;
-            font-size: 1.4em;
-        }
-
-        .grocery-list ul, .preparation-steps ol {
+        .list-container ul, .list-container ol {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        .grocery-list li, .preparation-steps li {
-            background-color: var(--pastel-green-light);
-            border-left: 5px solid var(--pastel-green-dark);
-            margin-bottom: 8px;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 1.05em;
+        .list-container li {
+            background-color: var(--pastel-pink-light);
+            border-left: 4px solid var(--pastel-pink-dark);
+            margin-bottom: 6px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.95em;
         }
-        
-        .preparation-steps li {
-             background-color: var(--pastel-pink-light);
-             border-left-color: var(--pastel-pink-dark);
+        .list-container li.category-header { /* Style for the category headers like "Proteins" */
+            background-color: var(--pastel-green-light);
+            border-left: 4px solid var(--pastel-green-dark);
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            padding: 10px 12px;
         }
 
-        /* Modal Styles (re-checked for pastel colors) */
+        /* Modal Styles */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -305,13 +297,13 @@
             font-size: 1.4em;
         }
 
-        .ingredients-list, .instructions-list {
+        .ingredients-list, .instructions-list, .macros-list {
             list-style-type: none;
             padding: 0;
             margin-bottom: 20px;
         }
 
-        .ingredients-list li, .instructions-list li {
+        .ingredients-list li, .instructions-list li, .macros-list li {
             padding: 8px 0;
             border-bottom: 1px dashed var(--pastel-green-medium);
         }
@@ -320,7 +312,7 @@
             border-bottom: 1px dashed var(--pastel-pink-medium);
         }
 
-        .ingredients-list li:last-child, .instructions-list li:last-child {
+        .ingredients-list li:last-child, .instructions-list li:last-child, .macros-list li:last-child {
             border-bottom: none;
         }
 
@@ -329,70 +321,62 @@
         }
         
         /* Responsive Design */
+        @media (max-width: 992px) {
+            .calendar-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
         @media (max-width: 768px) {
             .calendar-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
                 gap: 10px;
             }
             .day {
-                min-height: 120px;
+                min-height: 100px;
                 padding: 10px;
             }
             .meal {
                 font-size: 0.85em;
                 padding: 6px 8px;
             }
-            #currentMonth {
+            h1 {
+                font-size: 2em;
+            }
+            .week-title {
                 font-size: 1.5em;
             }
-            .calendar-nav {
+            .week-actions {
                 flex-direction: column;
-                padding: 10px;
+                gap: 10px;
             }
-            .calendar-nav button {
+            .week-action-button {
                 width: 80%;
-                margin: 5px 0;
+                margin: 0 auto;
             }
-            .tabs {
-                flex-direction: column;
-                border-bottom: none;
-            }
-            .tab-button {
-                width: 100%;
-                margin: 2px 0;
-                border-radius: 0;
-                border-bottom: 1px solid var(--border-color);
-            }
-            .tab-button.active {
-                border-bottom: none; /* Active tab doesn't need bottom border for column layout */
-            }
-            .tab-content {
-                padding: 15px;
+            .modal-content {
+                width: 90%;
             }
         }
 
         @media (max-width: 480px) {
-            h1 {
-                font-size: 2em;
-            }
-            .day-number {
-                font-size: 1em;
+            .day-name {
+                font-size: 0.9em;
             }
             .day {
-                min-height: 100px;
+                min-height: 80px;
                 padding: 8px;
             }
             .meal {
-                font-size: 0.75em;
+                font-size: 0.7em;
             }
             .modal-content {
                 width: 95%;
-                padding: 20px;
+                padding: 15px;
             }
             .close-button {
-                font-size: 28px;
+                font-size: 24px;
                 top: 10px;
-                right: 15px;
+                right: 10px;
             }
         }
     </style>
@@ -401,36 +385,8 @@
 
     <h1>Meal Prep Calendar</h1>
 
-    <div class="tabs">
-        <button class="tab-button active" onclick="showTab('calendarTab')">Calendar</button>
-        <button class="tab-button" onclick="showTab('mealPrepTab')">Meal Prep</button>
-    </div>
-
-    <div id="calendarTab" class="tab-content">
-        <div class="calendar-nav">
-            <button onclick="changeCycle(-1)">Previous Cycle</button>
-            <span id="currentMonth">Meal Plan Cycle 1</span>
-            <button onclick="changeCycle(1)">Next Cycle</button>
+    <div class="main-container" id="mainContent">
         </div>
-        <div id="calendar" class="calendar-grid">
-            </div>
-    </div>
-
-    <div id="mealPrepTab" class="tab-content" style="display: none;">
-        <div class="meal-prep-content">
-            <h2>Meal Preparation for This Cycle</h2>
-            <div class="grocery-list">
-                <h3>Grocery List:</h3>
-                <ul id="groceryList">
-                    </ul>
-            </div>
-            <div class="preparation-steps">
-                <h3>Preparation Steps:</h3>
-                <ol id="preparationSteps">
-                    </ol>
-            </div>
-        </div>
-    </div>
 
     <div id="recipeModal" class="modal">
         <div class="modal-content">
@@ -443,9 +399,7 @@
 
     <script>
         // Global variables
-        let currentCycleIndex = 0; // Represents the current "cycle" in a cycle of 4 weeks
-        
-        // Enhanced meal plan with specific meal types
+        // Meal plan with specific meal types
         const mealPlan = {
             week1: {
                 lunches: [
@@ -497,99 +451,207 @@
             }
         };
 
-        // Recipe database with ingredients and instructions
+        // Recipe database with ingredients (categorized) and instructions, and now MACROS
         const recipes = {
             "Kafta with Potatoes": {
-                ingredients: ["500g ground lamb or beef", "4 medium potatoes", "1 large onion", "2 cloves garlic", "1/4 cup fresh parsley", "1 tsp allspice", "1 tsp cinnamon", "Salt", "Pepper", "2 tbsp olive oil"],
-                instructions: ["Mix meat, onion, garlic, parsley, spices.", "Form patties.", "Brown patties in olive oil.", "Sauté remaining onions.", "Add potatoes.", "Return kafta, add water, simmer 25-30 min."]
+                ingredients: {
+                    proteins: ["500g ground lamb or beef"],
+                    vegetables: ["4 medium potatoes, cubed", "1 large onion, finely chopped", "2 cloves garlic, minced", "1/4 cup fresh parsley, chopped"],
+                    pantry: ["1 tsp allspice", "1 tsp cinnamon", "Salt and pepper to taste", "2 tbsp olive oil"]
+                },
+                instructions: ["Mix ground meat with half the onion, garlic, parsley, and spices.", "Form into small oval-shaped patties.", "Heat olive oil in a large pan over medium heat.", "Brown kafta patties on both sides, then remove.", "In same pan, sauté remaining onions until golden.", "Add potatoes and cook for 5 minutes.", "Return kafta to pan, add water to barely cover.", "Simmer covered for 25-30 minutes until potatoes are tender."],
+                macros: { calories: "350 kcal", protein: "30g", carbs: "40g", fat: "10g" } // TODO: Add actual macro data here
             },
             "Lebanese Shawarma Bowl": {
-                ingredients: ["500g chicken thighs", "2 cups basmati rice", "1 cucumber", "2 tomatoes", "1/2 red onion", "1/4 cup tahini", "2 tbsp lemon juice", "2 tsp shawarma spice blend", "Fresh parsley", "Fresh mint"],
-                instructions: ["Marinate chicken.", "Cook rice.", "Pan-fry chicken.", "Prepare veggies.", "Make tahini sauce.", "Assemble bowls."]
+                ingredients: {
+                    proteins: ["500g chicken thighs, sliced thin"],
+                    carbs: ["2 cups basmati rice"],
+                    vegetables: ["1 cucumber, diced", "2 tomatoes, diced", "1/2 red onion, sliced", "Fresh parsley and mint"],
+                    pantry: ["1/4 cup tahini", "2 tbsp lemon juice", "2 tsp shawarma spice blend"]
+                },
+                instructions: ["Marinate chicken in shawarma spices and lemon juice for 2 hours.", "Cook rice according to package instructions.", "Pan-fry chicken until golden and cooked through.", "Prepare vegetables and arrange in bowls.", "Mix tahini with lemon juice and water for sauce.", "Assemble bowls with rice, chicken, vegetables, and sauce."],
+                macros: { calories: "450 kcal", protein: "40g", carbs: "50g", fat: "15g" } // TODO: Add actual macro data here
             },
             "Caesar Salad": {
-                ingredients: ["2 romaine lettuce heads", "1/2 cup parmesan", "1 cup croutons", "4 anchovy fillets (optional)", "2 cloves garlic", "1/4 cup lemon juice", "1/4 cup olive oil", "1 egg yolk", "1 tsp Dijon mustard"],
-                instructions: ["Wash lettuce.", "Blend dressing ingredients.", "Toss lettuce with dressing.", "Top with parmesan and croutons."]
+                ingredients: {
+                    proteins: ["4 anchovy fillets (optional)", "1 egg yolk"],
+                    vegetables: ["2 large romaine lettuce heads", "2 cloves garlic"],
+                    pantry: ["1/2 cup parmesan cheese, grated", "1 cup croutons", "1/4 cup lemon juice", "1/4 cup olive oil", "1 tsp Dijon mustard"]
+                },
+                instructions: ["Wash and chop romaine lettuce.", "Make dressing: blend garlic, anchovies, lemon juice, egg yolk, and mustard.", "Slowly add olive oil while blending.", "Toss lettuce with dressing.", "Top with parmesan and croutons.", "Serve immediately."],
+                macros: { calories: "280 kcal", protein: "15g", carbs: "20g", fat: "18g" } // TODO: Add actual macro data here
             },
             "Chickpea Salad": {
-                ingredients: ["2 cans chickpeas", "1 cucumber", "2 tomatoes", "1/2 red onion", "1/4 cup fresh parsley", "3 tbsp olive oil", "2 tbsp lemon juice", "1 tsp sumac", "Salt", "Pepper"],
-                instructions: ["Drain chickpeas.", "Dice veggies.", "Chop herbs.", "Whisk dressing.", "Combine all ingredients."]
+                ingredients: {
+                    proteins: [],
+                    carbs: ["2 cans chickpeas, drained and rinsed"],
+                    vegetables: ["1 cucumber, diced", "2 tomatoes, diced", "1/2 red onion, finely chopped", "1/4 cup fresh parsley"],
+                    pantry: ["3 tbsp olive oil", "2 tbsp lemon juice", "1 tsp sumac", "Salt and pepper to taste"]
+                },
+                instructions: ["Drain and rinse chickpeas thoroughly.", "Dice all vegetables finely.", "Chop parsley and mint.", "Whisk together olive oil, lemon juice, and sumac.", "Combine all ingredients in a large bowl.", "Toss well and let marinate for 30 minutes.", "Adjust seasoning before serving."],
+                macros: { calories: "250 kcal", protein: "10g", carbs: "35g", fat: "10g" } // TODO: Add actual macro data here
             },
             "Chicken with Roasted Veggies": {
-                ingredients: ["500g chicken breast", "2 bell peppers", "1 zucchini", "1 red onion", "2 tbsp olive oil", "1 tsp dried oregano", "Salt", "Pepper"],
-                instructions: ["Preheat oven.", "Toss chicken and veggies with oil and spices.", "Roast 20-25 min."]
+                ingredients: {
+                    proteins: ["500g chicken breast, cubed"],
+                    vegetables: ["2 bell peppers, chopped", "1 zucchini, chopped", "1 red onion, chopped"],
+                    pantry: ["2 tbsp olive oil", "1 tsp dried oregano", "Salt and pepper to taste"]
+                },
+                instructions: ["Preheat oven to 200°C (400°F).", "Toss chicken and vegetables with olive oil, oregano, salt, and pepper.", "Spread on a baking sheet in a single layer.", "Roast for 20-25 minutes, or until chicken is cooked through and vegetables are tender-crisp.", "Serve hot."],
+                macros: { calories: "320 kcal", protein: "35g", carbs: "20g", fat: "12g" } // TODO: Add actual macro data here
             },
             "Mediterranean Quinoa Salad": {
-                ingredients: ["1 cup quinoa", "2 cups vegetable broth", "1 cucumber", "1 cup cherry tomatoes", "1/2 red onion", "1/2 cup Kalamata olives", "1/4 cup fresh parsley", "1/4 cup fresh mint", "1/4 cup feta cheese", "3 tbsp olive oil", "2 tbsp lemon juice", "Salt", "Pepper"],
-                instructions: ["Cook quinoa, cool.", "Combine quinoa, veggies, herbs.", "Whisk dressing.", "Pour dressing, toss.", "Stir in feta."]
+                ingredients: {
+                    proteins: ["1/4 cup feta cheese, crumbled"],
+                    carbs: ["1 cup quinoa, rinsed"],
+                    vegetables: ["1 cucumber, diced", "1 cup cherry tomatoes, halved", "1/2 red onion, finely chopped", "1/2 cup Kalamata olives, pitted and halved", "1/4 cup fresh parsley, chopped", "1/4 cup fresh mint, chopped"],
+                    pantry: ["2 cups vegetable broth or water", "3 tbsp olive oil", "2 tbsp lemon juice", "Salt and pepper to taste"]
+                },
+                instructions: ["Cook quinoa according to package directions using broth/water.", "Let cool completely.", "In a large bowl, combine cooked quinoa, cucumber, cherry tomatoes, red onion, olives, parsley, and mint.", "Whisk together olive oil, lemon juice, salt, and pepper.", "Pour dressing over salad and toss to combine.", "Stir in crumbled feta cheese just before serving."],
+                macros: { calories: "380 kcal", protein: "12g", carbs: "45g", fat: "18g" } // TODO: Add actual macro data here
             },
             "Asian Chicken Salad": {
-                ingredients: ["2 cups cooked chicken", "4 cups shredded cabbage", "1 cup shredded carrots", "1/2 red bell pepper", "1/4 cup green onions", "1/4 cup cilantro", "1/4 cup rice vinegar", "2 tbsp soy sauce", "1 tbsp sesame oil", "1 tbsp honey", "1 tsp fresh ginger", "1/2 cup chopped peanuts (optional)"],
-                instructions: ["Combine salad ingredients.", "Whisk dressing ingredients.", "Pour dressing, toss."]
-            },
-            "Beef Cubes with Potato": {
-                ingredients: ["500g beef stew meat", "3 medium potatoes", "1 large onion", "2 carrots", "2 stalks celery", "4 cups beef broth", "2 tbsp olive oil", "1 tbsp tomato paste", "1 tsp dried thyme", "Salt", "Pepper"],
-                instructions: ["Brown beef.", "Sauté veggies.", "Add tomato paste, thyme.", "Return beef, add broth, simmer 1.5-2 hrs.", "Add potatoes, cook 20-30 min."]
+                ingredients: {
+                    proteins: ["2 cups cooked chicken, shredded"],
+                    vegetables: ["4 cups shredded cabbage (green or napa)", "1 cup shredded carrots", "1/2 red bell pepper, thinly sliced", "1/4 cup chopped green onions", "1/4 cup chopped cilantro"],
+                    pantry: ["1/4 cup rice vinegar", "2 tbsp soy sauce", "1 tbsp sesame oil", "1 tbsp honey or maple syrup", "1 tsp grated fresh ginger", "1/2 cup chopped peanuts or cashews (optional)"]
+                },
+                instructions: ["In a large bowl, combine shredded chicken, cabbage, carrots, red bell pepper, green onions, and cilantro.", "In a small bowl, whisk together rice vinegar, soy sauce, sesame oil, honey, and ginger until well combined.", "Pour dressing over the salad ingredients and toss to coat evenly.", "If desired, add chopped peanuts or cashews for crunch.", "Serve immediately or chill for later."],
+                macros: { calories: "300 kcal", protein: "25g", carbs: "25g", fat: "12g" } // TODO: Add actual macro data here
             },
             "Shrimp Orzo": {
-                ingredients: ["400g raw shrimp", "1 cup orzo pasta", "2 tbsp olive oil", "1 onion", "2 cloves garlic", "1 can diced tomatoes", "1/2 cup white wine (optional)", "2 cups broth", "1/4 cup fresh parsley", "Salt", "Pepper"],
-                instructions: ["Sauté onion, garlic.", "Add orzo, toast.", "Add wine, tomatoes, broth, simmer.", "Stir in shrimp, cook 3-5 min.", "Add parsley."]
+                ingredients: {
+                    proteins: ["400g raw shrimp, peeled and deveined"],
+                    carbs: ["1 cup orzo pasta"],
+                    vegetables: ["1 onion, finely chopped", "2 cloves garlic, minced", "1/4 cup fresh parsley, chopped"],
+                    pantry: ["2 tbsp olive oil", "1 can (400g) diced tomatoes", "1/2 cup white wine (optional)", "2 cups vegetable or chicken broth", "Salt and pepper to taste"]
+                },
+                instructions: ["Heat olive oil in a large skillet over medium heat.", "Add onion and cook until softened, about 5 minutes.", "Add garlic and cook for 1 minute more until fragrant.", "Stir in orzo and toast for 2 minutes.", "Pour in white wine (if using) and cook until absorbed.", "Add diced tomatoes and broth, bring to a simmer.", "Cover and cook for 10-12 minutes, stirring occasionally, until orzo is almost cooked.", "Stir in shrimp and cook for 3-5 minutes until pink and cooked through.", "Season with salt and pepper, stir in fresh parsley before serving."],
+                macros: { calories: "380 kcal", protein: "25g", carbs: "45g", fat: "10g" } // TODO: Add actual macro data here
             },
             "Korean Beef Bowl": {
-                ingredients: ["500g beef sirloin", "2 tbsp soy sauce", "1 tbsp sesame oil", "1 tbsp brown sugar", "2 cloves garlic", "1 tsp fresh ginger", "1/2 red bell pepper", "1 cup broccoli florets", "Cooked rice", "Sesame seeds", "Green onions"],
-                instructions: ["Make marinade.", "Marinate beef.", "Stir-fry beef.", "Add veggies, stir-fry.", "Serve over rice."]
+                ingredients: {
+                    proteins: ["500g beef sirloin or flank steak, thinly sliced"],
+                    carbs: ["Cooked rice for serving"],
+                    vegetables: ["1/2 red bell pepper, sliced", "1 cup broccoli florets", "Sliced green onions for garnish"],
+                    pantry: ["2 tbsp soy sauce", "1 tbsp sesame oil", "1 tbsp brown sugar", "2 cloves garlic, minced", "1 tsp grated fresh ginger", "Sesame seeds for garnish"]
+                },
+                instructions: ["In a bowl, combine soy sauce, sesame oil, brown sugar, garlic, and ginger to make the marinade.", "Add sliced beef to the marinade and toss to coat; let marinate for at least 30 minutes.", "Heat a large skillet or wok over medium-high heat.", "Add marinated beef and stir-fry until cooked through and slightly caramelized.", "Add red bell pepper and broccoli, stir-fry for 3-5 minutes until tender-crisp.", "Serve hot over cooked rice, garnished with sesame seeds and green onions."],
+                macros: { calories: "420 kcal", protein: "38g", carbs: "40g", fat: "15g" } // TODO: Add actual macro data here
             },
             "Sweet and Sour Chicken": {
-                ingredients: ["500g chicken breast", "1 bell pepper", "1 onion", "1 can pineapple chunks", "2 tbsp cornstarch", "1/4 cup white vinegar", "1/4 cup sugar", "2 tbsp soy sauce", "1 tbsp ketchup", "1/2 cup chicken broth", "2 tbsp oil"],
-                instructions: ["Toss chicken with cornstarch.", "Stir-fry chicken.", "Sauté bell pepper, onion.", "Whisk sauce ingredients.", "Pour sauce, simmer.", "Return chicken, pineapple."]
+                ingredients: {
+                    proteins: ["500g chicken breast, cubed"],
+                    vegetables: ["1 bell pepper (any color), chopped", "1 onion, chopped"],
+                    pantry: ["1 can (227g) pineapple chunks, drained (reserve juice)", "2 tbsp cornstarch", "1/4 cup white vinegar", "1/4 cup sugar", "2 tbsp soy sauce", "1 tbsp ketchup", "1/2 cup chicken broth", "2 tbsp oil for cooking"]
+                },
+                instructions: ["Toss chicken cubes with 1 tbsp cornstarch.", "Heat oil in a large skillet or wok over medium-high heat.", "Stir-fry chicken until lightly browned and cooked through, remove from pan.", "In the same pan, add bell pepper and onion, stir-fry for 3-4 minutes until slightly softened.", "In a small bowl, whisk together remaining cornstarch with vinegar, sugar, soy sauce, ketchup, pineapple juice, and chicken broth.", "Pour sauce into the skillet, bring to a simmer, stirring until thickened.", "Return chicken to the pan along with pineapple chunks.", "Toss to coat everything in the sauce.", "Serve hot with rice or noodles."],
+                macros: { calories: "360 kcal", protein: "30g", carbs: "40g", fat: "10g" } // TODO: Add actual macro data here
             },
             "Tuna Salad": {
-                ingredients: ["2 cans tuna", "1/2 cup mayonnaise or Greek yogurt", "1 stalk celery", "1/4 cup red onion", "1 tbsp fresh dill (optional)", "1 tbsp Dijon mustard", "Salt", "Black pepper"],
-                instructions: ["Flake tuna.", "Combine with mayonnaise, celery, onion, dill, mustard.", "Mix well."]
+                ingredients: {
+                    proteins: ["2 cans (140g each) tuna in water, drained"],
+                    vegetables: ["1 stalk celery, finely chopped", "1/4 cup red onion, finely chopped", "1 tbsp fresh dill, chopped (optional)"],
+                    pantry: ["1/2 cup mayonnaise or Greek yogurt", "1 tbsp Dijon mustard", "Salt and black pepper to taste"]
+                },
+                instructions: ["In a medium bowl, flake the drained tuna with a fork.", "Add mayonnaise (or Greek yogurt), chopped celery, red onion, dill (if using), and Dijon mustard.", "Mix well to combine all ingredients.", "Season with salt and black pepper to taste.", "Serve as a sandwich filling, with crackers, or on a bed of lettuce."],
+                macros: { calories: "220 kcal", protein: "20g", carbs: "5g", fat: "15g" } // TODO: Add actual macro data here
             },
             "Mediterranean Orzo Salad": {
-                ingredients: ["1 cup orzo pasta", "1 cup cherry tomatoes", "1 cucumber", "1/2 red onion", "1/2 cup Kalamata olives", "1/4 cup fresh parsley", "1/4 cup feta cheese", "3 tbsp olive oil", "2 tbsp red wine vinegar", "1 tsp dried oregano", "Salt", "Pepper"],
-                instructions: ["Cook orzo, cool.", "Combine orzo, veggies, olives, parsley.", "Whisk dressing.", "Pour dressing, toss.", "Stir in feta."]
+                ingredients: {
+                    proteins: ["1/4 cup feta cheese, crumbled"],
+                    carbs: ["1 cup orzo pasta, cooked and cooled"],
+                    vegetables: ["1 cup cherry tomatoes, halved", "1 cucumber, diced", "1/2 red onion, thinly sliced", "1/2 cup Kalamata olives, pitted and halved", "1/4 cup fresh parsley, chopped"],
+                    pantry: ["3 tbsp olive oil", "2 tbsp red wine vinegar", "1 tsp dried oregano", "Salt and pepper to taste"]
+                },
+                instructions: ["Cook orzo pasta according to package directions; drain and rinse with cold water to cool, then set aside.", "In a large bowl, combine the cooled orzo, cherry tomatoes, cucumber, red onion, olives, and parsley.", "In a small bowl, whisk together olive oil, red wine vinegar, oregano, salt, and pepper to make the dressing.", "Pour the dressing over the orzo mixture and toss gently to coat all ingredients.", "Stir in the crumbled feta cheese.", "Serve immediately or chill for flavors to meld."],
+                macros: { calories: "350 kcal", protein: "10g", carbs: "40g", fat: "16g" } // TODO: Add actual macro data here
             },
             "Quinoa Halloumi Salad": {
-                ingredients: ["1 cup quinoa", "2 cups water or vegetable broth", "250g halloumi cheese", "2 tbsp olive oil", "1 red bell pepper", "1 yellow bell pepper", "1/2 red onion", "1/4 cup fresh mint", "1/4 cup fresh parsley", "3 tbsp lemon juice", "Salt", "Pepper"],
-                instructions: ["Cook quinoa, cool.", "Fry halloumi.", "Combine quinoa, peppers, onion, herbs.", "Whisk dressing.", "Pour dressing, toss.", "Fold in halloumi."]
+                ingredients: {
+                    proteins: ["250g halloumi cheese, sliced or cubed"],
+                    carbs: ["1 cup quinoa, rinsed"],
+                    vegetables: ["1 red bell pepper, chopped", "1 yellow bell pepper, chopped", "1/2 red onion, thinly sliced", "1/4 cup fresh mint, chopped", "1/4 cup fresh parsley, chopped"],
+                    pantry: ["2 cups water or vegetable broth", "2 tbsp olive oil", "3 tbsp lemon juice", "Salt and pepper to taste"]
+                },
+                instructions: ["Cook quinoa according to package directions with water or broth; let cool.", "Heat 1 tbsp olive oil in a non-stick skillet over medium heat.", "Add halloumi cheese and cook until golden brown on both sides, about 2-3 minutes per side; remove and set aside.", "In a large bowl, combine cooled quinoa, roasted bell peppers, red onion, mint, and parsley.", "Whisk together remaining olive oil, lemon juice, salt, and pepper for the dressing.", "Pour dressing over the salad and toss well.", "Gently fold in the cooked halloumi cheese.", "Serve warm or at room temperature."],
+                macros: { calories: "400 kcal", protein: "20g", carbs: "35g", fat: "20g" } // TODO: Add actual macro data here
             },
             "Bazella with Carrots": {
-                ingredients: ["500g ground beef or lamb (optional)", "1 tbsp olive oil", "1 onion", "2 cloves garlic", "1 can crushed tomatoes", "4 cups frozen peas and carrots mix", "1 cup water or beef broth", "1 tsp seven spice", "Salt", "Pepper", "Cooked rice"],
-                instructions: ["Brown meat (if used).", "Sauté onion, garlic.", "Stir in tomatoes, peas/carrots, broth, spice.", "Return meat (if used), simmer 20-25 min."]
+                ingredients: {
+                    proteins: ["500g ground beef or lamb (optional)"],
+                    vegetables: ["1 onion, chopped", "2 cloves garlic, minced", "4 cups frozen peas and carrots mix"],
+                    pantry: ["1 tbsp olive oil", "1 can (400g) crushed tomatoes", "1 cup water or beef broth", "1 tsp seven spice (baharat)", "Salt and pepper to taste", "Cooked rice for serving"]
+                },
+                instructions: ["If using meat, brown ground beef/lamb in olive oil in a large pot; drain excess fat and set aside.", "In the same pot, sauté onion until softened, then add garlic and cook for 1 minute more.", "Stir in crushed tomatoes, peas and carrots, water/broth, and seven spice.", "If using meat, return it to the pot.", "Bring to a simmer, then reduce heat, cover, and cook for 20-25 minutes, or until vegetables are tender.", "Season with salt and pepper to taste.", "Serve hot with rice."],
+                macros: { calories: "380 kcal", protein: "28g", carbs: "35g", fat: "14g" } // TODO: Add actual macro data here
             },
             "Chicken Fajita Bowl": {
-                ingredients: ["500g chicken breast", "2 bell peppers", "1 onion", "2 tbsp olive oil", "2 tsp fajita seasoning", "1 cup cooked rice", "1/2 cup black beans", "1/4 cup corn kernels", "Salsa", "Avocado slices", "Lime wedges"],
-                instructions: ["Stir-fry chicken.", "Add peppers, onion, sauté.", "Stir in seasoning.", "Serve over rice with toppings."]
+                ingredients: {
+                    proteins: ["500g chicken breast, sliced into strips"],
+                    carbs: ["1 cup cooked rice", "1/2 cup black beans, rinsed and drained"],
+                    vegetables: ["2 bell peppers (different colors), sliced", "1 onion, sliced", "1/4 cup corn kernels (frozen or canned)", "Salsa", "Avocado slices"],
+                    pantry: ["2 tbsp olive oil", "2 tsp fajita seasoning", "Lime wedges for serving"]
+                },
+                instructions: ["Heat olive oil in a large skillet over medium-high heat.", "Add chicken strips and cook until browned and cooked through.", "Add sliced bell peppers and onion, and sauté until tender-crisp.", "Stir in fajita seasoning and cook for another minute.", "Serve chicken and vegetable mixture over cooked rice, topped with black beans, corn, salsa, avocado, and lime wedges."],
+                macros: { calories: "450 kcal", protein: "40g", carbs: "50g", fat: "15g" } // TODO: Add actual macro data here
             },
             "Meatballs with Marinara": {
-                ingredients: ["500g ground beef or turkey", "1/2 cup breadcrumbs", "1 egg", "1/4 cup milk", "2 tbsp fresh parsley", "1 clove garlic", "1/2 tsp salt", "1/4 tsp black pepper", "1 tbsp olive oil", "1 jar marinara sauce", "Cooked pasta or zucchini noodles"],
-                instructions: ["Combine meatball ingredients, form meatballs.", "Brown meatballs.", "Pour marinara, simmer 15-20 min.", "Serve over pasta."]
+                ingredients: {
+                    proteins: ["500g ground beef or turkey", "1 egg"],
+                    carbs: ["1/2 cup breadcrumbs"],
+                    vegetables: ["2 tbsp fresh parsley, chopped", "1 clove garlic, minced"],
+                    pantry: ["1/4 cup milk", "1/2 tsp salt", "1/4 tsp black pepper", "1 tbsp olive oil", "1 jar (680g) marinara sauce", "Cooked pasta or zucchini noodles for serving"]
+                },
+                instructions: ["In a large bowl, gently combine ground meat, breadcrumbs, egg, milk, parsley, garlic, salt, and pepper.", "Form into 1-inch meatballs.", "Heat olive oil in a large skillet over medium heat.", "Brown meatballs on all sides, then drain any excess fat.", "Pour marinara sauce over the meatballs, bring to a simmer.", "Reduce heat, cover, and cook for 15-20 minutes, or until meatballs are cooked through.", "Serve hot over cooked pasta or zucchini noodles."],
+                macros: { calories: "420 kcal", protein: "35g", carbs: "30g", fat: "20g" } // TODO: Add actual macro data here
             },
             "Chicken Salad": {
-                ingredients: ["2 cups cooked chicken", "1/2 cup mayonnaise", "1/4 cup celery", "2 tbsp red onion", "1 tbsp fresh dill or parsley (optional)", "1 tsp Dijon mustard", "Salt", "Black pepper"],
-                instructions: ["Combine chicken, mayonnaise, celery, onion.", "Stir in dill, mustard.", "Mix well."]
+                ingredients: {
+                    proteins: ["2 cups cooked chicken, shredded or cubed"],
+                    vegetables: ["1/4 cup celery, finely chopped", "2 tbsp red onion, finely chopped", "1 tbsp fresh dill or parsley, chopped (optional)"],
+                    pantry: ["1/2 cup mayonnaise", "1 tsp Dijon mustard", "Salt and black pepper to taste", "Lettuce leaves or bread for serving"]
+                },
+                instructions: ["In a medium bowl, combine the cooked chicken, mayonnaise, chopped celery, and red onion.", "Stir in fresh dill or parsley (if using) and Dijon mustard.", "Mix all ingredients until well combined.", "Season with salt and black pepper to taste.", "Serve chilled on lettuce leaves, as a sandwich, or with crackers."],
+                macros: { calories: "280 kcal", protein: "25g", carbs: "5g", fat: "18g" } // TODO: Add actual macro data here
             },
             "Chicken Curry": {
-                ingredients: ["500g chicken breast", "1 tbsp olive oil", "1 onion", "2 cloves garlic", "1 tbsp fresh ginger", "2 tbsp curry powder", "1 can coconut milk", "1 cup chicken broth", "1/2 cup frozen peas", "Cooked basmati rice"],
-                instructions: ["Brown chicken.", "Sauté onion, garlic, ginger, curry powder.", "Return chicken, add coconut milk, broth, simmer.", "Stir in peas."]
+                ingredients: {
+                    proteins: ["500g chicken breast, cubed"],
+                    vegetables: ["1 onion, chopped", "2 cloves garlic, minced", "1/2 cup frozen peas"],
+                    pantry: ["1 tbsp olive oil", "1 tbsp grated fresh ginger", "2 tbsp curry powder", "1 can (400ml) coconut milk", "1 cup chicken broth", "Cooked basmati rice for serving"]
+                },
+                instructions: ["Heat olive oil in a large pot or deep skillet over medium heat.", "Add chicken cubes and cook until lightly browned; remove and set aside.", "In the same pot, add onion and cook until softened, about 5 minutes.", "Stir in garlic, ginger, and curry powder; cook for 1 minute until fragrant.", "Return chicken to the pot.", "Pour in coconut milk and chicken broth.", "Bring to a simmer, then reduce heat, cover, and cook for 15-20 minutes, or until chicken is cooked through.", "Stir in frozen peas and cook for another 5 minutes.", "Serve hot over basmati rice."],
+                macros: { calories: "400 kcal", protein: "35g", carbs: "30g", fat: "18g" } // TODO: Add actual macro data here
             },
             "Pepper and Cucumber Salad": {
-                ingredients: ["2 cucumbers", "2 bell peppers", "1/2 red onion", "1/4 cup fresh dill", "3 tbsp olive oil", "2 tbsp white wine vinegar", "1 tsp sugar (optional)", "Salt", "Black pepper"],
-                instructions: ["Dice veggies.", "Slice onion, chop dill.", "Combine veggies.", "Whisk dressing.", "Pour dressing, toss."]
+                ingredients: {
+                    proteins: [],
+                    vegetables: ["2 cucumbers, diced", "2 bell peppers (any color), diced", "1/2 red onion, thinly sliced", "1/4 cup fresh dill, chopped"],
+                    pantry: ["3 tbsp olive oil", "2 tbsp white wine vinegar", "1 tsp sugar (optional, for balance)", "Salt and black pepper to taste"]
+                },
+                instructions: ["Dice cucumbers and bell peppers into bite-sized pieces.", "Thinly slice the red onion and chop fresh dill.", "In a large bowl, combine the diced vegetables, red onion, and dill.", "In a small bowl, whisk together olive oil, white wine vinegar, sugar (if using), salt, and black pepper to create the dressing.", "Pour the dressing over the vegetables and toss gently to ensure everything is evenly coated.", "Serve immediately or chill in the refrigerator for at least 30 minutes to allow the flavors to meld."],
+                macros: { calories: "180 kcal", protein: "2g", carbs: "15g", fat: "12g" } // TODO: Add actual macro data here
             },
             "Mexican Burrito Bowl": {
-                ingredients: ["1 cup cooked rice", "1 cup cooked black beans", "1 cup cooked corn kernels", "1/2 cup salsa", "1/4 cup fresh cilantro", "1/2 avocado", "2 tbsp sour cream or Greek yogurt (optional)", "Lime wedges", "Optional: cooked seasoned protein"],
-                instructions: ["Layer rice, beans, corn.", "Top with salsa, cilantro, avocado.", "Add protein (optional), sour cream (optional)."]
-            },
-            "Burghul Banadoura": {
-                ingredients: ["1 cup coarse bulgur", "2 tbsp olive oil", "1 large onion", "2 cloves garlic", "1 can crushed tomatoes", "2 cups water or vegetable broth", "1 tsp dried mint", "Salt", "Black pepper"],
-                instructions: ["Rinse bulgur.", "Sauté onion, garlic.", "Stir in tomatoes, water/broth, dried mint, seasonings.", "Add bulgur, simmer 20-25 min."]
+                ingredients: {
+                    proteins: ["Optional: cooked seasoned chicken, beef, or tofu"],
+                    carbs: ["1 cup cooked rice (brown or white)", "1 cup cooked black beans, rinsed and drained"],
+                    vegetables: ["1 cup cooked corn kernels (fresh, frozen, or canned)", "1/2 cup salsa", "1/4 cup chopped fresh cilantro", "1/2 avocado, sliced or diced", "Lime wedges for serving"],
+                    pantry: ["2 tbsp sour cream or Greek yogurt (optional)"]
+                },
+                instructions: ["Assemble the bowl by layering cooked rice as the base.", "Top with cooked black beans and corn kernels.", "Add salsa, fresh cilantro, and avocado slices/dices.", "If desired, add your choice of cooked and seasoned protein (chicken, beef, or tofu).", "Dollop with sour cream or Greek yogurt if using.", "Serve immediately with a lime wedge for squeezing over the top."],
+                macros: { calories: "480 kcal", protein: "15g", carbs: "60g", fat: "20g" } // TODO: Add actual macro data here
             },
             "Teriyaki Chicken": {
-                ingredients: ["500g chicken breast or thighs", "1 tbsp olive oil", "1/2 cup teriyaki sauce", "1 tbsp honey or brown sugar (optional)", "1 cup broccoli florets", "1 bell pepper", "Cooked rice", "Sesame seeds", "Green onions"],
-                instructions: ["Stir-fry chicken.", "Add broccoli, bell pepper.", "Pour teriyaki sauce, simmer.", "Serve over rice."]
+                ingredients: {
+                    proteins: ["500g chicken breast or thighs, cut into bite-sized pieces"],
+                    carbs: ["Cooked rice for serving"],
+                    vegetables: ["1 cup broccoli florets", "1 bell pepper (any color), sliced", "Sliced green onions for garnish"],
+                    pantry: ["1 tbsp olive oil", "1/2 cup teriyaki sauce (store-bought or homemade)", "1 tbsp honey or brown sugar (optional, for extra glaze)", "Sesame seeds for garnish"]
+                },
+                instructions: ["Heat olive oil in a large skillet or wok over medium-high heat.", "Add chicken pieces and stir-fry until cooked through and lightly browned.", "Add broccoli florets and sliced bell pepper to the skillet, stir-fry for 3-5 minutes until tender-crisp.", "Pour teriyaki sauce over the chicken and vegetables, stir to coat.", "If desired, add honey or brown sugar and let the sauce simmer for 1-2 minutes until slightly thickened and glossy.", "Serve hot over cooked rice, garnished with sesame seeds and sliced green onions."],
+                macros: { calories: "390 kcal", protein: "35g", carbs: "40g", fat: "12g" } // TODO: Add actual macro data here
             }
         };
 
@@ -603,98 +665,91 @@
 
         // Utility function to get a random item from an array
         function getRandomMeal(mealList) {
+            if (mealList.length === 0) return null;
             return mealList[Math.floor(Math.random() * mealList.length)];
         }
 
-        // Function to distribute meals for Monday-Saturday based on your specific pattern
-        function distributeMeals(mealOptions, type) {
+        // Function to distribute meals for Sunday-Friday consumption
+        function distributeMealsForConsumption(mealOptions, type) {
             let assignedMeals = [];
-            let shuffledOptions = [...mealOptions]; // Create a copy to shuffle
-            shuffleArray(shuffledOptions); // Randomize the order of the available meals
+            let shuffledOptions = [...mealOptions]; 
+            shuffleArray(shuffledOptions); 
 
             if (type === 'lunches') {
-                // L1, L1, L2, L2, L3, L3
-                for (let i = 0; i < 3; i++) {
-                    const meal = shuffledOptions[i % shuffledOptions.length]; // Cycle through if less than 3 unique
-                    assignedMeals.push(meal, meal);
+                // L1, L1, L2, L2, L3, L3 for Sunday-Friday (6 meals)
+                for (let i = 0; i < 3; i++) { 
+                    const meal = shuffledOptions[i % shuffledOptions.length]; 
+                    assignedMeals.push(meal, meal); 
                 }
             } else if (type === 'dinners') {
-                // D1, D2, D3, D1, D2, D3
-                for (let i = 0; i < 6; i++) {
+                // D1, D2, D3, D1, D2, D3 for Sunday-Friday (6 meals)
+                for (let i = 0; i < 6; i++) { 
                     assignedMeals.push(shuffledOptions[i % shuffledOptions.length]);
                 }
             }
-            return assignedMeals;
+            return assignedMeals.slice(0, 6); // Ensure exactly 6 meals for Sun-Fri
         }
 
-        // Function to generate the calendar display
-        function generateCalendar() {
-            const calendarEl = document.getElementById('calendar');
-            calendarEl.innerHTML = ''; // Clear previous calendar content
+        // Main function to generate the entire calendar with weeks and controls
+        function generateFullCalendar() {
+            const mainContentEl = document.getElementById('mainContent');
+            mainContentEl.innerHTML = ''; // Clear previous content
 
-            // Update the current cycle display
-            document.getElementById('currentMonth').textContent = `Meal Plan Cycle ${currentCycleIndex + 1}`;
+            const dayNamesFull = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-            const weekLength = 7; // Days in a week
+            for (let weekDisplay = 0; weekDisplay < 4; weekDisplay++) { // Loop for 4 weeks
+                const weekSection = document.createElement('div');
+                weekSection.classList.add('calendar-section');
 
-            for (let weekDisplay = 0; weekDisplay < 4; weekDisplay++) { // Loop for 4 weeks to display
-                // Calculate which mealPlan week corresponds to the current 'weekDisplay'
-                const actualMealPlanWeekIndex = (currentCycleIndex + weekDisplay) % 4;
-                const actualMealPlanWeekKey = `week${actualMealPlanWeekIndex + 1}`;
-                const mealsForThisDisplayedWeek = mealPlan[actualMealPlanWeekKey];
+                const weekTitle = document.createElement('h2');
+                weekTitle.classList.add('week-title');
+                weekTitle.textContent = `Week ${weekDisplay + 1}`;
+                weekSection.appendChild(weekTitle);
 
-                // Determine the *next* actual meal plan week for Sunday's meals (prep for the *next* week)
-                const nextActualMealPlanWeekIndex = (actualMealPlanWeekIndex + 1) % 4;
-                const nextActualMealPlanWeekKey = `week${nextActualMealPlanWeekIndex + 1}`;
-                const mealsForNextDisplayedWeek = mealPlan[nextActualMealPlanWeekKey];
+                const weekCalendarGrid = document.createElement('div');
+                weekCalendarGrid.classList.add('calendar-grid');
 
-                // Distribute lunches and dinners for Monday-Saturday based on patterns
-                const distributedLunchesMonSat = distributeMeals(mealsForThisDisplayedWeek.lunches, 'lunches');
-                const distributedDinnersMonSat = distributeMeals(mealsForThisDisplayedWeek.dinners, 'dinners');
+                // Day Headers (Sun-Sat)
+                dayNamesFull.forEach(dayName => {
+                    const header = document.createElement('div');
+                    header.classList.add('day-header');
+                    header.textContent = dayName;
+                    weekCalendarGrid.appendChild(header);
+                });
 
-                // Get random meals for Sunday prep from the *next* week's available meals
-                const sundayPrepLunch = getRandomMeal(mealsForNextDisplayedWeek.lunches);
-                const sundayPrepDinner = getRandomMeal(mealsForNextDisplayedWeek.dinners);
+                // Get meal data for the *current* consumption week
+                const currentConsumptionWeekKey = `week${(weekDisplay % 4) + 1}`;
+                const currentConsumptionWeekData = mealPlan[currentConsumptionWeekKey];
+                
+                // Get meal data for the *next* week's prep (prepped on Sunday of THIS week)
+                const nextPrepWeekKey = `week${((weekDisplay + 1) % 4) + 1}`;
+                const nextPrepWeekData = mealPlan[nextPrepWeekKey];
 
-                for (let dayOfWeek = 0; dayOfWeek < weekLength; dayOfWeek++) { // Loop for 7 days (Sun-Sat)
+                const distributedLunchesConsumption = distributeMealsForConsumption(currentConsumptionWeekData.lunches, 'lunches');
+                const distributedDinnersConsumption = distributeMealsForConsumption(currentConsumptionWeekData.dinners, 'dinners');
+
+                // Random meals for Sunday prep for the *next* week's consumption
+                const sundayPrepLunch = getRandomMeal(nextPrepWeekData.lunches);
+                const sundayPrepDinner = getRandomMeal(nextPrepWeekData.dinners);
+
+                // Create days for Sunday to Saturday
+                for (let dayIndex = 0; dayIndex < 7; dayIndex++) { 
                     const dayEl = document.createElement('div');
                     dayEl.classList.add('day');
 
                     const dayNameEl = document.createElement('div');
-                    dayNameEl.classList.add('day-number');
-                    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                    
-                    if (dayOfWeek === 0) { // Sunday (Prep Day)
-                        dayNameEl.textContent = `Week ${weekDisplay + 1} ${dayNames[dayOfWeek]}`; // Week number + Day Name
-                        dayEl.classList.add('prep-day');
-                        const prepIndicator = document.createElement('div');
-                        prepIndicator.classList.add('prep-indicator');
-                        prepIndicator.textContent = 'Prep Day';
-                        dayEl.appendChild(prepIndicator);
+                    dayNameEl.classList.add('day-name');
+                    dayNameEl.textContent = dayNamesFull[dayIndex];
+                    dayEl.appendChild(dayNameEl);
 
-                        // Sunday meals are for PREP for the *next* week's consumption
-                        if (sundayPrepLunch) {
-                            const lunchEl = document.createElement('div');
-                            lunchEl.classList.add('meal', 'lunch');
-                            lunchEl.textContent = `Prep Lunch: ${sundayPrepLunch}`;
-                            lunchEl.onclick = () => openModal(sundayPrepLunch);
-                            dayEl.appendChild(lunchEl);
-                        }
-
-                        if (sundayPrepDinner) {
-                            const dinnerEl = document.createElement('div');
-                            dinnerEl.classList.add('meal', 'dinner');
-                            dinnerEl.textContent = `Prep Dinner: ${sundayPrepDinner}`;
-                            dinnerEl.onclick = () => openModal(sundayPrepDinner);
-                            dayEl.appendChild(dinnerEl);
-                        }
-
-                    } else { // Monday to Saturday (Consumption Days)
-                        dayNameEl.textContent = dayNames[dayOfWeek];
-                        const dayIndexForMeals = dayOfWeek - 1; // 0 for Monday, 1 for Tuesday... 5 for Saturday
-
-                        const lunch = distributedLunchesMonSat[dayIndexForMeals % distributedLunchesMonSat.length];
-                        const dinner = distributedDinnersMonSat[dayIndexForMeals % distributedDinnersMonSat.length];
+                    if (dayIndex === 6) { // Saturday is blank
+                        dayEl.classList.add('empty-day');
+                        // dayEl.innerHTML += '<p>Saturday - No Meals</p>'; // Optional text to indicate blank
+                    } else { // Sunday to Friday (Consumption Days)
+                        // All consumption meals (Sun-Fri) come from the 'distributedLunchesConsumption' and 'distributedDinnersConsumption' arrays.
+                        // These arrays are 0-indexed for Sunday-Friday, matching the dayIndex here directly.
+                        const lunch = distributedLunchesConsumption[dayIndex];
+                        const dinner = distributedDinnersConsumption[dayIndex];
 
                         if (lunch) {
                             const lunchEl = document.createElement('div');
@@ -711,131 +766,218 @@
                             dinnerEl.onclick = () => openModal(dinner);
                             dayEl.appendChild(dinnerEl);
                         }
+
+                        if (dayIndex === 0) { // Sunday - Also a Prep Day for the *next* week
+                            dayEl.classList.add('prep-day');
+                            const prepIndicator = document.createElement('div');
+                            prepIndicator.classList.add('prep-indicator');
+                            prepIndicator.textContent = 'Prep Day';
+                            dayEl.appendChild(prepIndicator);
+
+                            // Add the "Prep" meals (for next week's consumption) to Sunday's display
+                            if (sundayPrepLunch) {
+                                const prepLunchEl = document.createElement('div');
+                                prepLunchEl.classList.add('meal', 'lunch'); // Style as lunch, but indicate prep
+                                prepLunchEl.textContent = `Prep Lunch: ${sundayPrepLunch}`;
+                                prepLunchEl.onclick = () => openModal(sundayPrepLunch);
+                                dayEl.appendChild(prepLunchEl);
+                            }
+                            if (sundayPrepDinner) {
+                                const prepDinnerEl = document.createElement('div');
+                                prepDinnerEl.classList.add('meal', 'dinner'); // Style as dinner, but indicate prep
+                                prepDinnerEl.textContent = `Prep Dinner: ${sundayPrepDinner}`;
+                                prepDinnerEl.onclick = () => openModal(sundayPrepDinner);
+                                dayEl.appendChild(prepDinnerEl);
+                            }
+                        }
                     }
-                    dayEl.prepend(dayNameEl); // Ensure day name is at the top
-                    calendarEl.appendChild(dayEl);
+                    weekCalendarGrid.appendChild(dayEl);
                 }
+                weekSection.appendChild(weekCalendarGrid);
+
+                // Add Grocery List and Preparation buttons for the week
+                const weekActionsDiv = document.createElement('div');
+                weekActionsDiv.classList.add('week-actions');
+
+                const groceryButton = document.createElement('button');
+                groceryButton.classList.add('week-action-button');
+                groceryButton.textContent = 'View Grocery List';
+                groceryButton.onclick = () => toggleGroceryList(weekDisplay, weekActionsDiv);
+                weekActionsDiv.appendChild(groceryButton);
+
+                const prepButton = document.createElement('button');
+                prepButton.classList.add('week-action-button');
+                prepButton.textContent = 'View Preparations';
+                prepButton.onclick = () => togglePreparationSteps(weekDisplay, weekActionsDiv);
+                weekActionsDiv.appendChild(prepButton);
+
+                weekSection.appendChild(weekActionsDiv);
+
+                // Add placeholder for grocery list and prep steps (initially hidden)
+                const groceryListContainer = document.createElement('div');
+                groceryListContainer.id = `groceryList-${weekDisplay}`;
+                groceryListContainer.classList.add('list-container');
+                groceryListContainer.style.display = 'none'; // Hidden by default
+                weekSection.appendChild(groceryListContainer);
+
+                const preparationStepsContainer = document.createElement('div');
+                preparationStepsContainer.id = `preparationSteps-${weekDisplay}`;
+                preparationStepsContainer.classList.add('list-container');
+                preparationStepsContainer.style.display = 'none'; // Hidden by default
+                weekSection.appendChild(preparationStepsContainer);
+
+                mainContentEl.appendChild(weekSection);
             }
-            // After generating calendar, generate meal prep list for the *current* cycle's first week (which is the actual meal plan week)
-            generateMealPrepList();
         }
 
-        // Function to generate the grocery list and preparation steps
-        function generateMealPrepList() {
-            const groceryListEl = document.getElementById('groceryList');
-            const preparationStepsEl = document.getElementById('preparationSteps');
-            groceryListEl.innerHTML = '';
-            preparationStepsEl.innerHTML = '';
+        // Toggle Grocery List visibility and content
+        function toggleGroceryList(weekIndex, parentElement) {
+            const listContainer = document.getElementById(`groceryList-${weekIndex}`);
+            const prepContainer = document.getElementById(`preparationSteps-${weekIndex}`);
 
-            // Get the current week for which prep is being done
-            const actualMealPlanWeekKey = `week${(currentCycleIndex % 4) + 1}`;
-            const currentWeekData = mealPlan[actualMealPlanWeekKey];
+            // Hide the other list container for this week if open
+            prepContainer.style.display = 'none';
 
-            // Determine the *next* actual meal plan week for Sunday's prep meals
-            const nextActualMealPlanWeekIndex = (currentCycleIndex + 1) % 4;
-            const nextActualMealPlanWeekKey = `week${nextActualMealPlanWeekIndex + 1}`;
-            const nextWeekData = mealPlan[nextActualMealPlanWeekKey];
+            if (listContainer.style.display === 'none') {
+                listContainer.style.display = 'block';
+                generateGroceryList(weekIndex); // Generate content when shown
+            } else {
+                listContainer.style.display = 'none';
+            }
+        }
 
-            // Collect all meals that will be consumed in the CURRENT displayed cycle (Mon-Sat)
-            const mealsToCook = [
-                ...distributeMeals(currentWeekData.lunches, 'lunches'),
-                ...distributeMeals(currentWeekData.dinners, 'dinners')
-            ];
+        // Toggle Preparation Steps visibility and content
+        function togglePreparationSteps(weekIndex, parentElement) {
+            const listContainer = document.getElementById(`preparationSteps-${weekIndex}`);
+            const groceryContainer = document.getElementById(`groceryList-${weekIndex}`);
 
-            // Collect the meals that will be PREPPED on the Sunday of the CURRENT displayed cycle
-            // These are randomly selected from the *next* week's pool
-            const sundayPrepLunch = getRandomMeal(nextWeekData.lunches);
-            const sundayPrepDinner = getRandomMeal(nextWeekData.dinners);
+            // Hide the other list container for this week if open
+            groceryContainer.style.display = 'none';
+
+            if (listContainer.style.display === 'none') {
+                listContainer.style.display = 'block';
+                generatePreparationSteps(weekIndex); // Generate content when shown
+            } else {
+                listContainer.style.display = 'none';
+            }
+        }
+
+        // Function to generate the grocery list for a specific week
+        function generateGroceryList(weekIndex) {
+            const groceryListEl = document.getElementById(`groceryList-${weekIndex}`);
+            groceryListEl.innerHTML = ''; // Clear previous content
+
+            // Get the current week's data for *consumption*
+            const currentConsumptionWeekKey = `week${(weekIndex % 4) + 1}`;
+            const currentConsumptionWeekData = mealPlan[currentConsumptionWeekKey];
             
-            // Add Sunday prep meals to the list of meals to cook for ingredient gathering
-            if(sundayPrepLunch) mealsToCook.push(sundayPrepLunch);
-            if(sundayPrepDinner) mealsToCook.push(sundayPrepDinner);
+            // Get the NEXT week's data for *prep* (which is prepped on Sunday of the current week)
+            const nextPrepWeekKey = `week${((weekIndex + 1) % 4) + 1}`;
+            const nextPrepWeekData = mealPlan[nextPrepWeekKey];
 
-            const ingredientsCount = {};
-            const prepRecipes = new Set(); // To store unique recipe names for prep steps
+            // Meals that will be CONSUMED this week (Sunday-Friday)
+            const consumedLunches = distributeMealsForConsumption(currentConsumptionWeekData.lunches, 'lunches');
+            const consumedDinners = distributeMealsForConsumption(currentConsumptionWeekData.dinners, 'dinners');
+            
+            // Meals that will be PREPPED on Sunday of this week (for next week's consumption)
+            const sundayPrepLunch = getRandomMeal(nextPrepWeekData.lunches);
+            const sundayPrepDinner = getRandomMeal(nextPrepWeekData.dinners);
 
-            // Aggregate ingredients from all meals
-            mealsToCook.forEach(mealName => {
+            // Combine all unique meals whose ingredients are needed for this week's prep/consumption
+            const allMealsForIngredients = new Set();
+            consumedLunches.forEach(meal => allMealsForIngredients.add(meal));
+            consumedDinners.forEach(meal => allMealsForIngredients.add(meal));
+            if (sundayPrepLunch) allMealsForIngredients.add(sundayPrepLunch);
+            if (sundayPrepDinner) allMealsForIngredients.add(sundayPrepDinner);
+
+            const categorizedIngredients = {
+                proteins: new Set(),
+                carbs: new Set(),
+                vegetables: new Set(),
+                pantry: new Set()
+            };
+
+            allMealsForIngredients.forEach(mealName => {
                 const recipe = recipes[mealName];
-                if (recipe) {
-                    recipe.ingredients.forEach(ingredient => {
-                        ingredientsCount[ingredient] = (ingredientsCount[ingredient] || 0) + 1;
-                    });
+                if (recipe && recipe.ingredients) {
+                    for (const category in recipe.ingredients) {
+                        recipe.ingredients[category].forEach(item => {
+                            categorizedIngredients[category].add(item);
+                        });
+                    }
                 }
             });
 
-            // Add ingredients for Sunday prep meals to the list of meals to cook for ingredient gathering
-            // This is crucial: the actual prep being done on Sunday is for *these* specific meals.
-            if(sundayPrepLunch) {
-                const recipe = recipes[sundayPrepLunch];
-                if(recipe) {
-                    prepRecipes.add(sundayPrepLunch);
-                }
-            }
-            if(sundayPrepDinner) {
-                const recipe = recipes[sundayPrepDinner];
-                if(recipe) {
-                    prepRecipes.add(sundayPrepDinner);
-                }
-            }
+            const categoriesOrder = ['proteins', 'carbs', 'vegetables', 'pantry'];
+            let contentAdded = false;
 
+            categoriesOrder.forEach(category => {
+                if (categorizedIngredients[category].size > 0) {
+                    const categoryHeader = document.createElement('li');
+                    categoryHeader.classList.add('category-header');
+                    categoryHeader.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                    groceryListEl.appendChild(categoryHeader);
 
-            // Populate Grocery List
-            for (const ingredient in ingredientsCount) {
+                    const ul = document.createElement('ul');
+                    Array.from(categorizedIngredients[category]).sort().forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        ul.appendChild(li);
+                    });
+                    groceryListEl.appendChild(ul);
+                    contentAdded = true;
+                }
+            });
+
+            if (!contentAdded) {
                 const li = document.createElement('li');
-                // For simplicity, we just list the ingredient. If quantities need aggregation,
-                // the `recipes` object would need more structured quantity data.
-                li.textContent = `${ingredient}`; // (x${ingredientsCount[ingredient]}) if you want counts
+                li.textContent = "No grocery items found for this week.";
                 groceryListEl.appendChild(li);
             }
+        }
 
-            // Populate Preparation Steps (only for the meals prepped on Sunday)
-            if (prepRecipes.size === 0) {
+        // Function to generate preparation steps for a specific week
+        function generatePreparationSteps(weekIndex) {
+            const preparationStepsEl = document.getElementById(`preparationSteps-${weekIndex}`);
+            preparationStepsEl.innerHTML = ''; // Clear previous content
+
+            // Get the NEXT week's data for *prep* (which is prepped on Sunday of the current week)
+            const nextPrepWeekKey = `week${((weekIndex + 1) % 4) + 1}`;
+            const nextPrepWeekData = mealPlan[nextPrepWeekKey];
+
+            // Meals that will be PREPPED on Sunday of this week (for next week's consumption)
+            const sundayPrepLunch = getRandomMeal(nextPrepWeekData.lunches);
+            const sundayPrepDinner = getRandomMeal(nextPrepWeekData.dinners);
+            
+            const allPreppedMeals = new Set();
+            if (sundayPrepLunch) allPreppedMeals.add(sundayPrepLunch);
+            if (sundayPrepDinner) allPreppedMeals.add(sundayPrepDinner);
+
+            if (allPreppedMeals.size === 0) {
                 const li = document.createElement('li');
-                li.textContent = "No specific prep steps found for Sunday's meals.";
+                li.textContent = "No specific prep steps needed for this week's Sunday prep.";
                 preparationStepsEl.appendChild(li);
             } else {
-                prepRecipes.forEach(recipeName => {
-                    const recipe = recipes[recipeName];
-                    if (recipe && recipe.instructions && recipe.instructions.length > 0) {
+                const ol = document.createElement('ol');
+                allPreppedMeals.forEach(mealName => {
+                    const recipe = recipes[mealName];
+                    if (recipe && recipe.instructions) {
                         const liTitle = document.createElement('li');
-                        liTitle.innerHTML = `<strong>${recipeName}:</strong>`;
-                        preparationStepsEl.appendChild(liTitle);
+                        liTitle.innerHTML = `<strong>${mealName}:</strong>`;
+                        ol.appendChild(liTitle);
+                        const ulInstructions = document.createElement('ul');
                         recipe.instructions.forEach(instruction => {
                             const li = document.createElement('li');
                             li.textContent = instruction;
-                            preparationStepsEl.appendChild(li);
+                            ulInstructions.appendChild(li);
                         });
+                        ol.appendChild(ulInstructions);
                     }
                 });
+                preparationStepsEl.appendChild(ol);
             }
         }
 
-
-        // Function to change the current meal plan cycle
-        function changeCycle(direction) {
-            currentCycleIndex = (currentCycleIndex + direction + 4) % 4; // Ensure positive modulo result (0-3)
-            generateCalendar(); // Regenerate calendar with new cycle
-            generateMealPrepList(); // Regenerate grocery/prep list for the new cycle
-        }
-
-        // Function to show/hide tabs
-        function showTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.style.display = 'none';
-            });
-            // Deactivate all tab buttons
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-
-            // Show the selected tab content
-            document.getElementById(tabId).style.display = 'block';
-
-            // Activate the clicked button
-            document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active');
-        }
 
         // Modal functionality
         function openModal(recipeName) {
@@ -847,20 +989,45 @@
 
             if (recipe) {
                 modalTitle.textContent = recipeName;
-                modalBody.innerHTML = `
-                    <div class="recipe-section">
-                        <h3>Ingredients:</h3>
-                        <ul class="ingredients-list">
-                            ${recipe.ingredients.map(item => `<li>${item}</li>`).join('')}
-                        </ul>
-                    </div>
-                    <div class="recipe-section">
+                let ingredientsHtml = '';
+                if (recipe.ingredients) {
+                    ingredientsHtml += '<h3>Ingredients:</h3><ul class="ingredients-list">';
+                    const categoriesOrder = ['proteins', 'carbs', 'vegetables', 'pantry'];
+                    categoriesOrder.forEach(category => {
+                        if (recipe.ingredients[category] && recipe.ingredients[category].length > 0) {
+                            ingredientsHtml += `<li class="category-header">${category.charAt(0).toUpperCase() + category.slice(1)}</li>`;
+                            recipe.ingredients[category].forEach(item => {
+                                ingredientsHtml += `<li>${item}</li>`;
+                            });
+                        }
+                    });
+                    ingredientsHtml += '</ul>';
+                }
+
+                let instructionsHtml = '';
+                if (recipe.instructions && recipe.instructions.length > 0) {
+                    instructionsHtml = `
                         <h3>Instructions:</h3>
                         <ol class="instructions-list">
                             ${recipe.instructions.map(step => `<li>${step}</li>`).join('')}
                         </ol>
-                    </div>
-                `;
+                    `;
+                }
+
+                let macrosHtml = '';
+                if (recipe.macros) {
+                    macrosHtml = `
+                        <h3>Macros:</h3>
+                        <ul class="macros-list">
+                            <li>Calories: ${recipe.macros.calories || 'N/A'}</li>
+                            <li>Protein: ${recipe.macros.protein || 'N/A'}</li>
+                            <li>Carbs: ${recipe.macros.carbs || 'N/A'}</li>
+                            <li>Fat: ${recipe.macros.fat || 'N/A'}</li>
+                        </ul>
+                    `;
+                }
+
+                modalBody.innerHTML = ingredientsHtml + instructionsHtml + macrosHtml;
                 modal.style.display = 'flex'; 
             } else {
                 modalTitle.textContent = "Recipe Not Found";
@@ -884,8 +1051,7 @@
 
         // Initial generation on page load
         document.addEventListener('DOMContentLoaded', () => {
-            generateCalendar();
-            showTab('calendarTab'); // Show calendar tab by default
+            generateFullCalendar();
         });
     </script>
 </body>
